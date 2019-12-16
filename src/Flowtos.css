@@ -1,0 +1,12 @@
+.Flowtos {
+  text-align: center;
+}
+
+.Flowtos-header {
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.Flowtos-link {
+  color: #61dafb;
+}
