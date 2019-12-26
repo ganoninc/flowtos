@@ -13,14 +13,17 @@ import shutil
 from PIL import Image
 from progress.bar import Bar
 
+
 PACKAGE_FILE_PATH = './package.json'
 PHOTOS_FOLDER_PATH = './photos/'
 SUPPORTED_PHOTO_TYPES = ['.jpg']
 PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/photo-library-ressources/'
 PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME = 'photos'
+PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME = 'index.json'
 MAX_THUMBNAIL_DIMENSION = (128, 128)
 MAX_PHOTO_DIMENSION = (1280, 1280)
+
 
 def clean_and_init_photo_library_ressources_folder():
     shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
@@ -30,9 +33,11 @@ def clean_and_init_photo_library_ressources_folder():
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME)
 
+
 def load_package_file():
     with open(PACKAGE_FILE_PATH) as json_file:
         return json.load(json_file)
+
 
 def build_photos_folder_mapping():
     photos_folder_mapping = {'all_photos': [], 'albums': {}}
@@ -60,6 +65,7 @@ def build_photos_folder_mapping():
 
     return photos_folder_mapping
 
+
 def build_optimized_images(photos_folder_mapping):
     bar = Bar('Processing images', max=len(
         photos_folder_mapping['all_photos'])*2)
@@ -83,6 +89,33 @@ def build_optimized_images(photos_folder_mapping):
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
 
+
+def build_index_file(photos_folder_mapping):
+    index_file = {'all_photos': [], 'albums': []}
+    for photo in photos_folder_mapping['all_photos']:
+        photo_elt = {
+            'id': photo['id'],
+            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + 'jpg',
+            'photoUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + 'jpg'
+        }
+
+        index_file['all_photos'].append(photo_elt)
+
+    for album in photos_folder_mapping['albums']:
+        album_photos = []
+        for photo in photos_folder_mapping['albums'][album]['photos']:
+            photo_elt = {
+                'id': photo['id'],
+                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + 'jpg',
+                'photoUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + 'jpg'
+            }
+            album_photos.append(photo_elt)
+        index_file['albums'].append({'name:': album, 'photos': album_photos})
+
+    with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME, 'w') as outfile:
+        json.dump(index_file, outfile)
+
+
 def build_photo_library_ressources():
     clean_and_init_photo_library_ressources_folder()
     package_file = load_package_file()
@@ -90,6 +123,9 @@ def build_photo_library_ressources():
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
     build_optimized_images(photos_folder_mapping)
+    build_index_file(photos_folder_mapping)
+    print("\nDone")
+
 
 if __name__ == '__main__':
     build_photo_library_ressources()
