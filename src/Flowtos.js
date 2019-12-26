@@ -10,19 +10,19 @@ class Flowtos extends React.Component {
 
     this.state = {
       error: null,
-      isPhotosListLoaded: false,
-      photosList: []
+      isPhotoLibraryIndexLoaded: false,
+      photoLibraryIndex: []
     };
   }
 
   componentDidMount() {
-    fetch("./photos/list.json")
+    fetch("./photo-library-ressources/index.json")
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
-            isPhotosListLoaded: true,
-            photosList: result.items
+            isPhotoLibraryIndexLoaded: true,
+            photoLibraryIndex: result.items
           });
         },
         // Note: it's important to handle errors here
@@ -39,13 +39,13 @@ class Flowtos extends React.Component {
 
   render () {
     let photosView;
-    const { error, isPhotosListLoaded, photosList } = this.state;
+    const { error, isPhotoLibraryIndexLoaded, photoLibraryIndex } = this.state;
 
     if (error) {
       photosView = <div>Error while loading Flowtos: {error.message}</div>;
     }
-    else if (isPhotosListLoaded) {
-      photosView = <Photos list={photosList}></Photos>;
+    else if (isPhotoLibraryIndexLoaded) {
+      photosView = <Photos list={photoLibraryIndex}></Photos>;
     } else {
       photosView = <LoadingIndicator></LoadingIndicator>;
     }
