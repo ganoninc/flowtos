@@ -18,7 +18,7 @@ function Photos(props) {
             toggler: !lightboxController.toggler,
             slide: index + 1
         });
-    }, [lightboxController.toggler]);
+    }, [lightboxController]);
     
     return (
         <>
