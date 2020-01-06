@@ -22,7 +22,7 @@ class Flowtos extends React.Component {
         (result) => {
           this.setState({
             isPhotoLibraryIndexLoaded: true,
-            photoLibraryIndex: result.items
+            photoLibraryIndex: result.all_photos
           });
         },
         // Note: it's important to handle errors here

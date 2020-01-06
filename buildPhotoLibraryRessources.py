@@ -17,7 +17,10 @@ from progress.bar import Bar
 PACKAGE_FILE_PATH = './package.json'
 PHOTOS_FOLDER_PATH = './photos/'
 SUPPORTED_PHOTO_TYPES = ['.jpg']
-PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/photo-library-ressources/'
+PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME = 'photo-library-ressources'
+PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
+    PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
+PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME = 'photos'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME = 'index.json'
@@ -93,10 +96,14 @@ def build_optimized_images(photos_folder_mapping):
 def build_index_file(photos_folder_mapping):
     index_file = {'all_photos': [], 'albums': []}
     for photo in photos_folder_mapping['all_photos']:
+        im = Image.open(photo['path'])
+        photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + 'jpg',
-            'photoUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + 'jpg'
+            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'width': photo_width,
+            'height': photo_height
         }
 
         index_file['all_photos'].append(photo_elt)
@@ -106,8 +113,8 @@ def build_index_file(photos_folder_mapping):
         for photo in photos_folder_mapping['albums'][album]['photos']:
             photo_elt = {
                 'id': photo['id'],
-                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + 'jpg',
-                'photoUrl': PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + 'jpg'
+                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg'
             }
             album_photos.append(photo_elt)
         index_file['albums'].append({'name:': album, 'photos': album_photos})
