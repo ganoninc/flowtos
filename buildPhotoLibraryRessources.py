@@ -24,8 +24,10 @@ PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME 
 PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME = 'photos'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME = 'index.json'
-MAX_THUMBNAIL_DIMENSION = (128, 128)
+MAX_THUMBNAIL_DIMENSION = (512, 512)
+MAX_2X_THUMBNAIL_DIMENSION = (1024, 1024)
 MAX_PHOTO_DIMENSION = (1280, 1280)
+MAX_2X_PHOTO_DIMENSION = (2560, 2560)
 
 
 def clean_and_init_photo_library_ressources_folder():
@@ -71,7 +73,7 @@ def build_photos_folder_mapping():
 
 def build_optimized_images(photos_folder_mapping):
     bar = Bar('Processing images', max=len(
-        photos_folder_mapping['all_photos'])*2)
+        photos_folder_mapping['all_photos']) * 4)
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
@@ -85,11 +87,31 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
+            im.thumbnail(MAX_2X_THUMBNAIL_DIMENSION)
+            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+                    PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+        except IOError:
+            print("Cannot create @2x thumbnail for photo ", photo['path'])
+        bar.next()
+
+    for photo in photos_folder_mapping['all_photos']:
+        try:
+            im = Image.open(photo['path'])
             im.thumbnail(MAX_PHOTO_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
                     PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
         except IOError:
             print("Cannot create resized photo of ", photo['path'])
+        bar.next()
+
+    for photo in photos_folder_mapping['all_photos']:
+        try:
+            im = Image.open(photo['path'])
+            im.thumbnail(MAX_2X_PHOTO_DIMENSION)
+            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+                    PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+        except IOError:
+            print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
 
 
@@ -101,7 +123,9 @@ def build_index_file(photos_folder_mapping):
         photo_elt = {
             'id': photo['id'],
             'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'thumbnail@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'photo@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
             'height': photo_height
         }
@@ -114,7 +138,11 @@ def build_index_file(photos_folder_mapping):
             photo_elt = {
                 'id': photo['id'],
                 'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg'
+                'thumbnail@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'photo@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'width': photo_width,
+                'height': photo_height
             }
             album_photos.append(photo_elt)
         index_file['albums'].append({'name:': album, 'photos': album_photos})
