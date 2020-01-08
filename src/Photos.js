@@ -5,7 +5,16 @@ import FsLightbox from 'fslightbox-react';
 
 function Photos(props) {
     // remapping of the photo list
-    const photoThumbnails = props.list.map(photo => { return { src: photo.thumbnailUrl, width: photo.width, height: photo.height, key: photo.id.toString()} });
+    const photoThumbnails = props.list.map(photo => { return { 
+        src: photo.thumbnailUrl,
+        srcSet: [
+            photo.thumbnailUrl + " 1x",
+            photo.thumbnail2xUrl + " 2x"
+        ],
+        width: photo.width,
+        height: photo.height,
+        key: photo.id.toString()
+    } });
     const photos = props.list.map(photo => photo.photoUrl);
 
     const [lightboxController, setLightboxController] = useState({
@@ -22,7 +31,7 @@ function Photos(props) {
     
     return (
         <>
-            <Gallery photos={photoThumbnails} onClick={openLightboxOnSlide}/>
+            <Gallery photos={photoThumbnails} onClick={openLightboxOnSlide} margin={2}/>
             <FsLightbox
                 toggler={lightboxController.toggler}
                 sources={photos}

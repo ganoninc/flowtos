@@ -24,8 +24,8 @@ PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME 
 PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME = 'photos'
 PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME = 'index.json'
-MAX_THUMBNAIL_DIMENSION = (512, 512)
-MAX_2X_THUMBNAIL_DIMENSION = (1024, 1024)
+MAX_THUMBNAIL_DIMENSION = (400, 400)
+MAX_2X_THUMBNAIL_DIMENSION = (800, 800)
 MAX_PHOTO_DIMENSION = (1280, 1280)
 MAX_2X_PHOTO_DIMENSION = (2560, 2560)
 
@@ -123,9 +123,9 @@ def build_index_file(photos_folder_mapping):
         photo_elt = {
             'id': photo['id'],
             'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'thumbnail@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'photo@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
             'height': photo_height
         }
@@ -138,9 +138,9 @@ def build_index_file(photos_folder_mapping):
             photo_elt = {
                 'id': photo['id'],
                 'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'thumbnail@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
                 'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photo@2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
                 'width': photo_width,
                 'height': photo_height
             }
