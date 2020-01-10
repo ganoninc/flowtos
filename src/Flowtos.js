@@ -61,7 +61,7 @@ class Flowtos extends React.Component {
                         <main>{photosView}</main>
                         <footer class="footer mt-auto py-2">
                             <div class="container">
-                                <span class="text-muted">All images © 2002-2020 Romain Julien Giovanetti (@Gioroju). </span>
+                                <span class="text-muted">All images © 2002-2020 <a href="https://www.giovanetti.fr/">Romain Julien Giovanetti</a> (@Gioroju). </span>
                             </div>
                         </footer>
                     </div>
