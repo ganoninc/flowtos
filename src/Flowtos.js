@@ -55,13 +55,13 @@ class Flowtos extends React.Component {
                 <div className="container">
                     <div className="Flowtos">
                         <header className="Flowtos-header py-5">
-                            <span className="text-muted">Romain Julien Giovanetti</span>
+                            <span className="text-muted">Romain J. Giovanetti</span>
                             <h1 className="pt-2">Jeu de Lumières</h1>
                         </header>
                         <main>{photosView}</main>
                         <footer class="footer mt-auto py-2">
                             <div class="container">
-                                <span class="text-muted">All images © 2002-2020 <a href="https://www.giovanetti.fr/">Romain Julien Giovanetti</a> (@Gioroju). </span>
+                                <span class="text-muted">All images © 2002-2020 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a> (@Gioroju). </span>
                             </div>
                         </footer>
                     </div>
