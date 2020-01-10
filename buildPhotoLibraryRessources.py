@@ -9,6 +9,7 @@ import os
 import glob
 import json
 import shutil
+import hashlib
 
 from PIL import Image
 from progress.bar import Bar
@@ -55,6 +56,7 @@ def build_photos_folder_mapping():
             glob.glob(pathname, recursive=True))
 
     for photo_path in photos_grabbed:
+        photo_id = md5(photo_path)
         photo_folder_tree_element = {'id': photo_id, 'path': photo_path}
         photos_folder_mapping['all_photos'].append(photo_folder_tree_element)
 
@@ -66,7 +68,6 @@ def build_photos_folder_mapping():
                 photos_folder_mapping['albums'][album_name] = {'photos': []}
             photos_folder_mapping['albums'][album_name]['photos'].append(
                 photo_folder_tree_element)
-        photo_id += 1
 
     return photos_folder_mapping
 
@@ -149,6 +150,15 @@ def build_index_file(photos_folder_mapping):
 
     with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME, 'w') as outfile:
         json.dump(index_file, outfile)
+
+# Method found on Stack Overflow - Generating an MD5 checksum of a file
+# (https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file)
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 def build_photo_library_ressources():
