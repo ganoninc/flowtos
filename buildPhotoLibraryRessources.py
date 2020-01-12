@@ -123,10 +123,10 @@ def build_index_file(photos_folder_mapping):
         photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-            'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
             'height': photo_height
         }
@@ -138,10 +138,10 @@ def build_index_file(photos_folder_mapping):
         for photo in photos_folder_mapping['albums'][album]['photos']:
             photo_elt = {
                 'id': photo['id'],
-                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-                'photoUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_BASE_URL + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
                 'width': photo_width,
                 'height': photo_height
             }
