@@ -12,7 +12,7 @@ import CategorySelector from './CategorySelector'
 
 class Flowtos extends React.Component {
 
-    FLOWTOS_ENDPOINT = "https://giovanetti.fr/flowtos/photo-library-ressources/";
+    PHOTO_LIBRARY_ENDPOINT = "https://giovanetti.fr/flowtos/photo-library-ressources/";
 
     constructor(props) {
         super(props);
@@ -20,7 +20,7 @@ class Flowtos extends React.Component {
         this.state = {
             error: null,
             isPhotoLibraryIndexLoaded: false,
-            photoLibraryIndex: []
+            allPhotosIndex: []
         };
 
         if (process.env.NODE_ENV !== 'production') {
@@ -32,10 +32,12 @@ class Flowtos extends React.Component {
         fetch(this.PHOTO_LIBRARY_ENDPOINT + "index.json")
             .then(res => res.json())
             .then(
-                (result) => {
+                (photoLibraryIndex) => {
                     this.setState({
                         isPhotoLibraryIndexLoaded: true,
-                        photoLibraryIndex: result.all_photos
+                        allPhotosIndex: photoLibraryIndex.all_photos,
+                        albumsIndex: photoLibraryIndex.albums
+
                     });
                 },
                 // Note: it's important to handle errors here
@@ -52,7 +54,7 @@ class Flowtos extends React.Component {
 
     render() {
         let photosView;
-        const { error, isPhotoLibraryIndexLoaded, photoLibraryIndex } = this.state;
+        const { error, isPhotoLibraryIndexLoaded, allPhotosIndex, albumsIndex } = this.state;
 
         if (error) {
             photosView = <div>Error while loading Flowtos: {error.message}</div>;
@@ -62,13 +64,13 @@ class Flowtos extends React.Component {
                 <>
                 <Switch>
                     <Route path="/photos/:photoId">
-                        <Photos list={photoLibraryIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                        <Photos list={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                     <Route path="/albums">
-                        <Albums list={photoLibraryIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                            <Albums list={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                     <Route path="/">
-                        <Photos list={photoLibraryIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                        <Photos list={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                 </Switch>
                 </>

@@ -13,7 +13,7 @@ function Photos(props) {
 
     // remapping of the photo list
     const photoThumbnails = props.list.map(photo => { return { 
-        src: photo.thumbnailUrl,
+        src: props.photoLibraryEndpoint + photo.thumbnailUrl,
         srcSet: [
             props.photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
             props.photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x"
