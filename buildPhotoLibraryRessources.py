@@ -156,7 +156,7 @@ def build_index_file(photos_folder_mapping):
                 'height': photo_height
             }
             album_photos.append(photo_elt)
-        index_file['albums'].append({'name:': album, 'photos': album_photos})
+        index_file['albums'].append({'name': album, 'photos': album_photos})
 
     with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME, 'w') as outfile:
         json.dump(index_file, outfile)
