@@ -27,3 +27,4 @@ yarn-error.log*
 
 # photo library ressources
 /public/photo-library-ressources/*
+/public/photos/*

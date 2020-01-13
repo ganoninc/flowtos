@@ -29,13 +29,6 @@ function Photos(props) {
         sourceIndex: photoThumbnails.findIndex(photoThumbnail => photoThumbnail.key === photoId)
     });
 
-    // if (photoId){
-    //     setLightboxController({
-    //         toggler: lightboxController.toggler,
-    //         sourceIndex: photoThumbnails.findIndex(photoThumbnail => photoThumbnail.key === photoId)
-    //     });
-    // }
-
     const openLightboxOnSlide = useCallback((event, { photo, index }) => { 
         history.push("/photos/" + photo.key);
         setLightboxController({

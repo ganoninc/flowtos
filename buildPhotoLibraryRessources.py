@@ -14,11 +14,14 @@ import hashlib
 from PIL import Image
 from progress.bar import Bar
 
-
+FLOWTOS_BASEURL = 'https://giovanetti.fr/flowtos/'
 PACKAGE_FILE_PATH = './package.json'
+BASIC_PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-ssr-template.html'
+BASIC_PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
 PHOTOS_FOLDER_PATH = './photos/'
 SUPPORTED_PHOTO_TYPES = ['.jpg']
 PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME = 'photo-library-ressources'
+BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH = './public/photos/'
 PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
     PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
@@ -31,13 +34,20 @@ MAX_PHOTO_DIMENSION = (1280, 1280)
 MAX_2X_PHOTO_DIMENSION = (2560, 2560)
 
 
-def clean_and_init_photo_library_ressources_folder():
-    shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
+def clean_and_init_photo_library_ressources_folders():
+    # photo-library-ressources folder
+    if os.path.exists(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH) and os.path.isdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH):
+        shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME)
+    # photos folder (basic server side renders)
+    if os.path.exists(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH):
+        shutil.rmtree(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
+    os.mkdir(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
+
 
 
 def load_package_file():
@@ -161,14 +171,32 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
+def build_basic_server_side_renders(photos_folder_mapping):
+    with open(BASIC_PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
+        photo_server_side_render_template = template.read()
+        for photo in photos_folder_mapping['all_photos']:
+            photo_server_side_render = photo_server_side_render_template.replace(
+                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + photo['id'] + '.jpg')
+            photo_server_side_render = photo_server_side_render.replace(
+                '{BASIC_SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
+            
+            with open(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + photo['id'] + '.html', 'w+') as render:
+                render.write(photo_server_side_render)
+
+    with open(BASIC_PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
+        with open(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
+            htaccess_destination.write(htaccess_source.read())
+
+
 def build_photo_library_ressources():
-    clean_and_init_photo_library_ressources_folder()
+    clean_and_init_photo_library_ressources_folders()
     package_file = load_package_file()
     flowtos_version = package_file['version']
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
     build_optimized_images(photos_folder_mapping)
     build_index_file(photos_folder_mapping)
+    build_basic_server_side_renders(photos_folder_mapping)
     print("\nDone")
 
 
