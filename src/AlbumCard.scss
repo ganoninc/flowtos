@@ -1,0 +1,40 @@
+@import './custom.scss';
+
+
+.album-card {
+    height: 300px;
+    width: inherit;
+    overflow: hidden;
+    
+
+    .cover {
+        object-fit: cover;
+        width: inherit;
+        height: inherit;
+        -webkit-filter: opacity(10%); /* Safari 6.0 - 9.0 */
+        filter: opacity(10%) saturate(0);
+        transition: 0.25s filter linear, 0.25s -webkit-filter linear;
+    }
+
+    .name {
+        position: relative;
+        top: -53%;
+        font-size: 1.25rem;
+        color: $link-color;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        .cover {
+            filter: opacity(35%) saturate(1);
+        }
+        .name {
+            color: $link-hover-color;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        
+    }
+}
