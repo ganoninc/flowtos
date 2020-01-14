@@ -12,7 +12,7 @@ function Photos(props) {
     let { photoId } = useParams();
 
     // remapping of the photo list
-    const photoThumbnails = props.list.map(photo => { return { 
+    const photoThumbnails = props.photoList.map(photo => { return { 
         src: props.photoLibraryEndpoint + photo.thumbnailUrl,
         srcSet: [
             props.photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
@@ -22,7 +22,7 @@ function Photos(props) {
         height: photo.height,
         key: photo.id.toString()
     } });
-    const photos = props.list.map(photo => props.photoLibraryEndpoint + photo.photoUrl);
+    const photos = props.photoList.map(photo => props.photoLibraryEndpoint + photo.photoUrl);
 
     const [lightboxController, setLightboxController] = useState({
         toggler: false,

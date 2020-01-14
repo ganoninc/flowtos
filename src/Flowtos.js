@@ -8,6 +8,7 @@ import './Flowtos.scss';
 import LoadingIndicator from './LoadingIndicator'
 import Photos from './Photos';
 import Albums from './Albums';
+import Album from './Album';
 import CategorySelector from './CategorySelector'
 
 class Flowtos extends React.Component {
@@ -64,13 +65,16 @@ class Flowtos extends React.Component {
                 <>
                 <Switch>
                     <Route path="/photos/:photoId">
-                        <Photos list={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                        <Photos photoList={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                    </Route>
+                    <Route path="/albums/:albumId">
+                        <Album albumList={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                     <Route path="/albums">
-                            <Albums list={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                        <Albums albumList={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                     <Route path="/">
-                        <Photos list={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                        <Photos photoList={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                 </Switch>
                 </>
