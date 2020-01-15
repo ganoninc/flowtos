@@ -4,6 +4,8 @@ import {
     useHistory
 } from "react-router-dom";
 
+import './CategorySelector.scss'
+
 function CategorySelector(props) {
     let history = useHistory();
 
@@ -15,7 +17,7 @@ function CategorySelector(props) {
     };
 
     return (
-        <>
+        <div className="category-selector">
             <Nav className="justify-content-center pt-2" activeKey={props.selected} onSelect={onSelectHandler}>
                 <Nav.Item>
                     <Nav.Link eventKey="latest-photos">Latest Photos</Nav.Link>
@@ -24,7 +26,7 @@ function CategorySelector(props) {
                     <Nav.Link eventKey="albums">Albums</Nav.Link>
                 </Nav.Item>
             </Nav>
-        </>
+        </div>
     );
 }
 

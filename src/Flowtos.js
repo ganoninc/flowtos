@@ -4,12 +4,13 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import './Flowtos.scss';
 import LoadingIndicator from './LoadingIndicator'
 import Photos from './Photos';
 import Albums from './Albums';
 import Album from './Album';
 import CategorySelector from './CategorySelector'
+
+import './Flowtos.scss';
 
 class Flowtos extends React.Component {
 
@@ -87,37 +88,35 @@ class Flowtos extends React.Component {
         }
 
         return (
-            <>
+            <div className="flowtos">
                 <Router>
                     <div className="container">
-                        <div className="Flowtos">
-                            <header className="Flowtos-header pt-5 pb-4">
-                                <span className="text-muted">Romain J. Giovanetti</span>
-                                <h1 className="pt-2">Jeu de Lumières</h1>
-                                <Switch>
-                                    <Route path="/photos/:photoId">
-                                        <CategorySelector selected="latest-photos" />
-                                    </Route>
-                                    <Route path="/albums">
-                                        <CategorySelector selected="albums" />
-                                    </Route>
-                                    <Route path="/">
-                                        <CategorySelector selected="latest-photos" />
-                                    </Route>
-                                </Switch>
-                            </header>
-                            <main>
-                                {photosView}
-                            </main>
-                            <footer className="footer mt-auto py-4">
-                                <div className="container">
-                                    <span className="text-muted">All images © 2002-2020 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a> (@Gioroju). </span>
-                                </div>
-                            </footer>
-                        </div>
+                        <header className="Flowtos-header pt-5 pb-4">
+                            <span className="text-muted">Romain J. Giovanetti</span>
+                            <h1 className="pt-2">Jeu de Lumières</h1>
+                            <Switch>
+                                <Route path="/photos/:photoId">
+                                    <CategorySelector selected="latest-photos" />
+                                </Route>
+                                <Route path="/albums">
+                                    <CategorySelector selected="albums" />
+                                </Route>
+                                <Route path="/">
+                                    <CategorySelector selected="latest-photos" />
+                                </Route>
+                            </Switch>
+                        </header>
+                        <main>
+                            {photosView}
+                        </main>
+                        <footer className="footer mt-auto py-4">
+                            <div className="container">
+                                <span className="text-muted">All images © 2002-2020 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a> (@Gioroju). </span>
+                            </div>
+                        </footer>
                     </div>
                 </Router>
-            </>
+            </div>
         );
     }
 }
