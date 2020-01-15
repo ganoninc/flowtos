@@ -16,12 +16,15 @@ from progress.bar import Bar
 
 FLOWTOS_BASEURL = 'https://giovanetti.fr/flowtos/'
 PACKAGE_FILE_PATH = './package.json'
-BASIC_PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-ssr-template.html'
-BASIC_PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
+PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-ssr-template.html'
+PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
+ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './album-ssr-template.html'
+ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './album-ssr-htaccess'
 PHOTOS_FOLDER_PATH = './photos/'
 SUPPORTED_PHOTO_TYPES = ['.jpg']
 PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME = 'photo-library-ressources'
-BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH = './public/photos/'
+PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH = './public/photos/'
+ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH = './public/albums/'
 PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
     PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
@@ -43,10 +46,14 @@ def clean_and_init_photo_library_ressources_folders():
              PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME)
-    # photos folder (basic server side renders)
-    if os.path.exists(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH):
-        shutil.rmtree(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
-    os.mkdir(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
+    # photos folder (server side renders)
+    if os.path.exists(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH):
+        shutil.rmtree(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
+    os.mkdir(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
+    # albums folder (server side renders)
+    if os.path.exists(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH):
+        shutil.rmtree(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
+    os.mkdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
 
 
 
@@ -176,21 +183,41 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-def build_basic_server_side_renders(photos_folder_mapping):
-    with open(BASIC_PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
+def build_server_side_renders(photos_folder_mapping):
+    # all photos
+    with open(PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
         photo_server_side_render_template = template.read()
         for photo in photos_folder_mapping['all_photos']:
             photo_server_side_render = photo_server_side_render_template.replace(
                 '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + photo['id'] + '.jpg')
             photo_server_side_render = photo_server_side_render.replace(
-                '{BASIC_SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
+                '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
             
-            with open(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + photo['id'] + '.html', 'w+') as render:
+            with open(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + photo['id'] + '.html', 'w+') as render:
                 render.write(photo_server_side_render)
 
-    with open(BASIC_PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
-        with open(BASIC_PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
+    with open(PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
+        with open(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
             htaccess_destination.write(htaccess_source.read())
+
+    # albums
+    with open(ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
+        album_server_side_render_template = template.read()
+        for album in photos_folder_mapping['albums']:
+            album_server_side_render = album_server_side_render_template.replace(
+                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
+            album_server_side_render = album_server_side_render.replace(
+                '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
+            album_server_side_render = album_server_side_render.replace(
+                '{ALBUM_NAME}', album)
+
+            with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album + '.html', 'w+') as render:
+                render.write(album_server_side_render)
+
+    with open(ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
+        with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
+            htaccess_destination.write(htaccess_source.read())
+
 
 
 def build_photo_library_ressources():
@@ -201,7 +228,7 @@ def build_photo_library_ressources():
     photos_folder_mapping = build_photos_folder_mapping()
     build_optimized_images(photos_folder_mapping)
     build_index_file(photos_folder_mapping)
-    build_basic_server_side_renders(photos_folder_mapping)
+    build_server_side_renders(photos_folder_mapping)
     print("\nDone")
 
 
