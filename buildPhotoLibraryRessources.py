@@ -146,6 +146,8 @@ def build_index_file(photos_folder_mapping):
     for album in photos_folder_mapping['albums']:
         album_photos = []
         for photo in photos_folder_mapping['albums'][album]['photos']:
+            im = Image.open(photo['path'])
+            photo_width, photo_height = im.size
             photo_elt = {
                 'id': photo['id'],
                 'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
