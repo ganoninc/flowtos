@@ -15,7 +15,7 @@ function About(props) {
         I was 17. A few years after the iPhone arrived in my life and changed
         everything. Eventually, one year ago I bought a professional digital
         camera and just 2 minutes after the transaction, I got hit by a car as
-        pedestrian, but that's another story.{" "}
+        pedestrian, but that's another story.
       </p>
       <p>
         Long story short, I've enjoyed taking and editing those pictures and I
