@@ -67,7 +67,10 @@ class Flowtos extends React.Component {
                     <Route path="/photos/:photoId">
                         <Photos photoList={allPhotosIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
-                    <Route path="/albums/:albumId">
+                    <Route exact path="/albums/:albumId">
+                        <Album albumList={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+                    </Route>
+                    <Route exact path="/albums/:albumId/:photoId">
                         <Album albumList={albumsIndex} photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
                     </Route>
                     <Route path="/albums">

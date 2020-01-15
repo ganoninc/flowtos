@@ -9,7 +9,7 @@ function Album(props) {
 
     let photoList = albumData.photos;
 
-    let photos = <Photos photoList={photoList} photoLibraryEndpoint={props.photoLibraryEndpoint} albumId={albumId}/>
+    let photos = <Photos photoList={photoList} photoLibraryEndpoint={props.photoLibraryEndpoint} />
 
     return (
         <div className="album">
