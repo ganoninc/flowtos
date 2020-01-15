@@ -128,6 +128,7 @@ def build_optimized_images(photos_folder_mapping):
 
 def build_index_file(photos_folder_mapping):
     index_file = {'all_photos': [], 'albums': []}
+    already_added_photo_elt = []
     for photo in photos_folder_mapping['all_photos']:
         im = Image.open(photo['path'])
         photo_width, photo_height = im.size
@@ -141,7 +142,9 @@ def build_index_file(photos_folder_mapping):
             'height': photo_height
         }
 
-        index_file['all_photos'].append(photo_elt)
+        if photo['id'] not in already_added_photo_elt:
+            index_file['all_photos'].append(photo_elt)
+            already_added_photo_elt.append(photo['id'])
 
     for album in photos_folder_mapping['albums']:
         album_photos = []
