@@ -21,7 +21,8 @@ PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
 ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './album-ssr-template.html'
 ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './album-ssr-htaccess'
 PHOTOS_FOLDER_PATH = './photos/'
-SUPPORTED_PHOTO_TYPES = ['.jpg']
+SUPPORTED_PHOTO_TYPES = ['.jpg', '.jpeg']
+MODELS_FOLDER_PATH = './credits/models/'
 PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME = 'photo-library-ressources'
 PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH = './public/photos/'
 ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH = './public/albums/'
@@ -29,12 +30,15 @@ PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
     PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
-PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME = 'photos'
-PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME = 'index.json'
+PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME = 'photos'
+PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME = 'models'
+PHOTO_LIBRARY_RESSOURCES_PHOTOS_INDEX_NAME = 'index.json'
 MAX_THUMBNAIL_DIMENSION = (400, 400)
 MAX_2X_THUMBNAIL_DIMENSION = (800, 800)
 MAX_PHOTO_DIMENSION = (1280, 1280)
 MAX_2X_PHOTO_DIMENSION = (2560, 2560)
+MODEL_THUMBNAIL_DIMENSION = (150, 150)
+MODEL_2X_THUMBNAIL_DIMENSION = (300, 300)
 
 
 def clean_and_init_photo_library_ressources_folders():
@@ -45,7 +49,10 @@ def clean_and_init_photo_library_ressources_folders():
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME)
+             PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME)
+    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+             PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME)
+    
     # photos folder (server side renders)
     if os.path.exists(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH):
         shutil.rmtree(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
@@ -117,7 +124,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_PHOTO_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
         except IOError:
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
@@ -127,14 +134,14 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_2X_PHOTO_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
         except IOError:
             print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
 
 
-def build_index_file(photos_folder_mapping):
-    index_file = {'all_photos': [], 'albums': []}
+def build_index_file(photos_folder_mapping, credits_index):
+    index_file = {'all_photos': [], 'albums': [], 'credits': credits_index}
     already_added_photo_elt = []
     for photo in photos_folder_mapping['all_photos']:
         im = Image.open(photo['path'])
@@ -143,8 +150,8 @@ def build_index_file(photos_folder_mapping):
             'id': photo['id'],
             'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
             'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-            'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
             'height': photo_height
         }
@@ -162,15 +169,15 @@ def build_index_file(photos_folder_mapping):
                 'id': photo['id'],
                 'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
                 'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-                'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
                 'width': photo_width,
                 'height': photo_height
             }
             album_photos.append(photo_elt)
         index_file['albums'].append({'name': album, 'photos': album_photos})
 
-    with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTO_INDEX_NAME, 'w') as outfile:
+    with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTOS_INDEX_NAME, 'w') as outfile:
         json.dump(index_file, outfile)
 
 # Method found on Stack Overflow - Generating an MD5 checksum of a file
@@ -189,7 +196,7 @@ def build_server_side_renders(photos_folder_mapping):
         photo_server_side_render_template = template.read()
         for photo in photos_folder_mapping['all_photos']:
             photo_server_side_render = photo_server_side_render_template.replace(
-                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + photo['id'] + '.jpg')
+                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
             photo_server_side_render = photo_server_side_render.replace(
                 '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
             
@@ -205,7 +212,7 @@ def build_server_side_renders(photos_folder_mapping):
         album_server_side_render_template = template.read()
         for album in photos_folder_mapping['albums']:
             album_server_side_render = album_server_side_render_template.replace(
-                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTO_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
+                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
             album_server_side_render = album_server_side_render.replace(
                 '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
             album_server_side_render = album_server_side_render.replace(
@@ -219,6 +226,72 @@ def build_server_side_renders(photos_folder_mapping):
             htaccess_destination.write(htaccess_source.read())
 
 
+def build_credits_ressources():
+    index = {'models': []}
+    models_grabbed = []
+
+    for supported_photo_type in SUPPORTED_PHOTO_TYPES:
+        pathname = MODELS_FOLDER_PATH + '**/*' + supported_photo_type
+        models_grabbed.extend(
+            glob.glob(pathname, recursive=True))
+
+    if len(models_grabbed) > 0:
+        bar = Bar('Processing models', max=len(models_grabbed))
+        for model in models_grabbed:
+            model_basename = os.path.basename(model)
+            model_basename_array = model_basename.split('.')[0].split('#')
+            model_fullname = model_basename_array[0]
+            model_instagran = model_basename_array[1]
+            model_formated_fullname = ''.join(
+                x for x in model_fullname.title() if not x.isspace())
+
+            # regular thumbnail
+            try:
+                im = Image.open(model)
+                im = crop_max_square(im)
+                im.thumbnail(MODEL_THUMBNAIL_DIMENSION)
+                im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+                        PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '.jpg', "JPEG")
+            except IOError:
+                print("Cannot create thumbnail for model ", model)
+
+            # retina (2x) thumbnail
+            try:
+                im = Image.open(model)
+                im = crop_max_square(im)
+                im.thumbnail(MODEL_2X_THUMBNAIL_DIMENSION)
+                im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+                        PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
+            except IOError:
+                print("Cannot create @2x thumbnail for model ", model)
+
+            model_index_element = {
+                'fullname': model_fullname,
+                'formated_fullname': model_formated_fullname,
+                'instagram': model_instagran,
+                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '.jpg',
+                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '@2x.jpg'
+            }
+            index['models'].append(model_index_element)
+            bar.next()
+
+
+    return index
+
+
+# https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
+def crop_center(pil_img, crop_width, crop_height):
+    img_width, img_height = pil_img.size
+    return pil_img.crop(((img_width - crop_width) // 2,
+                         (img_height - crop_height) // 2,
+                         (img_width + crop_width) // 2,
+                         (img_height + crop_height) // 2))
+
+
+# https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
+def crop_max_square(pil_img):
+    return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
+
 
 def build_photo_library_ressources():
     clean_and_init_photo_library_ressources_folders()
@@ -227,7 +300,8 @@ def build_photo_library_ressources():
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
     build_optimized_images(photos_folder_mapping)
-    build_index_file(photos_folder_mapping)
+    credits_index = build_credits_ressources()
+    build_index_file(photos_folder_mapping, credits_index)
     build_server_side_renders(photos_folder_mapping)
     print("\nDone")
 
