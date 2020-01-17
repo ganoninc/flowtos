@@ -110,9 +110,9 @@ class Flowtos extends React.Component {
       <div className="flowtos">
         <Router>
           <div className="container">
-            <header className="Flowtos-header pt-5 pb-4">
+            <header className="Flowtos-header mt-5 mb-4">
               <span className="text-muted">Romain J. Giovanetti</span>
-              <h1 className="pt-2">Jeu de Lumières</h1>
+              <h1 className="mt-2">Jeu de Lumières</h1>
               <Switch>
                 <Route path="/photos/:photoId">
                   <CategorySelector selected="latest-photos" />
@@ -129,7 +129,7 @@ class Flowtos extends React.Component {
               </Switch>
             </header>
             <main>{photosView}</main>
-            <footer className="footer mt-auto py-4">
+            <footer className="footer mt-4">
               <div className="container">
                 <span className="text-muted">
                   All images © 2002-2020{" "}
