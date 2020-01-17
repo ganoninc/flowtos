@@ -267,7 +267,7 @@ def build_credits_ressources():
 
             model_index_element = {
                 'fullname': model_fullname,
-                'formated_fullname': model_formated_fullname,
+                'formatedFullName': model_formated_fullname,
                 'instagram': model_instagran,
                 'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '.jpg',
                 'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '@2x.jpg'
