@@ -24,6 +24,8 @@ yarn-error.log*
 
 # original photos
 /photos/*
+# credits
+/credits/*
 
 # photo library ressources
 /public/photo-library-ressources/*
