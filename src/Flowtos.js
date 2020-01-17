@@ -19,7 +19,9 @@ class Flowtos extends React.Component {
     this.state = {
       error: null,
       isPhotoLibraryIndexLoaded: false,
-      allPhotosIndex: []
+      allPhotosIndex: [],
+      albumsIndex: [],
+      modelsIndex: []
     };
 
     if (process.env.NODE_ENV !== "production") {
@@ -36,7 +38,8 @@ class Flowtos extends React.Component {
           this.setState({
             isPhotoLibraryIndexLoaded: true,
             allPhotosIndex: photoLibraryIndex.all_photos,
-            albumsIndex: photoLibraryIndex.albums
+            albumsIndex: photoLibraryIndex.albums,
+            modelsIndex: photoLibraryIndex.credits.models
           });
         },
         // Note: it's important to handle errors here
@@ -57,7 +60,8 @@ class Flowtos extends React.Component {
       error,
       isPhotoLibraryIndexLoaded,
       allPhotosIndex,
-      albumsIndex
+      albumsIndex,
+      modelsIndex
     } = this.state;
 
     if (error) {
@@ -91,7 +95,10 @@ class Flowtos extends React.Component {
               />
             </Route>
             <Route path="/about">
-              <About photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT} />
+              <About
+                models={modelsIndex}
+                photoLibraryEndpoint={this.PHOTO_LIBRARY_ENDPOINT}
+              />
             </Route>
             <Route path="/">
               <Photos

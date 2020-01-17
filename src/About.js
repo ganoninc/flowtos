@@ -1,4 +1,5 @@
 import React from "react";
+import Model from "./Model";
 
 import "./About.scss";
 
@@ -38,6 +39,11 @@ function About(props) {
       {/* <div className="models mt-4">
         <h2 className="mb-4">Models</h2>
         <p>Special thanks to the following persons for helping me in my work:</p>
+        <div className="d-flex justify-content-center mt-4 models-list">
+          {props.models.map(model => {
+            return <Model key={model.formatedFullName} fullname={model.fullname} formatedFullName={model.formatedFullName} picture={props.photoLibraryEndpoint + model.thumbnailUrl} picture2x={props.photoLibraryEndpoint + model.thumbnail2xUrl} instagramUsername={model.instagram} />
+          })}
+        </div>
       </div> */}
     </div>
   );
