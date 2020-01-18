@@ -6,7 +6,6 @@ function Model(props) {
   const { instagramUsername, picture, fullname } = props;
 
   let getInstagramLink = () => {
-    console.log(instagramUsername);
     if (instagramUsername) {
       return (
         <a
