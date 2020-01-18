@@ -26,9 +26,10 @@ function About(props) {
             in my life and changed everything because I was now able to carry a
             camera all the time, right in my pocket, always ready to shoot the
             sometimes unpredictable. Eventually, in December 19', I bought a
-            professional digital camera to go beyond the limitations of my
-            smartphone and just two minutes after the transaction, I got hit by
-            a car as pedestrian, but that's another story.
+            second hand professional digital camera to go beyond the limitations
+            of my smartphone and just two minutes after that, as I was happily
+            crossing the road to reach my car, all excited by this promising new
+            toy, I got hit by a car, but that's another story.
           </p>
           <p>
             Long story short, I've enjoyed taking and editing those photos and I
