@@ -4,13 +4,13 @@ import "./Model.scss";
 
 function Model(props) {
   return (
-    <div className="model">
+    <div className="d-flex flex-column justify-content-center my-4 mx-3 model">
       <img
         src={props.picture}
         alt={props.fullname}
-        className="rounded-circle mb-4"
-        width="150"
-        height="150"
+        className="img-thumbnail mb-2"
+        width="125"
+        height="125"
       />
       <span className="fullname">{props.fullname}</span>
       <a className="instagram-link" href="{props.instagramUsername}">

@@ -11,7 +11,7 @@ function About(props) {
           <img
             src="./me_2x.jpg"
             alt="myself"
-            className="rounded-circle mb-4"
+            className="img-thumbnail mb-4"
             width="150"
             height="150"
           />
@@ -36,15 +36,24 @@ function About(props) {
           </p>
         </div>
       </div>
-      {/* <div className="models mt-4">
+      <div className="models mt-4">
         <h2 className="mb-4">Models</h2>
-        <p>Special thanks to the following persons for helping me in my work:</p>
-        <div className="d-flex justify-content-center mt-4 models-list">
+        <p>Special thanks to these amazing persons</p>
+        <div className="d-flex justify-content-center flex-wrap models-list">
           {props.models.map(model => {
-            return <Model key={model.formatedFullName} fullname={model.fullname} formatedFullName={model.formatedFullName} picture={props.photoLibraryEndpoint + model.thumbnailUrl} picture2x={props.photoLibraryEndpoint + model.thumbnail2xUrl} instagramUsername={model.instagram} />
+            return (
+              <Model
+                key={model.formatedFullName}
+                fullname={model.fullname}
+                formatedFullName={model.formatedFullName}
+                picture={props.photoLibraryEndpoint + model.thumbnailUrl}
+                picture2x={props.photoLibraryEndpoint + model.thumbnail2xUrl}
+                instagramUsername={model.instagram}
+              />
+            );
           })}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
