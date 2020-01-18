@@ -1,11 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './custom.scss';
-import './index.css';
-import Flowtos from './Flowtos';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./custom.scss";
+import "./index.css";
+import Flowtos from "./Flowtos";
+import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<Flowtos />, document.getElementById('root'));
+let photoLibraryEndpoint =
+  "https://giovanetti.fr/flowtos/photo-library-ressources/";
+if (process.env.NODE_ENV !== "production") {
+  photoLibraryEndpoint = "http://localhost:3000/photo-library-ressources/";
+}
+
+ReactDOM.render(
+  <Flowtos photoLibraryEndpoint={photoLibraryEndpoint} />,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
