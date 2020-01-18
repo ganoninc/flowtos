@@ -4,6 +4,32 @@ import Model from "./Model";
 import "./About.scss";
 
 function About(props) {
+  const { models, photoLibraryEndpoint } = props;
+  let getModels = () => {
+    if (models && Array.isArray(models) && models.length > 0) {
+      return (
+        <div className="models mt-4">
+          <h2 className="mb-4">Models</h2>
+          <p>Special thanks to these amazing persons</p>
+          <div className="d-flex justify-content-center flex-wrap models-list">
+            {models.map(model => {
+              return (
+                <Model
+                  key={model.formatedFullName}
+                  fullname={model.fullname}
+                  formatedFullName={model.formatedFullName}
+                  picture={photoLibraryEndpoint + model.thumbnailUrl}
+                  picture2x={photoLibraryEndpoint + model.thumbnail2xUrl}
+                  instagramUsername={model.instagram}
+                />
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="about">
       <div className="about-me">
@@ -37,24 +63,7 @@ function About(props) {
           </p>
         </div>
       </div>
-      <div className="models mt-4">
-        <h2 className="mb-4">Models</h2>
-        <p>Special thanks to these amazing persons</p>
-        <div className="d-flex justify-content-center flex-wrap models-list">
-          {props.models.map(model => {
-            return (
-              <Model
-                key={model.formatedFullName}
-                fullname={model.fullname}
-                formatedFullName={model.formatedFullName}
-                picture={props.photoLibraryEndpoint + model.thumbnailUrl}
-                picture2x={props.photoLibraryEndpoint + model.thumbnail2xUrl}
-                instagramUsername={model.instagram}
-              />
-            );
-          })}
-        </div>
-      </div>
+      {getModels()}
     </div>
   );
 }
