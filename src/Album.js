@@ -1,22 +1,26 @@
-import React from 'react';
+import React from "react";
 import { useParams } from "react-router-dom";
-import Photos from './Photos'
+import Photos from "./Photos";
 
 function Album(props) {
-    let { albumId } = useParams();
+  const { albumList, photoLibraryEndpoint } = props;
 
-    let albumData = props.albumList.find(album => album.name === albumId);
+  let { albumId } = useParams();
 
-    let photoList = albumData.photos;
+  let albumData = albumList.find(album => album.name === albumId);
 
-    let photos = <Photos photoList={photoList} photoLibraryEndpoint={props.photoLibraryEndpoint} />
+  let photoList = albumData.photos;
 
-    return (
-        <div className="album">
-            <h2 className="pb-3">{albumId}</h2>
-            {photos}
-        </div>
-    );
+  let photos = (
+    <Photos photoList={photoList} photoLibraryEndpoint={photoLibraryEndpoint} />
+  );
+
+  return (
+    <div className="album">
+      <h2 className="pb-3">{albumId}</h2>
+      {photos}
+    </div>
+  );
 }
 
 export default Album;

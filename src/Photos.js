@@ -6,25 +6,25 @@ import FsLightbox from "fslightbox-react";
 import "./Photos.scss";
 
 function Photos(props) {
+  const { photoList, photoLibraryEndpoint } = props;
+
   let history = useHistory();
   let { photoId, albumId } = useParams();
 
   // remapping of the photo list
-  let photoThumbnails = props.photoList.map(photo => {
+  let photoThumbnails = photoList.map(photo => {
     return {
-      src: props.photoLibraryEndpoint + photo.thumbnailUrl,
+      src: photoLibraryEndpoint + photo.thumbnailUrl,
       srcSet: [
-        props.photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
-        props.photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x"
+        photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
+        photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x"
       ],
       width: photo.width,
       height: photo.height,
       key: photo.id.toString()
     };
   });
-  let photos = props.photoList.map(
-    photo => props.photoLibraryEndpoint + photo.photoUrl
-  );
+  let photos = photoList.map(photo => photoLibraryEndpoint + photo.photoUrl);
 
   let [lightboxController, setLightboxController] = useState({
     toggler: false,
