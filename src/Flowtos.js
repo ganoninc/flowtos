@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
+import Menu from "./Menu";
 import Photos from "./Photos";
 import Albums from "./Albums";
 import Album from "./Album";
 import About from "./About";
-import CategorySelector from "./CategorySelector";
 
 import "./Flowtos.scss";
 
 function Flowtos(props) {
   const { photoLibraryEndpoint } = props;
-  console.log(photoLibraryEndpoint);
 
   const [
     photoLibraryIndexLoadingStatus,
@@ -56,25 +55,6 @@ function Flowtos(props) {
     }
     fetchPhotoLibraryIndex();
   }, [photoLibraryEndpoint]);
-
-  let categorySelectors = (
-    <>
-      <Switch>
-        <Route path="/photos/:photoId">
-          <CategorySelector selected="latest-photos" />
-        </Route>
-        <Route path="/albums">
-          <CategorySelector selected="albums" />
-        </Route>
-        <Route path="/about">
-          <CategorySelector selected="about" />
-        </Route>
-        <Route path="/">
-          <CategorySelector selected="latest-photos" />
-        </Route>
-      </Switch>
-    </>
-  );
 
   let getMainView = () => {
     if (photoLibraryIndexLoadingStatus.hasError) {
@@ -143,7 +123,7 @@ function Flowtos(props) {
           <header className="Flowtos-header mt-5 mb-4">
             <span className="text-muted">Romain J. Giovanetti</span>
             <h1 className="mt-2">Jeu de Lumières</h1>
-            {categorySelectors}
+            <Menu displayAlbums={photoLibraryIndex.albums.length > 0} />
           </header>
           <main>{getMainView()}</main>
           <footer className="footer mt-4">
