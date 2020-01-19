@@ -3,7 +3,7 @@ import React from "react";
 import "./Model.scss";
 
 function Model(props) {
-  const { instagramUsername, picture, fullname } = props;
+  const { instagramUsername, picture, picture2x, fullname } = props;
 
   let getInstagramLink = () => {
     if (instagramUsername) {
@@ -25,6 +25,8 @@ function Model(props) {
       <img
         src={picture}
         alt={fullname}
+        srcSet={picture + " 1x, " + picture2x + " 2x"}
+        sizes="125px"
         className="img-thumbnail mb-2 picture"
         width="125"
         height="125"

@@ -37,7 +37,9 @@ function About(props) {
         <div className="about-me">
           <div className="profile-picture">
             <img
-              src="./me_2x.jpg"
+              src="./me.jpg"
+              srcSet="./me.jpg 1x, ./me_2x.jpg 2x"
+              sizes="150px"
               alt="myself"
               className="img-thumbnail mb-4"
               width="150"
