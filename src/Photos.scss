@@ -1,19 +1,13 @@
-$imgHoverScale: 0.975;
+$imgHoverScale: 1.1;
 
 .photos {
   .react-photo-gallery--gallery {
     img {
-      transition: All 0.25s ease;
+      transition: All 0.4s ease-in-out;
     }
     img:hover {
+      filter: brightness(1.1);
       transform: rotate(0deg) scale($imgHoverScale) skew(0deg) translate(0px);
-      -webkit-transform: rotate(0deg) scale($imgHoverScale) skew(0deg)
-        translate(0px);
-      -moz-transform: rotate(0deg) scale($imgHoverScale) skew(0deg)
-        translate(0px);
-      -o-transform: rotate(0deg) scale($imgHoverScale) skew(0deg) translate(0px);
-      -ms-transform: rotate(0deg) scale($imgHoverScale) skew(0deg)
-        translate(0px);
     }
   }
 }
