@@ -126,7 +126,7 @@ function Flowtos(props) {
             <Menu displayAlbums={photoLibraryIndex.albums.length > 0} />
           </header>
           <main>{getMainView()}</main>
-          <footer className="footer">
+          <footer className="mb-5 footer">
             <div className="container">
               <span className="small text-muted">
                 All images © 2002-2020{" "}
