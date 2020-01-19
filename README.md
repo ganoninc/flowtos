@@ -37,6 +37,8 @@ photos
         IMG_0003.jpg
 ```
 
+You can give credit to your models by placing their profile picture in the ```credits/models``` folder. See the file  ```HOWTO.md``` in that folder for file naming convention.
+
 Then run:
 
 ```bash
