@@ -57,7 +57,7 @@ function Photos(props) {
   };
 
   return (
-    <div className="photos">
+    <div className="mb-4 photos">
       <Gallery
         photos={photoThumbnails}
         onClick={openLightboxOnSlide}

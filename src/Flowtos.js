@@ -126,9 +126,9 @@ function Flowtos(props) {
             <Menu displayAlbums={photoLibraryIndex.albums.length > 0} />
           </header>
           <main>{getMainView()}</main>
-          <footer className="footer mt-4">
+          <footer className="footer">
             <div className="container">
-              <span className="text-muted">
+              <span className="small text-muted">
                 All images © 2002-2020{" "}
                 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>{" "}
                 (@Gioroju).
