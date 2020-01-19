@@ -1,5 +1,8 @@
 import React from "react";
+import { CSSTransition } from "react-transition-group";
 import AlbumCard from "./AlbumCard";
+
+import "./Albums.scss";
 
 function Albums(props) {
   const { albumList, photoLibraryEndpoint } = props;
@@ -19,7 +22,11 @@ function Albums(props) {
   });
 
   return (
-    <div className="row justify-content-center">{albumListComponents}</div>
+    <CSSTransition in={true} timeout={0} classNames="fade" appear>
+      <div className="row justify-content-center albums">
+        {albumListComponents}
+      </div>
+    </CSSTransition>
   );
 }
 

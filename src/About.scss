@@ -1,4 +1,6 @@
 .about {
+  transition: All 0.5s;
+
   .presentation {
     text-align: justify;
     margin: auto;
@@ -17,4 +19,12 @@
       margin: auto;
     }
   }
+}
+
+.fade-appear {
+  opacity: 0.5;
+}
+
+.fade-appear-done {
+  opacity: 1;
 }

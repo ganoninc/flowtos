@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
+import { CSSTransition } from "react-transition-group";
 import Photo from "./Photo";
 
 import "./Photos.scss";
@@ -67,22 +68,24 @@ function Photos(props) {
   );
 
   return (
-    <div className="mb-4 photos">
-      <Gallery
-        photos={photoThumbnails}
-        onClick={openLightboxOnSlide}
-        margin={4}
-        renderImage={imageRenderer}
-      />
-      <FsLightbox
-        toggler={lightboxController.toggler}
-        sources={photos}
-        type="image"
-        sourceIndex={lightboxController.sourceIndex}
-        openOnMount={photoId ? true : false}
-        onClose={onLightBoxCloseHandler}
-      />
-    </div>
+    <CSSTransition in={true} timeout={25} classNames="fade" appear>
+      <div className="mb-4 photos">
+        <Gallery
+          photos={photoThumbnails}
+          onClick={openLightboxOnSlide}
+          margin={4}
+          renderImage={imageRenderer}
+        />
+        <FsLightbox
+          toggler={lightboxController.toggler}
+          sources={photos}
+          type="image"
+          sourceIndex={lightboxController.sourceIndex}
+          openOnMount={photoId ? true : false}
+          onClose={onLightBoxCloseHandler}
+        />
+      </div>
+    </CSSTransition>
   );
 }
 
