@@ -1,36 +1,48 @@
-@import './custom.scss';
-
+@import "./custom.scss";
 
 .album-card {
-    height: 300px;
+  height: 300px;
+  width: inherit;
+  overflow: hidden;
+
+  .cover {
+    object-fit: cover;
     width: inherit;
-    overflow: hidden;
-    
+    height: inherit;
+    -webkit-filter: opacity(10%); /* Safari 6.0 - 9.0 */
+    filter: opacity(10%) saturate(0);
+    transition: 0.25s filter linear, 0.25s -webkit-filter linear;
+  }
+
+  .name {
+    position: relative;
+    top: -53%;
+    font-size: 1.25rem;
+    color: $link-color;
+  }
+
+  &:hover {
+    cursor: pointer;
 
     .cover {
-        object-fit: cover;
-        width: inherit;
-        height: inherit;
-        -webkit-filter: opacity(10%); /* Safari 6.0 - 9.0 */
-        filter: opacity(10%) saturate(0);
-        transition: 0.25s filter linear, 0.25s -webkit-filter linear;
+      filter: opacity(35%) saturate(1);
     }
-
     .name {
-        position: relative;
-        top: -53%;
-        font-size: 1.25rem;
-        color: $link-color;
+      color: $link-hover-color;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .album-card {
+    .name {
+      color: #569def;
     }
 
     &:hover {
-        cursor: pointer;
-
-        .cover {
-            filter: opacity(35%) saturate(1);
-        }
-        .name {
-            color: $link-hover-color;
-        }
+      .name {
+        color: #a6cfff;
+      }
     }
+  }
 }

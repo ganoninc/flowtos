@@ -120,13 +120,13 @@ function Flowtos(props) {
     <div className="flowtos">
       <Router>
         <div className="container">
-          <header className="Flowtos-header mt-5 mb-4">
+          <header className="Flowtos-header pt-5 mb-4">
             <span className="text-muted">Romain J. Giovanetti</span>
             <h1 className="mt-2">Jeu de Lumières</h1>
             <Menu displayAlbums={photoLibraryIndex.albums.length > 0} />
           </header>
           <main>{getMainView()}</main>
-          <footer className="mb-5 footer">
+          <footer className="pb-5 footer">
             <div className="container">
               <span className="small text-muted">
                 All images © 2002-2020{" "}
