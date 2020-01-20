@@ -3,6 +3,21 @@
 Flowtos is a photo gallery app made with react. I developed it after I closed my instagram account.
 It aims to be simple and content focused.
 
+## Features ##
+
+- Displays a flow of photos made of same length rows
+- Two modes: Latest Photos (all photos) and Albums
+- Click on a picture to enlarge it
+- About page with dynamic Models section
+- Easy to organize photo library
+- Assets optimization
+- Static Server Side Rendering
+- No need to have Node.js or PHP running on the server
+- Support High-Density Retina Displays
+- Support Dark Mode (prefers-color-scheme: dark)
+- Generates sharable unique URLs for photos and albums
+- Responsive design
+
 ## Getting started ##
 
 ### Dependencies ###
