@@ -10,7 +10,6 @@
     "husky": "^4.0.10",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.13.0",
-    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
@@ -52,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "fslightbox-react": "^1.4.7"
+    "fslightbox-react": "^1.4.7",
+    "prettier": "^1.19.1"
   }
 }
