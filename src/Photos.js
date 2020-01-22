@@ -3,12 +3,13 @@ import { useParams, useHistory } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
 import { CSSTransition } from "react-transition-group";
+import { trackWindowScroll } from "react-lazy-load-image-component";
 import Photo from "./Photo";
 
 import "./Photos.scss";
 
 function Photos(props) {
-  const { photoList, photoLibraryEndpoint } = props;
+  const { photoList, photoLibraryEndpoint, scrollPosition } = props;
 
   let history = useHistory();
   let { photoId, albumId } = useParams();
@@ -89,4 +90,4 @@ function Photos(props) {
   );
 }
 
-export default Photos;
+export default trackWindowScroll(Photos);
