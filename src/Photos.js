@@ -24,7 +24,8 @@ function Photos(props) {
       ],
       width: photo.width,
       height: photo.height,
-      key: photo.id.toString()
+      key: photo.id.toString(),
+      scrollPosition: scrollPosition
     };
   });
   let photos = photoList.map(photo => photoLibraryEndpoint + photo.photoUrl);
