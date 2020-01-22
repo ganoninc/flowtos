@@ -51,7 +51,7 @@
     ]
   },
   "devDependencies": {
-    "fslightbox-react": "^1.4.7",
+    "fslightbox-react": "^1.4.9",
     "prettier": "^1.19.1"
   }
 }
