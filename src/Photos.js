@@ -28,7 +28,13 @@ function Photos(props) {
       scrollPosition: scrollPosition
     };
   });
-  let photos = photoList.map(photo => photoLibraryEndpoint + photo.photoUrl);
+  let photos = photoList.map(photo => {
+    if (window.devicePixelRatio > 1) {
+      return photoLibraryEndpoint + photo.photo2xUrl;
+    } else {
+      return photoLibraryEndpoint + photo.photoUrl;
+    }
+  });
 
   let [lightboxController, setLightboxController] = useState({
     toggler: false,
