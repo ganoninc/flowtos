@@ -1,25 +1,34 @@
-import React from 'react';
-import {
-    useHistory
-} from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import './AlbumCard.scss';
+import "./AlbumCard.scss";
 
-function AlbumCard(props){
-    let history = useHistory();
+function AlbumCard(props) {
+  const { name, cover, cover2x, scrollPosition, placeholderSrc } = props;
+  let history = useHistory();
 
-    let openAlbum = () => {
-        history.push("/albums/" + props.name);
-    };
+  let openAlbum = () => {
+    history.push("/albums/" + name);
+  };
 
-    return (
-        <div className="mb-4 col-xs-12 col-sm-12 col-md-3">
-            <div className="album-card" onClick={openAlbum}>
-                <img src={props.cover} className="cover" alt="cover" srcSet={props.cover + " 1x, " + props.cover2x + " 2x"} />
-                <span className="name">{props.name}</span>
-            </div>
-        </div>
-    );
-};
+  return (
+    <div className="mb-4 col-xs-12 col-sm-12 col-md-3">
+      <div className="album-card" onClick={openAlbum}>
+        <LazyLoadImage
+          alt={name}
+          scrollPosition={scrollPosition}
+          effect="blur"
+          placeholderSrc={placeholderSrc}
+          src={cover}
+          className="cover"
+          srcSet={cover + " 1x, " + cover2x + " 2x"}
+        />
+        {/* <img src={cover} className="cover" alt="cover" srcSet={cover + " 1x, " + cover2x + " 2x"} /> */}
+        <span className="name">{name}</span>
+      </div>
+    </div>
+  );
+}
 
 export default AlbumCard;

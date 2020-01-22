@@ -5,6 +5,11 @@
   width: inherit;
   overflow: hidden;
 
+  span:first-child {
+    width: inherit;
+    height: inherit;
+  }
+
   .cover {
     object-fit: cover;
     width: inherit;
