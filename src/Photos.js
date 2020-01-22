@@ -25,7 +25,9 @@ function Photos(props) {
       width: photo.width,
       height: photo.height,
       key: photo.id.toString(),
-      scrollPosition: scrollPosition
+      scrollPosition: scrollPosition,
+      placeholderSrc:
+        photoLibraryEndpoint + photo.blurredThumbnailPlaceholderUrl
     };
   });
   let photos = photoList.map(photo => {

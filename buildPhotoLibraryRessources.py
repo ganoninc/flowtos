@@ -29,7 +29,8 @@ ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH = './public/albums/'
 PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
     PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
 PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
-PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME = 'thumbnails'
+PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME = 'thumbnails'
+PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME = 'blurred-thumbnail-placeholders'
 PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME = 'photos'
 PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME = 'models'
 PHOTO_LIBRARY_RESSOURCES_PHOTOS_INDEX_NAME = 'index.json'
@@ -39,6 +40,7 @@ MAX_PHOTO_DIMENSION = (1280, 1280)
 MAX_2X_PHOTO_DIMENSION = (2560, 2560)
 MODEL_THUMBNAIL_DIMENSION = (125, 125)
 MODEL_2X_THUMBNAIL_DIMENSION = (250, 250)
+MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION = (25, 25)
 
 
 def clean_and_init_photo_library_ressources_folders():
@@ -47,7 +49,9 @@ def clean_and_init_photo_library_ressources_folders():
         shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME)
+             PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME)
+    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+             PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME)
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
@@ -61,7 +65,6 @@ def clean_and_init_photo_library_ressources_folders():
     if os.path.exists(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH):
         shutil.rmtree(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
     os.mkdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
-
 
 
 def load_package_file():
@@ -99,13 +102,13 @@ def build_photos_folder_mapping():
 
 def build_optimized_images(photos_folder_mapping):
     bar = Bar('Processing images', max=len(
-        photos_folder_mapping['all_photos']) * 4)
+        photos_folder_mapping['all_photos']) * 5)
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(MAX_THUMBNAIL_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
         except IOError:
             print("Cannot create thumbnail for photo ", photo['path'])
         bar.next()
@@ -115,9 +118,19 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_2X_THUMBNAIL_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
         except IOError:
             print("Cannot create @2x thumbnail for photo ", photo['path'])
+        bar.next()
+
+    for photo in photos_folder_mapping['all_photos']:
+        try:
+            im = Image.open(photo['path'])
+            im.thumbnail(MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION)
+            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
+                    PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+        except IOError:
+            print("Cannot create blurred thumbnail placeholder for photo ", photo['path'])
         bar.next()
 
     for photo in photos_folder_mapping['all_photos']:
@@ -149,8 +162,9 @@ def build_index_file(photos_folder_mapping, credits_index):
         photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'blurredThumbnailPlaceholderUrl': PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
             'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
             'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
@@ -168,8 +182,9 @@ def build_index_file(photos_folder_mapping, credits_index):
             photo_width, photo_height = im.size
             photo_elt = {
                 'id': photo['id'],
-                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAIL_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
+                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'blurredThumbnailPlaceholderUrl': PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
                 'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
                 'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
                 'width': photo_width,
@@ -275,7 +290,6 @@ def build_credits_ressources():
             }
             index['models'].append(model_index_element)
             bar.next()
-
 
     return index
 
