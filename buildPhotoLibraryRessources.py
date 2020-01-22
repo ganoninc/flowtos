@@ -79,6 +79,7 @@ def build_photos_folder_mapping():
         photos_grabbed.extend(
             glob.glob(pathname, recursive=True))
 
+    photos_grabbed.sort(key=os.path.getmtime, reverse=True)
     for photo_path in photos_grabbed:
         photo_id = md5(photo_path)
         photo_folder_tree_element = {'id': photo_id, 'path': photo_path}
