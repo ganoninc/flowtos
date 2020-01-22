@@ -1,7 +1,11 @@
-import React from 'react';
+import React from "react";
 
 function LoadingIndicator(props) {
-    return <span>Loading...</span>;
+  return (
+    <div className="mb-4 loading-indicator">
+      <span>Loading...</span>
+    </div>
+  );
 }
 
 export default LoadingIndicator;

@@ -60,9 +60,10 @@ function Flowtos(props) {
     if (photoLibraryIndexLoadingStatus.hasError) {
       console.log(photoLibraryIndexLoadingStatus.error);
       return (
-        <div>
-          Error while loading the photo library index. Please try again later.
-          See console for more details.
+        <div className="mb-4">
+          <p>
+            Error while loading the photo library index. Please try again later.
+          </p>
         </div>
       );
     } else if (
