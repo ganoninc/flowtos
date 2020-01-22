@@ -18,7 +18,6 @@ function Photo(props) {
 
   return (
     <div style={styles}>
-      {/* <img alt={photo.title} {...photo} onClick={onClickHandler} /> */}
       <LazyLoadImage
         alt={photo.title}
         scrollPosition={scrollPosition}
