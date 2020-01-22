@@ -16,6 +16,7 @@ It aims to be simple and content focused.
 - Support High-Density Retina Displays
 - Support Dark Mode (prefers-color-scheme: dark)
 - Generates sharable unique URLs for photos and albums
+- Lazy image loading
 - Responsive design
 
 ## Getting started ##
