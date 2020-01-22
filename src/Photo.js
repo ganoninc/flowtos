@@ -1,7 +1,8 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import "react-lazy-load-image-component/src/effects/blur.css";
+//import "react-lazy-load-image-component/src/effects/blur.css";
+import "./Photo.scss";
 
 function Photo(props) {
   const { photo, index, margin, onClick, scrollPosition } = props;
@@ -23,6 +24,7 @@ function Photo(props) {
       <LazyLoadImage
         alt={photo.title}
         scrollPosition={scrollPosition}
+        effect="blur"
         onClick={onClickHandler}
         {...photo}
       />

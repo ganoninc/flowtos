@@ -108,7 +108,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_THUMBNAIL_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create thumbnail for photo ", photo['path'])
         bar.next()
@@ -118,7 +118,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_2X_THUMBNAIL_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create @2x thumbnail for photo ", photo['path'])
         bar.next()
@@ -128,7 +128,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", quality=40)
         except IOError:
             print("Cannot create blurred thumbnail placeholder for photo ", photo['path'])
         bar.next()
@@ -138,7 +138,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_PHOTO_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
@@ -148,7 +148,7 @@ def build_optimized_images(photos_folder_mapping):
             im = Image.open(photo['path'])
             im.thumbnail(MAX_2X_PHOTO_DIMENSION)
             im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG")
+                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
