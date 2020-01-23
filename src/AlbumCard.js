@@ -24,8 +24,7 @@ function AlbumCard(props) {
           className="cover"
           srcSet={cover + " 1x, " + cover2x + " 2x"}
         />
-        {/* <img src={cover} className="cover" alt="cover" srcSet={cover + " 1x, " + cover2x + " 2x"} /> */}
-        <span className="name">{name}</span>
+        <span className="py-2 name">{name}</span>
       </div>
     </div>
   );
