@@ -15,7 +15,7 @@
     width: inherit;
     height: inherit;
     filter: opacity(7.25%) saturate(0);
-    transition: 0.25s filter linear, 0.25s -webkit-filter linear;
+    transition: 0.38s filter linear, 0.25s -webkit-filter linear;
   }
 
   .name {
@@ -23,7 +23,7 @@
     top: -56%;
     font-size: 1.25rem;
     color: $link-color;
-    transition: all 0.25s ease-in-out;
+    transition: all 0.38s ease-in-out;
     display: block;
   }
 

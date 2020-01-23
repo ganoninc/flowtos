@@ -4,6 +4,7 @@ import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
 import { CSSTransition } from "react-transition-group";
 import { trackWindowScroll } from "react-lazy-load-image-component";
+import LazyLoad from "react-lazyload";
 import Photo from "./Photo";
 
 import "./Photos.scss";
@@ -30,6 +31,12 @@ function Photos(props) {
         photoLibraryEndpoint + photo.blurredThumbnailPlaceholderUrl
     };
   });
+  //#Source https://bit.ly/2neWfJ2
+  const chunk = (arr, size) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    );
+  let photoThumbnailsChunks = chunk(photoThumbnails, 25);
   let photos = photoList.map(photo => {
     if (window.devicePixelRatio > 1) {
       return photoLibraryEndpoint + photo.photo2xUrl;
@@ -37,7 +44,6 @@ function Photos(props) {
       return photoLibraryEndpoint + photo.photoUrl;
     }
   });
-
   let [lightboxController, setLightboxController] = useState({
     toggler: false,
     sourceIndex: photoThumbnails.findIndex(
@@ -53,7 +59,9 @@ function Photos(props) {
     }
     setLightboxController({
       toggler: !lightboxController.toggler,
-      sourceIndex: index
+      sourceIndex: photoThumbnails.findIndex(
+        photoThumbnail => photoThumbnail.key === photo.key
+      )
     });
   };
 
@@ -80,12 +88,19 @@ function Photos(props) {
   return (
     <CSSTransition in={true} timeout={25} classNames="fade" appear>
       <div className="mb-4 photos">
-        <Gallery
-          photos={photoThumbnails}
-          onClick={openLightboxOnSlide}
-          margin={4}
-          renderImage={imageRenderer}
-        />
+        {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
+          return (
+            <LazyLoad key={index} height={1000} once>
+              <Gallery
+                photos={photoThumbnailsChunk}
+                onClick={openLightboxOnSlide}
+                margin={4}
+                renderImage={imageRenderer}
+              />
+            </LazyLoad>
+          );
+        })}
+
         <FsLightbox
           toggler={lightboxController.toggler}
           sources={photos}
