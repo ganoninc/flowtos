@@ -64,7 +64,7 @@ function About(props) {
             </p>
             <p>
               Long story short, I've enjoyed taking and editing those photos and
-              I hope you'll like them.
+              I hope you'll like them as well.
             </p>
           </div>
         </div>
