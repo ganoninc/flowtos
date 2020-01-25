@@ -308,6 +308,16 @@ def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
+def add_index_og_image(photos_folder_mapping):
+    cover_image_path = photos_folder_mapping['all_photos'][0]['path']
+    try:
+        im = Image.open(cover_image_path)
+        im.thumbnail(MAX_PHOTO_DIMENSION)
+        im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + '/indexOGImage.jpg', "JPEG")
+    except IOError:
+        print("Cannot create index og inage")
+
+
 def build_photo_library_ressources():
     clean_and_init_photo_library_ressources_folders()
     package_file = load_package_file()
@@ -318,6 +328,7 @@ def build_photo_library_ressources():
     credits_index = build_credits_ressources()
     build_index_file(photos_folder_mapping, credits_index)
     build_server_side_renders(photos_folder_mapping)
+    add_index_og_image(photos_folder_mapping)
     print("\nDone")
 
 
