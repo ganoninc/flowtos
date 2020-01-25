@@ -132,14 +132,19 @@ function Flowtos(props) {
               <span className="small text-muted">
                 All images © 2002-2020{" "}
                 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>{" "}
-                (@Gioroju) -{" "}
+                (@Gioroju)
+                <br />
+                Web App made by{" "}
+                <a href="https://www.giovanetti.fr/">
+                  Romain J. Giovanetti
+                </a>,{" "}
                 <a
                   rel="noopener noreferrer"
                   target="_blank"
                   href="https://github.com/ganoninc/flowtos"
                 >
-                  Fork me on GitHub.
-                </a>{" "}
+                  fork it on GitHub.
+                </a>
               </span>
             </div>
           </footer>
