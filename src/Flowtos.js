@@ -119,7 +119,7 @@ function Flowtos(props) {
 
   return (
     <div className="flowtos">
-      <Router>
+      <Router basename="/flowtos">
         <div className="container">
           <header className="Flowtos-header pt-5 mb-4">
             <span className="text-muted">Romain J. Giovanetti</span>

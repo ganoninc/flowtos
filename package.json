@@ -1,7 +1,8 @@
 {
   "name": "flowtos",
   "version": "1.0.25",
-  "private": true,
+  "private": false,
+  "homepage": "https://giovanetti.fr/flowtos",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.3",

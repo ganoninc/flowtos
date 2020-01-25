@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 let photoLibraryEndpoint =
   "https://giovanetti.fr/flowtos/photo-library-ressources/";
 if (process.env.NODE_ENV !== "production") {
-  photoLibraryEndpoint = "http://localhost:3000/photo-library-ressources/";
+  photoLibraryEndpoint = "/photo-library-ressources/";
 }
 
 ReactDOM.render(
