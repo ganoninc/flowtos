@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import Menu from "./Menu";
+import GATracker from "./GATracker";
 import Photos from "./Photos";
 import Albums from "./Albums";
 import Album from "./Album";
@@ -74,40 +75,52 @@ function Flowtos(props) {
         <>
           <Switch>
             <Route path="/photos/:photoId">
-              <Photos
-                photoList={photoLibraryIndex.allPhotos}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <Photos
+                  photoList={photoLibraryIndex.allPhotos}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
             <Route exact path="/albums/:albumId">
-              <Album
-                albumList={photoLibraryIndex.albums}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <Album
+                  albumList={photoLibraryIndex.albums}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
             <Route exact path="/albums/:albumId/:photoId">
-              <Album
-                albumList={photoLibraryIndex.albums}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <Album
+                  albumList={photoLibraryIndex.albums}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
             <Route path="/albums">
-              <Albums
-                albumList={photoLibraryIndex.albums}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <Albums
+                  albumList={photoLibraryIndex.albums}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
             <Route path="/about">
-              <About
-                models={photoLibraryIndex.models}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <About
+                  models={photoLibraryIndex.models}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
             <Route path="/">
-              <Photos
-                photoList={photoLibraryIndex.allPhotos}
-                photoLibraryEndpoint={photoLibraryEndpoint}
-              />
+              <GATracker>
+                <Photos
+                  photoList={photoLibraryIndex.allPhotos}
+                  photoLibraryEndpoint={photoLibraryEndpoint}
+                />
+              </GATracker>
             </Route>
           </Switch>
         </>
