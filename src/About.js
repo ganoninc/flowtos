@@ -37,10 +37,15 @@ function About(props) {
         <div className="about-me">
           <div className="profile-picture">
             <img
-              src="https://giovanetti.fr/flowtos/me.jpg"
-              srcSet="https://giovanetti.fr/flowtos/me.jpg 1x, https://giovanetti.fr/flowtos/me_2x.jpg 2x"
+              src={process.env.PUBLIC_URL + "/me.jpg"}
+              srcSet={
+                process.env.PUBLIC_URL +
+                "/me.jpg 1x, " +
+                process.env.PUBLIC_URL +
+                "/me_2x.jpg 2x"
+              }
               sizes="150px"
-              alt="me"
+              alt="myself"
               className="img-thumbnail mb-4"
               width="150"
               height="150"

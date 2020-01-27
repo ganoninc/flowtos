@@ -9,10 +9,7 @@ import * as serviceWorker from "./serviceWorker";
 ReactGA.initialize("UA-156968412-1");
 
 let photoLibraryEndpoint =
-  "https://giovanetti.fr/flowtos/photo-library-ressources/";
-if (process.env.NODE_ENV !== "production") {
-  photoLibraryEndpoint = "/photo-library-ressources/";
-}
+  process.env.PUBLIC_URL + "/photo-library-ressources/";
 
 ReactDOM.render(
   <Flowtos photoLibraryEndpoint={photoLibraryEndpoint} />,
