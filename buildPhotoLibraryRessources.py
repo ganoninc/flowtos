@@ -215,6 +215,8 @@ def build_server_side_renders(photos_folder_mapping):
                 '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
             photo_server_side_render = photo_server_side_render.replace(
                 '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
+            photo_server_side_render = photo_server_side_render.replace(
+                '{PHOTO_ID}', photo['id'])
             
             with open(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + photo['id'] + '.html', 'w+') as render:
                 render.write(photo_server_side_render)
@@ -233,6 +235,8 @@ def build_server_side_renders(photos_folder_mapping):
                 '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
             album_server_side_render = album_server_side_render.replace(
                 '{ALBUM_NAME}', album)
+            album_server_side_render = album_server_side_render.replace(
+                '{PHOTO_ID}', photo['id'])
 
             with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album + '.html', 'w+') as render:
                 render.write(album_server_side_render)

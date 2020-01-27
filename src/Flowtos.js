@@ -7,6 +7,7 @@ import Photos from "./Photos";
 import Albums from "./Albums";
 import Album from "./Album";
 import About from "./About";
+import SSRRedirect from "./SSRRedirect";
 
 import "./Flowtos.scss";
 
@@ -112,6 +113,21 @@ function Flowtos(props) {
                   models={photoLibraryIndex.models}
                   photoLibraryEndpoint={photoLibraryEndpoint}
                 />
+              </GATracker>
+            </Route>
+            <Route exact path="/ssr/photos/:photoId">
+              <GATracker>
+                <SSRRedirect />
+              </GATracker>
+            </Route>
+            <Route exact path="/ssr/albums/:albumId/:photoId">
+              <GATracker>
+                <SSRRedirect />
+              </GATracker>
+            </Route>
+            <Route path="/ssr">
+              <GATracker>
+                <SSRRedirect />
               </GATracker>
             </Route>
             <Route path="/">
