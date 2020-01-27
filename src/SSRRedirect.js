@@ -8,6 +8,8 @@ function SSRRedirect(props) {
 
   if (albumId && photoId) {
     history.push("/albums/" + albumId + "/" + photoId);
+  } else if (albumId) {
+    history.push("/albums/" + albumId);
   } else if (photoId) {
     history.push("/photos/" + photoId);
   } else {
