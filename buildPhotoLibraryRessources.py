@@ -20,6 +20,7 @@ PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-ssr-template.html'
 PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
 ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './album-ssr-template.html'
 ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './album-ssr-htaccess'
+PHOTO_IN_ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-in-album.html'
 PHOTOS_FOLDER_PATH = './photos/'
 SUPPORTED_PHOTO_TYPES = ['.jpg', '.jpeg', 'JPG', 'JPEG']
 MODELS_FOLDER_PATH = './credits/models/'
@@ -208,8 +209,8 @@ def md5(fname):
 
 def build_server_side_renders(photos_folder_mapping):
     # all photos
-    with open(PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
-        photo_server_side_render_template = template.read()
+    with open(PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as photo_template:
+        photo_server_side_render_template = photo_template.read()
         for photo in photos_folder_mapping['all_photos']:
             photo_server_side_render = photo_server_side_render_template.replace(
                 '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
@@ -226,20 +227,43 @@ def build_server_side_renders(photos_folder_mapping):
             htaccess_destination.write(htaccess_source.read())
 
     # albums
-    with open(ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as template:
-        album_server_side_render_template = template.read()
-        for album in photos_folder_mapping['albums']:
-            album_server_side_render = album_server_side_render_template.replace(
-                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
-            album_server_side_render = album_server_side_render.replace(
-                '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
-            album_server_side_render = album_server_side_render.replace(
-                '{ALBUM_NAME}', album)
-            album_server_side_render = album_server_side_render.replace(
-                '{PHOTO_ID}', photo['id'])
+    with open(ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as album_template:
+        with open(PHOTO_IN_ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as photo_in_album_template:
+            album_server_side_render_template = album_template.read()
+            photo_in_album_server_side_render_template = photo_in_album_template.read()
 
-            with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album + '.html', 'w+') as render:
-                render.write(album_server_side_render)
+            for album in photos_folder_mapping['albums']:
+                album_ssr_folder_path = ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album 
+                os.mkdir(album_ssr_folder_path)
+
+                album_server_side_render = album_server_side_render_template.replace(
+                    '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
+                album_server_side_render = album_server_side_render.replace(
+                    '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
+                album_server_side_render = album_server_side_render.replace(
+                    '{ALBUM_NAME}', album)
+                album_server_side_render = album_server_side_render.replace(
+                    '{ALBUM_ID}', album)
+
+                with open(album_ssr_folder_path + '/index.html', 'w+') as render:
+                    render.write(album_server_side_render)
+
+                # albums' photos
+                for photo in photos_folder_mapping['albums'][album]['photos']:
+                    photo_in_album_server_side_render = photo_in_album_server_side_render_template.replace(
+                        '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
+                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
+                        '{ALBUM_NAME}', album)
+                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
+                        '{ALBUM_ID}', album)
+                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
+                        '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album + '/' + photo['id'])
+                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
+                        '{PHOTO_ID}', photo['id'])
+
+                    with open(album_ssr_folder_path + '/' + photo['id'] + '.html', 'w+') as render:
+                        render.write(photo_in_album_server_side_render)
+
 
     with open(ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
         with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
