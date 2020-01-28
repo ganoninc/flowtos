@@ -16,7 +16,9 @@ import hashlib
 from PIL import Image
 from progress.bar import Bar
 
+import bplrh_helpers.tools
 import bplrh_helpers.server_side_renders
+import bplrh_helpers.credits
 
 config = {
     'flowtos_baseurl': 'https://giovanetti.fr/flowtos/',
@@ -74,9 +76,8 @@ def reset_photo_library_ressources():
              config['plr']['blurred_thumbnail_placeholders_folder_name'])
     os.mkdir(config['plr']['main_folder_path'] +
              config['plr']['photos_folder_name'])
-    os.mkdir(config['plr']['main_folder_path'] +
-             config['plr']['models_folder_name'])
 
+    bplrh_helpers.credits.reset(config)
     bplrh_helpers.server_side_renders.reset(config)
 
 
@@ -97,7 +98,7 @@ def build_photos_folder_mapping():
 
     photos_grabbed.sort(key=os.path.getmtime, reverse=True)
     for photo_path in photos_grabbed:
-        photo_id = md5(photo_path)
+        photo_id = bplrh_helpers.tools.md5(photo_path)
         photo_folder_tree_element = {'id': photo_id, 'path': photo_path}
         photos_folder_mapping['all_photos'].append(photo_folder_tree_element)
 
@@ -210,83 +211,6 @@ def build_index_file(photos_folder_mapping, credits_index):
     with open(config['plr']['main_folder_path'] + config['plr']['index_name'], 'w') as outfile:
         json.dump(index_file, outfile)
 
-# Method found on Stack Overflow - Generating an MD5 checksum of a file
-# (https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file)
-
-
-def md5(fname):
-    hash_md5 = hashlib.md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-
-def build_credits_ressources():
-    index = {'models': []}
-    models_grabbed = []
-
-    for supported_photo_type in config['supported_photo_types']:
-        pathname = config['plr']['models_folder_name'] + '**/*' + supported_photo_type
-        models_grabbed.extend(
-            glob.glob(pathname, recursive=True))
-
-    if len(models_grabbed) > 0:
-        bar = Bar('Processing models', max=len(models_grabbed))
-        for model in models_grabbed:
-            model_basename = os.path.basename(model)
-            model_basename_array = model_basename.split('.')[0].split('#')
-            model_fullname = model_basename_array[0]
-            model_instagran = model_basename_array[1]
-            model_formated_fullname = ''.join(
-                x for x in model_fullname.title() if not x.isspace())
-
-            # regular thumbnail
-            try:
-                im = Image.open(model)
-                im = crop_max_square(im)
-                im.thumbnail(config['plr']['max_dimensions']['model'])
-                im.save(config['plr']['main_folder_path'] +
-                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg', "JPEG")
-            except IOError:
-                print("Cannot create thumbnail for model ", model)
-
-            # retina (2x) thumbnail
-            try:
-                im = Image.open(model)
-                im = crop_max_square(im)
-                im.thumbnail(config['plr']['max_dimensions']['model_2x'])
-                im.save(config['plr']['main_folder_path'] +
-                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
-            except IOError:
-                print("Cannot create @2x thumbnail for model ", model)
-
-            model_index_element = {
-                'fullname': model_fullname,
-                'formatedFullName': model_formated_fullname,
-                'instagram': model_instagran,
-                'thumbnailUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg',
-                'thumbnail2xUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg'
-            }
-            index['models'].append(model_index_element)
-            bar.next()
-
-    return index
-
-
-# https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_center(pil_img, crop_width, crop_height):
-    img_width, img_height = pil_img.size
-    return pil_img.crop(((img_width - crop_width) // 2,
-                         (img_height - crop_height) // 2,
-                         (img_width + crop_width) // 2,
-                         (img_height + crop_height) // 2))
-
-
-# https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_max_square(pil_img):
-    return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
-
 
 def add_index_og_image(photos_folder_mapping):
     cover_image_path = photos_folder_mapping['all_photos'][0]['path']
@@ -306,7 +230,7 @@ def build_photo_library_ressources():
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
     build_optimized_images(photos_folder_mapping)
-    credits_index = build_credits_ressources()
+    credits_index = bplrh_helpers.credits.build(config)
     build_index_file(photos_folder_mapping, credits_index)
     bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
     add_index_og_image(photos_folder_mapping)

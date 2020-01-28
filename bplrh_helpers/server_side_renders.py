@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Build static server side renders to be crawled by search engines. """
+"""Build static server side renders to be crawled by search engines"""
 
 import os
 import shutil
