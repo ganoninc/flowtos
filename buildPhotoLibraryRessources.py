@@ -3,6 +3,8 @@
 """Build ressources to be used by Flowtos.
 
 Those ressources include optimized images, thumbnails and, properties files.
+
+Note: plr (PLR) stands for photo library ressources
 """
 
 import os
@@ -13,6 +15,8 @@ import hashlib
 
 from PIL import Image
 from progress.bar import Bar
+
+import bplrh_helpers.server_side_renders
 
 FLOWTOS_BASEURL = 'https://giovanetti.fr/flowtos/'
 PACKAGE_FILE_PATH = './package.json'
@@ -44,7 +48,8 @@ MODEL_2X_THUMBNAIL_DIMENSION = (250, 250)
 MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION = (25, 25)
 
 
-def clean_and_init_photo_library_ressources_folders():
+def reset_photo_library_ressources():
+    print("Reset photo library ressources...")
     # photo-library-ressources folder
     if os.path.exists(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH) and os.path.isdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH):
         shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
@@ -58,14 +63,8 @@ def clean_and_init_photo_library_ressources_folders():
     os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
              PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME)
     
-    # photos folder (server side renders)
-    if os.path.exists(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH):
-        shutil.rmtree(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
-    os.mkdir(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH)
-    # albums folder (server side renders)
-    if os.path.exists(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH) and os.path.isdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH):
-        shutil.rmtree(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
-    os.mkdir(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
+    bplrh_helpers.server_side_renders.reset(
+        PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH, ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
 
 
 def load_package_file():
@@ -207,67 +206,7 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-def build_server_side_renders(photos_folder_mapping):
-    # all photos
-    with open(PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as photo_template:
-        photo_server_side_render_template = photo_template.read()
-        for photo in photos_folder_mapping['all_photos']:
-            photo_server_side_render = photo_server_side_render_template.replace(
-                '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
-            photo_server_side_render = photo_server_side_render.replace(
-                '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'photos/' + photo['id'])
-            photo_server_side_render = photo_server_side_render.replace(
-                '{PHOTO_ID}', photo['id'])
-            
-            with open(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + photo['id'] + '.html', 'w+') as render:
-                render.write(photo_server_side_render)
 
-    with open(PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
-        with open(PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
-            htaccess_destination.write(htaccess_source.read())
-
-    # albums
-    with open(ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as album_template:
-        with open(PHOTO_IN_ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as photo_in_album_template:
-            album_server_side_render_template = album_template.read()
-            photo_in_album_server_side_render_template = photo_in_album_template.read()
-
-            for album in photos_folder_mapping['albums']:
-                album_ssr_folder_path = ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album 
-                os.mkdir(album_ssr_folder_path)
-
-                album_server_side_render = album_server_side_render_template.replace(
-                    '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
-                album_server_side_render = album_server_side_render.replace(
-                    '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
-                album_server_side_render = album_server_side_render.replace(
-                    '{ALBUM_NAME}', album)
-                album_server_side_render = album_server_side_render.replace(
-                    '{ALBUM_ID}', album)
-
-                with open(album_ssr_folder_path + '/index.html', 'w+') as render:
-                    render.write(album_server_side_render)
-
-                # albums' photos
-                for photo in photos_folder_mapping['albums'][album]['photos']:
-                    photo_in_album_server_side_render = photo_in_album_server_side_render_template.replace(
-                        '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
-                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-                        '{ALBUM_NAME}', album)
-                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-                        '{ALBUM_ID}', album)
-                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-                        '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album + '/' + photo['id'])
-                    photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-                        '{PHOTO_ID}', photo['id'])
-
-                    with open(album_ssr_folder_path + '/' + photo['id'] + '.html', 'w+') as render:
-                        render.write(photo_in_album_server_side_render)
-
-
-    with open(ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
-        with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
-            htaccess_destination.write(htaccess_source.read())
 
 
 def build_credits_ressources():
@@ -347,15 +286,16 @@ def add_index_og_image(photos_folder_mapping):
 
 
 def build_photo_library_ressources():
-    clean_and_init_photo_library_ressources_folders()
+    reset_photo_library_ressources()
     package_file = load_package_file()
     flowtos_version = package_file['version']
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
-    build_optimized_images(photos_folder_mapping)
+    # build_optimized_images(photos_folder_mapping)
     credits_index = build_credits_ressources()
     build_index_file(photos_folder_mapping, credits_index)
-    build_server_side_renders(photos_folder_mapping)
+    bplrh_helpers.server_side_renders.build(
+        photos_folder_mapping, PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH)
     add_index_og_image(photos_folder_mapping)
     print("\nDone")
 
