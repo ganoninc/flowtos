@@ -120,7 +120,17 @@ function Flowtos(props) {
                 <SSRRedirect />
               </GATracker>
             </Route>
+            <Route exact path="/ssr/albums/:albumId">
+              <GATracker>
+                <SSRRedirect />
+              </GATracker>
+            </Route>
             <Route exact path="/ssr/albums/:albumId/:photoId">
+              <GATracker>
+                <SSRRedirect />
+              </GATracker>
+            </Route>
+            <Route path="/ssr/albums">
               <GATracker>
                 <SSRRedirect />
               </GATracker>
