@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Photos from "./Photos";
+import Photos from "../photos/Photos";
 
 function Album(props) {
   const { albumList, photoLibraryEndpoint } = props;

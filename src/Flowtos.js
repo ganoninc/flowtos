@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import Menu from "./Menu";
 import GATracker from "./GATracker";
-import Photos from "./Photos";
-import Albums from "./Albums";
-import Album from "./Album";
-import About from "./About";
+import Photos from "./photos/Photos";
+import Albums from "./albums/Albums";
+import Album from "./albums/Album";
+import About from "./about/About";
 import SSRRedirect from "./SSRRedirect";
 
 import "./Flowtos.scss";
