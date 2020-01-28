@@ -49,17 +49,18 @@ config = {
     },
     'ssr': {
         'photos': {
-            'render_template_path': './bplrh_helpers/ressources/photo-ssr-template.html',
-            'htaccess_template_path': './bplrh_helpers/ressources/photo-ssr-htaccess',
+            'render_template_path': './bplrh_helpers/ressources/ssr-photo-template.html',
+            'htaccess_template_path': './bplrh_helpers/ressources/ssr-photo-htaccess',
             'destination_path': './public/photos/'
         },
         'albums': {
-            'render_template_path': './bplrh_helpers/ressources/album-ssr-template.html',
-            'htaccess_template_path': './bplrh_helpers/ressources/album-ssr-htaccess',
-            'destination_path': './public/albums/'
+            'render_template_path': './bplrh_helpers/ressources/ssr-album-template.html',
+            'htaccess_template_path': './bplrh_helpers/ressources/ssr-album-htaccess',
+            'destination_path': './public/albums/',
+            'index_template_path': './bplrh_helpers/ressources/ssr-albums-index-template.html'
         },
         'photos_in_albums': {
-            'render_template_path': './bplrh_helpers/ressources/photo-in-album.html',
+            'render_template_path': './bplrh_helpers/ressources/ssr-photo-in-album.html',
         }
     }
 }
