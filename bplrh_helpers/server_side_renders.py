@@ -83,6 +83,14 @@ def _build_albums(albums, config):
         with open(config['ssr']['albums']['destination_path'] + '.htaccess', 'w+') as htaccess_destination:
             htaccess_destination.write(htaccess_source.read())
 
+    with open(config['ssr']['albums']['index_template_path']) as albums_index_template_file:
+        albums_index_template = albums_index_template_file.read()
+
+        albums_index = albums_index_template.replace(
+            '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums')
+
+        with open(config['ssr']['albums']['destination_path'] + 'index.html', 'w+') as index:
+            index.write(albums_index)
 
 def build(photos_folder_mapping, config):
     _build_photos(photos_folder_mapping['all_photos'], config)
