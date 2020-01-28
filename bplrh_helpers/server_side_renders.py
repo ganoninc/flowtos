@@ -31,9 +31,9 @@ def _build_photos(photos, config):
             with open(config['ssr']['photos']['destination_path'] + photo['id'] + '.html', 'w+') as render:
                 render.write(photo_render)
 
-    # with open(config['ssr']['photos']['htaccess_template_path']) as htaccess_source:
-    #     with open(dest_path + '.htaccess', 'w+') as htaccess_destination:
-    #         htaccess_destination.write(htaccess_source.read())
+    with open(config['ssr']['photos']['htaccess_template_path']) as htaccess_source:
+        with open(config['ssr']['photos']['destination_path'] + '.htaccess', 'w+') as htaccess_destination:
+            htaccess_destination.write(htaccess_source.read())
 
 
 def _build_photos_in_album(photos, config, album_id, dest_path):
@@ -79,9 +79,9 @@ def _build_albums(albums, config):
             _build_photos_in_album(
                 albums[album]['photos'], config, album, album_dest_path)
 
-    # with open(config['ssr']['albums']['htaccess_template_path']) as htaccess_source:
-    #     with open(dest_path + '.htaccess', 'w+') as htaccess_destination:
-    #         htaccess_destination.write(htaccess_source.read())
+    with open(config['ssr']['albums']['htaccess_template_path']) as htaccess_source:
+        with open(config['ssr']['albums']['destination_path'] + '.htaccess', 'w+') as htaccess_destination:
+            htaccess_destination.write(htaccess_source.read())
 
 
 def build(photos_folder_mapping, config):
