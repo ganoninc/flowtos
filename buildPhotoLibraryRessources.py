@@ -296,7 +296,7 @@ def add_index_og_image(photos_folder_mapping):
         im.save(config['plr']['main_folder_path'] +
                 '/indexOGImage.jpg', "JPEG")
     except IOError:
-        print("Cannot create index og inage")
+        print("Cannot create index open graph image")
 
 
 def build_photo_library_ressources():
@@ -305,7 +305,7 @@ def build_photo_library_ressources():
     flowtos_version = package_file['version']
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
-    # build_optimized_images(photos_folder_mapping)
+    build_optimized_images(photos_folder_mapping)
     credits_index = build_credits_ressources()
     build_index_file(photos_folder_mapping, credits_index)
     bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
