@@ -26,8 +26,8 @@ config = {
     'package_path': './package.json',
     'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG'],
     'sources': {
-        'photos_path': './photos/',
-        'models_path': './credits/models/'
+        'photos_path': './original_ressources/photos/',
+        'models_path': './original_ressources/credits/models/'
     },
     'plr': {
         'main_folder_name': 'photo-library-ressources',

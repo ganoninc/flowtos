@@ -37,23 +37,27 @@ pip3 install -r requirements.txt
 
 ### Building Photo Library Ressources ###
 
-Put your original pictures in the ```photos``` folder. Pictures in subfolders will be interpreted as part of albums by Flowtos. A typical photos folder looks like this:
+Put your original pictures in the ```./original_ressources/photos``` folder. Pictures in subfolders will be interpreted as part of albums by Flowtos. A typical photos folder looks like this:
 
 ```
-photos
-    IMG_0027.jpg
-    IMG_0028.jpg
-    IMG_0029.jpg
-    Portraits
-        IMG_0025.jpg
-        IMG_0026.jpg
-    Landscapes
-        IMG_0001.jpg
-        IMG_0002.jpg
-        IMG_0003.jpg
+[] original_ressources
+    [] photos
+        - IMG_0027.jpg
+        - IMG_0028.jpg
+        - IMG_0029.jpg
+        [] Portraits
+            - IMG_0025.jpg
+            - IMG_0026.jpg
+        [] Landscapes
+            - IMG_0001.jpg
+            - IMG_0002.jpg
+            - IMG_0003.jpg
+    [] credits
+        [] models
+            - Steve Jobs#sjobs.jpg
 ```
 
-You can give credit to your models by placing their profile picture in the ```credits/models``` folder. See the file  ```HOWTO.md``` in that folder for file naming convention.
+You can give credit to your models by placing their profile picture in the ```./original_ressources/credits/models``` folder. See the file  ```HOWTO.md``` in that folder for file naming convention.
 
 Then run:
 

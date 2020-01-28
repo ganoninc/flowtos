@@ -25,9 +25,9 @@ yarn-error.log*
 __pycache__/
 
 # original photos
-/photos/*
+/original_ressources/photos/*
 # credits
-/credits/*
+/original_ressources/credits/*
 
 # photo library ressources
 /public/photo-library-ressources/*
