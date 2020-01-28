@@ -32,7 +32,7 @@ function SSRRedirect(props) {
   } else if (isAboutPage) {
     history.push("/about");
   } else {
-    //history.push("/");
+    history.push("/");
   }
 
   return <LoadingIndicator></LoadingIndicator>;
