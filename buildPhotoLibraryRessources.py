@@ -4,7 +4,8 @@
 
 Those ressources include optimized images, thumbnails and, properties files.
 
-Note: plr (PLR) stands for photo library ressources
+Note:   plr (PLR) stands for photo library ressources
+        ssr (SSR) stands for server side renders
 """
 
 import os
@@ -48,17 +49,17 @@ config = {
     },
     'ssr': {
         'photos': {
-            'render_template_path': './photo-ssr-template.html',
-            'htaccess_template_path': './photo-ssr-htaccess',
+            'render_template_path': './bplrh_helpers/ressources/photo-ssr-template.html',
+            'htaccess_template_path': './bplrh_helpers/ressources/photo-ssr-htaccess',
             'destination_path': './public/photos/'
         },
         'albums': {
-            'render_template_path': './album-ssr-template.html',
-            'htaccess_template_path': './album-ssr-htaccess',
+            'render_template_path': './bplrh_helpers/ressources/album-ssr-template.html',
+            'htaccess_template_path': './bplrh_helpers/ressources/album-ssr-htaccess',
             'destination_path': './public/albums/'
         },
         'photos_in_albums': {
-            'render_template_path': './photo-in-album.html',
+            'render_template_path': './bplrh_helpers/ressources/photo-in-album.html',
         }
     }
 }

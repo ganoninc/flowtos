@@ -29,8 +29,6 @@ def build(config):
         models_grabbed.extend(
             glob.glob(pathname, recursive=True))
 
-    print(models_grabbed)
-
     if len(models_grabbed) > 0:
         bar = Bar('Processing models', max=len(models_grabbed))
         for model in models_grabbed:
