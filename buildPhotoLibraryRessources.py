@@ -51,7 +51,8 @@ config = {
         'photos': {
             'render_template_path': './bplrh_helpers/ressources/ssr-photo-template.html',
             'htaccess_template_path': './bplrh_helpers/ressources/ssr-photos-htaccess',
-            'destination_path': './public/photos/'
+            'destination_path': './public/photos/',
+            'index_template_path': './bplrh_helpers/ressources/ssr-photos-index-template.html'
         },
         'albums': {
             'render_template_path': './bplrh_helpers/ressources/ssr-album-template.html',

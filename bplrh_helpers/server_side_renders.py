@@ -35,6 +35,15 @@ def _build_photos(photos, config):
         with open(config['ssr']['photos']['destination_path'] + '.htaccess', 'w+') as htaccess_destination:
             htaccess_destination.write(htaccess_source.read())
 
+    with open(config['ssr']['photos']['index_template_path']) as photos_index_template_file:
+        photos_index_template = photos_index_template_file.read()
+
+        photos_index = photos_index_template.replace(
+            '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'])
+
+        with open(config['ssr']['photos']['destination_path'] + 'index.html', 'w+') as index:
+            index.write(photos_index)
+
 
 def _build_photos_in_album(photos, config, album_id, dest_path):
     with open(config['ssr']['photos_in_albums']['render_template_path']) as photo_in_album_template_file:
@@ -91,6 +100,7 @@ def _build_albums(albums, config):
 
         with open(config['ssr']['albums']['destination_path'] + 'index.html', 'w+') as index:
             index.write(albums_index)
+
 
 def build(photos_folder_mapping, config):
     _build_photos(photos_folder_mapping['all_photos'], config)
