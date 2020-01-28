@@ -18,9 +18,6 @@ function SSRRedirect(props) {
     sensitive: false
   });
 
-  console.log(photoId);
-  console.log(albumId);
-
   if (albumId && photoId) {
     history.push("/albums/" + albumId + "/" + photoId);
   } else if (albumId) {
