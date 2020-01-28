@@ -125,6 +125,11 @@ function Flowtos(props) {
                 <SSRRedirect />
               </GATracker>
             </Route>
+            <Route path="/ssr/about">
+              <GATracker>
+                <SSRRedirect />
+              </GATracker>
+            </Route>
             <Route path="/ssr">
               <GATracker>
                 <SSRRedirect />
