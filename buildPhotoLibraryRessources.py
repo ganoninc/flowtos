@@ -18,57 +18,70 @@ from progress.bar import Bar
 
 import bplrh_helpers.server_side_renders
 
-FLOWTOS_BASEURL = 'https://giovanetti.fr/flowtos/'
-PACKAGE_FILE_PATH = './package.json'
-PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-ssr-template.html'
-PHOTO_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './photo-ssr-htaccess'
-ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './album-ssr-template.html'
-ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH = './album-ssr-htaccess'
-PHOTO_IN_ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH = './photo-in-album.html'
-PHOTOS_FOLDER_PATH = './photos/'
-SUPPORTED_PHOTO_TYPES = ['.jpg', '.jpeg', 'JPG', 'JPEG']
-MODELS_FOLDER_PATH = './credits/models/'
-PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME = 'photo-library-ressources'
-PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH = './public/photos/'
-ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH = './public/albums/'
-PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH = './public/' + \
-    PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
-PHOTO_LIBRARY_RESSOURCES_BASE_URL = './' + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/'
-PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME = 'thumbnails'
-PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME = 'blurred-thumbnail-placeholders'
-PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME = 'photos'
-PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME = 'models'
-PHOTO_LIBRARY_RESSOURCES_PHOTOS_INDEX_NAME = 'index.json'
-MAX_THUMBNAIL_DIMENSION = (400, 400)
-MAX_2X_THUMBNAIL_DIMENSION = (800, 800)
-MAX_PHOTO_DIMENSION = (1280, 1280)
-MAX_2X_PHOTO_DIMENSION = (2560, 2560)
-MODEL_THUMBNAIL_DIMENSION = (125, 125)
-MODEL_2X_THUMBNAIL_DIMENSION = (250, 250)
-MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION = (25, 25)
+config = {
+    'flowtos_baseurl': 'https://giovanetti.fr/flowtos/',
+    'package_path': './package.json',
+    'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG'],
+    'sources': {
+        'photos_path': './photos/',
+        'models_path': './credits/models/'
+    },
+    'plr': {
+        'main_folder_name': 'photo-library-ressources',
+        'main_folder_path': './public/photo-library-ressources/',
+        'photos_folder_name': 'photos',
+        'thumbnails_folder_name': 'thumbnails',
+        'blurred_thumbnail_placeholders_folder_name': 'blurred-thumbnail-placeholders',
+        'models_folder_name': 'models',
+        'index_name': 'index.json',
+        'max_dimensions': {
+            'thumbnail': (400, 400),
+            'thumbnail_2x': (800, 800),
+            'photo': (1280, 1280),
+            'photo_2x': (2560, 2560),
+            'model': (125, 125),
+            'model_2x': (250, 250),
+            'blurred_thumbnail_placeholder': (25, 25)
+        }
+    },
+    'ssr': {
+        'photos': {
+            'render_template_path': './photo-ssr-template.html',
+            'htaccess_template_path': './photo-ssr-htaccess',
+            'destination_path': './public/photos/'
+        },
+        'albums': {
+            'render_template_path': './album-ssr-template.html',
+            'htaccess_template_path': './album-ssr-htaccess',
+            'destination_path': './public/albums/'
+        },
+        'photos_in_albums': {
+            'render_template_path': './photo-in-album.html',
+        }
+    }
+}
 
 
 def reset_photo_library_ressources():
     print("Reset photo library ressources...")
     # photo-library-ressources folder
-    if os.path.exists(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH) and os.path.isdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH):
-        shutil.rmtree(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
-    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH)
-    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME)
-    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME)
-    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME)
-    os.mkdir(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-             PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME)
-    
-    bplrh_helpers.server_side_renders.reset(
-        PHOTO_SERVER_SIDE_RENDER_FOLDER_PATH, ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH)
+    if os.path.exists(config['plr']['main_folder_path']) and os.path.isdir(config['plr']['main_folder_path']):
+        shutil.rmtree(config['plr']['main_folder_path'])
+    os.mkdir(config['plr']['main_folder_path'])
+    os.mkdir(config['plr']['main_folder_path'] +
+             config['plr']['thumbnails_folder_name'])
+    os.mkdir(config['plr']['main_folder_path'] +
+             config['plr']['blurred_thumbnail_placeholders_folder_name'])
+    os.mkdir(config['plr']['main_folder_path'] +
+             config['plr']['photos_folder_name'])
+    os.mkdir(config['plr']['main_folder_path'] +
+             config['plr']['models_folder_name'])
+
+    bplrh_helpers.server_side_renders.reset(config)
 
 
 def load_package_file():
-    with open(PACKAGE_FILE_PATH) as json_file:
+    with open(config['package_path']) as json_file:
         return json.load(json_file)
 
 
@@ -77,8 +90,8 @@ def build_photos_folder_mapping():
     photo_id = 0
     photos_grabbed = []
 
-    for supported_photo_type in SUPPORTED_PHOTO_TYPES:
-        pathname = PHOTOS_FOLDER_PATH + '**/*' + supported_photo_type
+    for supported_photo_type in config['supported_photo_types']:
+        pathname = config['sources']['photos_path'] + '**/*' + supported_photo_type
         photos_grabbed.extend(
             glob.glob(pathname, recursive=True))
 
@@ -89,7 +102,7 @@ def build_photos_folder_mapping():
         photos_folder_mapping['all_photos'].append(photo_folder_tree_element)
 
         splitted_photo_path_in_photos_folder_path = photo_path[len(
-            PHOTOS_FOLDER_PATH):len(photo_path)].split('/')
+            config['sources']['photos_path']):len(photo_path)].split('/')
         if len(splitted_photo_path_in_photos_folder_path) == 2:
             album_name = splitted_photo_path_in_photos_folder_path[0]
             if album_name not in photos_folder_mapping['albums']:
@@ -106,9 +119,9 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(MAX_THUMBNAIL_DIMENSION)
-            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
+            im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
+            im.save(config['plr']['main_folder_path'] +
+                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create thumbnail for photo ", photo['path'])
         bar.next()
@@ -116,9 +129,9 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(MAX_2X_THUMBNAIL_DIMENSION)
-            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
+            im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
+            im.save(config['plr']['main_folder_path'] +
+                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create @2x thumbnail for photo ", photo['path'])
         bar.next()
@@ -126,19 +139,20 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(MAX_BLURRED_THUMBNAIL_PLACEHOLDER_DIMENSION)
-            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", quality=40)
+            im.thumbnail(config['plr']['max_dimensions']['blurred_thumbnail_placeholder'])
+            im.save(config['plr']['main_folder_path'] +
+                    config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", quality=40)
         except IOError:
-            print("Cannot create blurred thumbnail placeholder for photo ", photo['path'])
+            print(
+                "Cannot create blurred thumbnail placeholder for photo ", photo['path'])
         bar.next()
 
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(MAX_PHOTO_DIMENSION)
-            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
+            im.thumbnail(config['plr']['max_dimensions']['photo'])
+            im.save(config['plr']['main_folder_path'] +
+                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
@@ -146,9 +160,9 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(MAX_2X_PHOTO_DIMENSION)
-            im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                    PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
+            im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
+            im.save(config['plr']['main_folder_path'] +
+                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
             print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
@@ -162,11 +176,11 @@ def build_index_file(photos_folder_mapping, credits_index):
         photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-            'blurredThumbnailPlaceholderUrl': PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-            'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+            'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg',
+            'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
+            'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg',
+            'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg',
+            'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,
             'height': photo_height
         }
@@ -182,22 +196,24 @@ def build_index_file(photos_folder_mapping, credits_index):
             photo_width, photo_height = im.size
             photo_elt = {
                 'id': photo['id'],
-                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_THUMBNAILS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
-                'blurredThumbnailPlaceholderUrl': PHOTO_LIBRARY_RESSOURCES_BLURRED_THUMBNAIL_PLACEHOLDERS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photoUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '.jpg',
-                'photo2xUrl': PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + str(photo['id']) + '@2x.jpg',
+                'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg',
+                'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
+                'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg',
+                'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg',
+                'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
                 'width': photo_width,
                 'height': photo_height
             }
             album_photos.append(photo_elt)
         index_file['albums'].append({'name': album, 'photos': album_photos})
 
-    with open(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + PHOTO_LIBRARY_RESSOURCES_PHOTOS_INDEX_NAME, 'w') as outfile:
+    with open(config['plr']['main_folder_path'] + config['plr']['index_name'], 'w') as outfile:
         json.dump(index_file, outfile)
 
 # Method found on Stack Overflow - Generating an MD5 checksum of a file
 # (https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file)
+
+
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
@@ -206,15 +222,12 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-
-
-
 def build_credits_ressources():
     index = {'models': []}
     models_grabbed = []
 
-    for supported_photo_type in SUPPORTED_PHOTO_TYPES:
-        pathname = MODELS_FOLDER_PATH + '**/*' + supported_photo_type
+    for supported_photo_type in config['supported_photo_types']:
+        pathname = config['plr']['models_folder_name'] + '**/*' + supported_photo_type
         models_grabbed.extend(
             glob.glob(pathname, recursive=True))
 
@@ -232,9 +245,9 @@ def build_credits_ressources():
             try:
                 im = Image.open(model)
                 im = crop_max_square(im)
-                im.thumbnail(MODEL_THUMBNAIL_DIMENSION)
-                im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                        PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '.jpg', "JPEG")
+                im.thumbnail(config['plr']['max_dimensions']['model'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg', "JPEG")
             except IOError:
                 print("Cannot create thumbnail for model ", model)
 
@@ -242,9 +255,9 @@ def build_credits_ressources():
             try:
                 im = Image.open(model)
                 im = crop_max_square(im)
-                im.thumbnail(MODEL_2X_THUMBNAIL_DIMENSION)
-                im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH +
-                        PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
+                im.thumbnail(config['plr']['max_dimensions']['model_2x'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
             except IOError:
                 print("Cannot create @2x thumbnail for model ", model)
 
@@ -252,8 +265,8 @@ def build_credits_ressources():
                 'fullname': model_fullname,
                 'formatedFullName': model_formated_fullname,
                 'instagram': model_instagran,
-                'thumbnailUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '.jpg',
-                'thumbnail2xUrl': PHOTO_LIBRARY_RESSOURCES_MODELS_FOLDER_NAME + '/' + model_formated_fullname + '@2x.jpg'
+                'thumbnailUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg',
+                'thumbnail2xUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg'
             }
             index['models'].append(model_index_element)
             bar.next()
@@ -279,8 +292,9 @@ def add_index_og_image(photos_folder_mapping):
     cover_image_path = photos_folder_mapping['all_photos'][0]['path']
     try:
         im = Image.open(cover_image_path)
-        im.thumbnail(MAX_PHOTO_DIMENSION)
-        im.save(PHOTO_LIBRARY_RESSOURCES_FOLDER_PATH + '/indexOGImage.jpg', "JPEG")
+        im.thumbnail(config['plr']['max_dimensions']['photo'])
+        im.save(config['plr']['main_folder_path'] +
+                '/indexOGImage.jpg', "JPEG")
     except IOError:
         print("Cannot create index og inage")
 
@@ -294,8 +308,7 @@ def build_photo_library_ressources():
     # build_optimized_images(photos_folder_mapping)
     credits_index = build_credits_ressources()
     build_index_file(photos_folder_mapping, credits_index)
-    bplrh_helpers.server_side_renders.build(
-        photos_folder_mapping, PHOTO_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH)
+    bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
     add_index_og_image(photos_folder_mapping)
     print("\nDone")
 

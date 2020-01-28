@@ -6,18 +6,17 @@ import os
 import shutil
 
 
-def reset(ssr_photos_folder_path, ssr_albums_path):
-    if os.path.exists(ssr_photos_folder_path) and os.path.isdir(ssr_photos_folder_path):
-        shutil.rmtree(ssr_photos_folder_path)
-    if os.path.exists(ssr_albums_path) and os.path.isdir(ssr_albums_path):
-        shutil.rmtree(ssr_albums_path)
+def reset(config):
+    if os.path.exists(config['ssr']['photos']['destination_path']) and os.path.isdir(config['ssr']['photos']['destination_path']):
+        shutil.rmtree(config['ssr']['photos']['destination_path'])
+    if os.path.exists(config['ssr']['albums']['destination_path']) and os.path.isdir(config['ssr']['albums']['destination_path']):
+        shutil.rmtree(config['ssr']['albums']['destination_path'])
 
-    os.mkdir(ssr_photos_folder_path)
-    os.mkdir(ssr_albums_path)
+    os.mkdir(config['ssr']['photos']['destination_path'])
+    os.mkdir(config['ssr']['albums']['destination_path'])
 
 
 def _build_photos(photos_folder_mapping, flowtos_baseurl, plr_folder_name, plr_photos_folder_name, photo_template_path, htaccess_template_path, dest_path):
-    # photos renders
     with open(photo_template_path) as photo_template_file:
         photo_template = photo_template_file.read()
 
@@ -37,49 +36,57 @@ def _build_photos(photos_folder_mapping, flowtos_baseurl, plr_folder_name, plr_p
             htaccess_destination.write(htaccess_source.read())
 
 
-def build(photos_folder_mapping, flowtos_baseurl, plr_folder_name, plr_photos_folder_name, ssr_photo_template_path, ssr_photo_htaccess_template_path, ssr_photos_dest_path):
-    _build_photos(photos_folder_mapping, flowtos_baseurl,
-                  plr_folder_name, plr_photos_folder_name, ssr_photo_template_path, ssr_photo_htaccess_template_path, ssr_photos_dest_path)
+def _build_albums_photos(photos_folder_mapping, flowtos_baseurl, plr_folder_name, plr_photos_folder_name, photo_in_album_template_path, album_id, dest_path):
+    with open(photo_in_album_template_path) as photo_in_album_template_file:
+        photo_in_album_template = photo_in_album_template_file.read()
 
-    # albums
-    # with open(ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as album_template:
-    #     with open(PHOTO_IN_ALBUM_SERVER_SIDE_RENDER_TEMPLATE_FILE_PATH) as photo_in_album_template:
-    #         album_server_side_render_template = album_template.read()
-    #         photo_in_album_server_side_render_template = photo_in_album_template.read()
+        for photo in photos_folder_mapping['albums'][album_id]['photos']:
+            photo_in_album_render = photo_in_album_template.replace(
+                '{PHOTO_URL}', flowtos_baseurl + plr_folder_name + '/' + plr_photos_folder_name + '/' + photo['id'] + '.jpg')
+            photo_in_album_render = photo_in_album_render.replace(
+                '{ALBUM_NAME}', album_id)
+            photo_in_album_render = photo_in_album_render.replace(
+                '{ALBUM_ID}', album_id)
+            photo_in_album_render = photo_in_album_render.replace(
+                '{SERVER_SIDE_RENDER_URL}', flowtos_baseurl + 'albums/' + album_id + '/' + photo['id'])
+            photo_in_album_render = photo_in_album_render.replace(
+                '{PHOTO_ID}', photo['id'])
 
-    #         for album in photos_folder_mapping['albums']:
-    #             album_ssr_folder_path = ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + album
-    #             os.mkdir(album_ssr_folder_path)
-
-    #             album_server_side_render = album_server_side_render_template.replace(
-    #                 '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
-    #             album_server_side_render = album_server_side_render.replace(
-    #                 '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album)
-    #             album_server_side_render = album_server_side_render.replace(
-    #                 '{ALBUM_NAME}', album)
-    #             album_server_side_render = album_server_side_render.replace(
-    #                 '{ALBUM_ID}', album)
-
-    #             with open(album_ssr_folder_path + '/index.html', 'w+') as render:
-    #                 render.write(album_server_side_render)
-
-    #             # albums' photos
-    #             for photo in photos_folder_mapping['albums'][album]['photos']:
-    #                 photo_in_album_server_side_render = photo_in_album_server_side_render_template.replace(
-    #                     '{PHOTO_URL}', FLOWTOS_BASEURL + PHOTO_LIBRARY_RESSOURCES_FOLDER_NAME + '/' + PHOTO_LIBRARY_RESSOURCES_PHOTOS_FOLDER_NAME + '/' + photo['id'] + '.jpg')
-    #                 photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-    #                     '{ALBUM_NAME}', album)
-    #                 photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-    #                     '{ALBUM_ID}', album)
-    #                 photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-    #                     '{SERVER_SIDE_RENDER_URL}', FLOWTOS_BASEURL + 'albums/' + album + '/' + photo['id'])
-    #                 photo_in_album_server_side_render = photo_in_album_server_side_render.replace(
-    #                     '{PHOTO_ID}', photo['id'])
-
-    #                 with open(album_ssr_folder_path + '/' + photo['id'] + '.html', 'w+') as render:
-    #                     render.write(photo_in_album_server_side_render)
+            with open(dest_path + '/' + photo['id'] + '.html', 'w+') as render:
+                render.write(photo_in_album_render)
 
 
-    # with open(ALBUM_SERVER_SIDE_RENDER_HTACCESS_FILE_PATH) as htaccess_source:
-    #     with open(ALBUM_SERVER_SIDE_RENDER_FOLDER_PATH + '.htaccess', 'w+') as htaccess_destination:
-    #         htaccess_destination.write(htaccess_source.read())
+def _build_albums(photos_folder_mapping, flowtos_baseurl, plr_folder_name, plr_photos_folder_name, album_template_path, photo_in_album_template_path, htaccess_template_path, dest_path):
+    with open(album_template_path) as album_template_file:
+        album_template = album_template_file.read()
+
+        for album in photos_folder_mapping['albums']:
+            album_dest_path = dest_path + album
+            os.mkdir(album_dest_path)
+
+            album_render = album_template.replace(
+                '{PHOTO_URL}', flowtos_baseurl + plr_folder_name + '/' + plr_photos_folder_name + '/' + photos_folder_mapping['albums'][album]['photos'][0]['id'] + '.jpg')
+            album_render = album_render.replace(
+                '{SERVER_SIDE_RENDER_URL}', flowtos_baseurl + 'albums/' + album)
+            album_render = album_render.replace(
+                '{ALBUM_NAME}', album)
+            album_render = album_render.replace(
+                '{ALBUM_ID}', album)
+
+            with open(album_dest_path + '/index.html', 'w+') as render:
+                render.write(album_render)
+
+            _build_albums_photos(photos_folder_mapping, flowtos_baseurl, plr_folder_name,
+                                 plr_photos_folder_name, photo_in_album_template_path, album, album_dest_path)
+
+
+    with open(htaccess_template_path) as htaccess_source:
+        with open(dest_path + '.htaccess', 'w+') as htaccess_destination:
+            htaccess_destination.write(htaccess_source.read())
+
+
+def build(photos_folder_mapping, config):
+    # _build_photos(photos_folder_mapping, config)
+
+    # _build_albums(photos_folder_mapping, config)
+    
