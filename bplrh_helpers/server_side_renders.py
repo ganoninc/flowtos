@@ -11,9 +11,12 @@ def reset(config):
         shutil.rmtree(config['ssr']['photos']['destination_path'])
     if os.path.exists(config['ssr']['albums']['destination_path']) and os.path.isdir(config['ssr']['albums']['destination_path']):
         shutil.rmtree(config['ssr']['albums']['destination_path'])
+    if os.path.exists(config['ssr']['about']['destination_path']) and os.path.isdir(config['ssr']['about']['destination_path']):
+        shutil.rmtree(config['ssr']['about']['destination_path'])
 
     os.mkdir(config['ssr']['photos']['destination_path'])
     os.mkdir(config['ssr']['albums']['destination_path'])
+    os.mkdir(config['ssr']['about']['destination_path'])
 
 
 def _build_photos(photos, config):
@@ -102,6 +105,18 @@ def _build_albums(albums, config):
             index.write(albums_index)
 
 
+def _build_about(config):
+    with open(config['ssr']['about']['render_template_path']) as about_template_file:
+        about_template = about_template_file.read()
+
+        about_template_render = about_template.replace(
+            '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'about')
+
+        with open(config['ssr']['about']['destination_path'] + '/index.html', 'w+') as render:
+            render.write(about_template_render)
+
+
 def build(photos_folder_mapping, config):
     _build_photos(photos_folder_mapping['all_photos'], config)
     _build_albums(photos_folder_mapping['albums'], config)
+    _build_about(config)

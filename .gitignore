@@ -33,3 +33,4 @@ __pycache__/
 /public/photo-library-ressources/*
 /public/photos/*
 /public/albums/*
+/public/about/*

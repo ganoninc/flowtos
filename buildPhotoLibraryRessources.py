@@ -61,7 +61,11 @@ config = {
             'index_template_path': './bplrh_helpers/ressources/ssr-albums-index-template.html'
         },
         'photos_in_albums': {
-            'render_template_path': './bplrh_helpers/ressources/ssr-photo-in-album.html',
+            'render_template_path': './bplrh_helpers/ressources/ssr-photo-in-album.html'
+        },
+        'about': {
+            'render_template_path': './bplrh_helpers/ressources/ssr-about.html',
+            'destination_path': './public/about/'
         }
     }
 }
