@@ -11,7 +11,6 @@ import "./Photos.scss";
 
 function Photos(props) {
   const { photoList, photoLibraryEndpoint, scrollPosition } = props;
-
   let history = useHistory();
   let { photoId, albumId } = useParams();
 
@@ -26,7 +25,6 @@ function Photos(props) {
       width: photo.width,
       height: photo.height,
       key: photo.id.toString(),
-      scrollPosition: scrollPosition,
       placeholderSrc:
         photoLibraryEndpoint + photo.blurredThumbnailPlaceholderUrl
     };
@@ -82,6 +80,7 @@ function Photos(props) {
       left={left}
       top={top}
       onClick={onClick}
+      scrollPosition={scrollPosition}
     />
   );
 

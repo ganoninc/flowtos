@@ -9,18 +9,18 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.3",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/jest-dom": "^5.0.2",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^8.0.7",
     "bootstrap": "^4.4.1",
-    "husky": "^4.0.10",
-    "lint-staged": "^9.5.0",
+    "husky": "^4.2.1",
+    "lint-staged": "^10.0.4",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
-    "react-lazy-load-image-component": "^1.4.0",
+    "react-lazy-load-image-component": "^1.4.1",
     "react-lazyload": "^2.6.5",
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.1.2",
@@ -60,7 +60,7 @@
     ]
   },
   "devDependencies": {
-    "fslightbox-react": "^1.4.7",
+    "fslightbox-react": "^1.4.9",
     "prettier": "^1.19.1"
   }
 }

@@ -13,7 +13,7 @@ function AlbumCard(props) {
   };
 
   return (
-    <div className="mb-4 col-xs-12 col-sm-12 col-md-3">
+    <div className="mb-4 col-xs-12 col-sm-12 col-md-4 col-lg-3">
       <div className="album-card" onClick={openAlbum}>
         <LazyLoadImage
           alt={name}
@@ -23,6 +23,8 @@ function AlbumCard(props) {
           src={cover}
           className="cover"
           srcSet={cover + " 1x, " + cover2x + " 2x"}
+          threshold={250}
+          wrapperClassName="lazy-loader"
         />
         <span className="py-2 name">{name}</span>
       </div>

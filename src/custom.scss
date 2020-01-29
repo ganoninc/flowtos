@@ -1,12 +1,8 @@
 // Override default variables before the import
 //$body-bg: #ddd;
-$font-family-sans-serif: 'Open Sans', sans-serif;
-$font-weight-light: 400;
-$font-weight-normal: 700;
-$font-weight-bold: 900; 
-$headings-font-weight: 900;
+$font-family-sans-serif: "Open Sans", sans-serif;
 
 $link-color: rgb(56, 108, 168);
 $link-hover-color: rgb(48, 127, 218);
 // Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/bootstrap.scss";
