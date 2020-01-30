@@ -16,9 +16,11 @@ $imgHoverScale: 1.05;
 }
 
 .fade-appear {
-  opacity: 0.5;
+  opacity: 0;
+  filter: blur(25px);
 }
 
 .fade-appear-done {
   opacity: 1;
+  filter: blur(0px);
 }

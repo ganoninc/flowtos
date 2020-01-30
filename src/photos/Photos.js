@@ -25,8 +25,7 @@ function Photos(props) {
       width: photo.width,
       height: photo.height,
       key: photo.id.toString(),
-      placeholderSrc:
-        photoLibraryEndpoint + photo.blurredThumbnailPlaceholderUrl
+      placeholderSrc: photo.blurredThumbnailPlaceholderUrl
     };
   });
   //#Source https://bit.ly/2neWfJ2
@@ -87,7 +86,7 @@ function Photos(props) {
   return (
     <CSSTransition in={true} timeout={25} classNames="fade" appear>
       <div className="mb-4 photos">
-        {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
+        {/* {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
           return (
             <LazyLoad key={index} height={1000} once>
               <Gallery
@@ -98,7 +97,13 @@ function Photos(props) {
               />
             </LazyLoad>
           );
-        })}
+        })} */}
+        <Gallery
+          photos={photoThumbnails}
+          onClick={openLightboxOnSlide}
+          margin={4}
+          renderImage={imageRenderer}
+        />
 
         <FsLightbox
           toggler={lightboxController.toggler}

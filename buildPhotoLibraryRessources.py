@@ -13,6 +13,8 @@ import glob
 import json
 import shutil
 import hashlib
+import base64
+from io import BytesIO
 
 from PIL import Image
 from progress.bar import Bar
@@ -73,7 +75,6 @@ config = {
 
 def reset_photo_library_ressources():
     print("Reset photo library ressources...")
-    # photo-library-ressources folder
     if os.path.exists(config['plr']['main_folder_path']) and os.path.isdir(config['plr']['main_folder_path']):
         shutil.rmtree(config['plr']['main_folder_path'])
     os.mkdir(config['plr']['main_folder_path'])
@@ -99,7 +100,8 @@ def build_photos_folder_mapping():
     photos_grabbed = []
 
     for supported_photo_type in config['supported_photo_types']:
-        pathname = config['sources']['photos_path'] + '**/*' + supported_photo_type
+        pathname = config['sources']['photos_path'] + \
+            '**/*' + supported_photo_type
         photos_grabbed.extend(
             glob.glob(pathname, recursive=True))
 
@@ -147,17 +149,6 @@ def build_optimized_images(photos_folder_mapping):
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
-            im.thumbnail(config['plr']['max_dimensions']['blurred_thumbnail_placeholder'])
-            im.save(config['plr']['main_folder_path'] +
-                    config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", quality=40)
-        except IOError:
-            print(
-                "Cannot create blurred thumbnail placeholder for photo ", photo['path'])
-        bar.next()
-
-    for photo in photos_folder_mapping['all_photos']:
-        try:
-            im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo'])
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
@@ -176,6 +167,26 @@ def build_optimized_images(photos_folder_mapping):
         bar.next()
 
 
+# https://stackoverflow.com/questions/31826335/how-to-convert-pil-image-image-object-to-base64-string
+def get_blurred_thumbnail_placeholder_base64(photo):
+    try:
+        im = Image.open(photo['path'])
+        im.thumbnail(config['plr']['max_dimensions']
+                     ['blurred_thumbnail_placeholder'])
+        buffered = BytesIO()
+
+        im.save(buffered, "JPEG", quality=40)
+        img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+        img_str = 'data:image/jpg;base64,' + img_str
+
+        return img_str
+
+    except IOError:
+        print(
+            "Cannot create blurred thumbnail placeholder for photo ", photo['path'])
+
+
 def build_index_file(photos_folder_mapping, credits_index):
     index_file = {'all_photos': [], 'albums': [], 'credits': credits_index}
     already_added_photo_elt = []
@@ -186,7 +197,7 @@ def build_index_file(photos_folder_mapping, credits_index):
             'id': photo['id'],
             'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg',
             'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
-            'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg',
+            'blurredThumbnailPlaceholderUrl': get_blurred_thumbnail_placeholder_base64(photo),
             'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg',
             'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
             'width': photo_width,

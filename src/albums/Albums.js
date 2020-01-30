@@ -11,8 +11,7 @@ function Albums(props) {
   let albumListComponents = albumList.map(album => {
     let coverImg = photoLibraryEndpoint + album.photos[0].thumbnailUrl;
     let coverImg2x = photoLibraryEndpoint + album.photos[0].thumbnail2xUrl;
-    let placeholderSrc =
-      photoLibraryEndpoint + album.photos[0].blurredThumbnailPlaceholderUrl;
+    let placeholderSrc = album.photos[0].blurredThumbnailPlaceholderUrl;
 
     return (
       <AlbumCard
