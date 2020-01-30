@@ -175,8 +175,7 @@ function Flowtos(props) {
             <div className="container">
               <span className="small text-muted">
                 All images © 2002-2020{" "}
-                <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>{" "}
-                (@Gioroju)
+                <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>
                 <br />
                 Web App made by{" "}
                 <a href="https://www.giovanetti.fr/">

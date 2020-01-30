@@ -4,7 +4,6 @@ import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
 import { CSSTransition } from "react-transition-group";
 import { trackWindowScroll } from "react-lazy-load-image-component";
-import LazyLoad from "react-lazyload";
 import Photo from "./Photo";
 
 import "./Photos.scss";
