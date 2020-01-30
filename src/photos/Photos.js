@@ -28,12 +28,6 @@ function Photos(props) {
       placeholderSrc: photo.blurredThumbnailPlaceholderUrl
     };
   });
-  //#Source https://bit.ly/2neWfJ2
-  const chunk = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-      arr.slice(i * size, i * size + size)
-    );
-  let photoThumbnailsChunks = chunk(photoThumbnails, 25);
   let photos = photoList.map(photo => {
     if (window.devicePixelRatio > 1) {
       return photoLibraryEndpoint + photo.photo2xUrl;
@@ -84,37 +78,24 @@ function Photos(props) {
   );
 
   return (
-    <CSSTransition in={true} timeout={25} classNames="fade" appear>
-      <div className="mb-4 photos">
-        {/* {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
-          return (
-            <LazyLoad key={index} height={1000} once>
-              <Gallery
-                photos={photoThumbnailsChunk}
-                onClick={openLightboxOnSlide}
-                margin={4}
-                renderImage={imageRenderer}
-              />
-            </LazyLoad>
-          );
-        })} */}
+    <div className="mb-4 photos">
+      <CSSTransition in={true} timeout={25} classNames="fade" appear>
         <Gallery
           photos={photoThumbnails}
           onClick={openLightboxOnSlide}
           margin={4}
           renderImage={imageRenderer}
         />
-
-        <FsLightbox
-          toggler={lightboxController.toggler}
-          sources={photos}
-          type="image"
-          sourceIndex={lightboxController.sourceIndex}
-          openOnMount={photoId ? true : false}
-          onClose={onLightBoxCloseHandler}
-        />
-      </div>
-    </CSSTransition>
+      </CSSTransition>
+      <FsLightbox
+        toggler={lightboxController.toggler}
+        sources={photos}
+        type="image"
+        sourceIndex={lightboxController.sourceIndex}
+        openOnMount={photoId ? true : false}
+        onClose={onLightBoxCloseHandler}
+      />
+    </div>
   );
 }
 
