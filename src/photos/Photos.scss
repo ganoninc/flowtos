@@ -2,8 +2,6 @@ $imgHoverScale: 1.05;
 
 .photos {
   .react-photo-gallery--gallery {
-    transition: All 0.25s;
-
     img {
       filter: brightness(1);
       transition: All 0.5s ease-in-out;
@@ -12,15 +10,5 @@ $imgHoverScale: 1.05;
       filter: brightness(1.05);
       transform: rotate(0deg) scale($imgHoverScale) skew(0deg) translate(0px);
     }
-  }
-
-  .fade-appear {
-    opacity: 0;
-    filter: blur(25px);
-  }
-
-  .fade-appear-done {
-    opacity: 1;
-    filter: blur(0px);
   }
 }

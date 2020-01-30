@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
-import { CSSTransition } from "react-transition-group";
 import { trackWindowScroll } from "react-lazy-load-image-component";
 import Photo from "./Photo";
 
@@ -27,6 +26,12 @@ function Photos(props) {
       placeholderSrc: photo.blurredThumbnailPlaceholderUrl
     };
   });
+  //#Source https://bit.ly/2neWfJ2
+  const chunk = (arr, size) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    );
+  let photoThumbnailsChunks = chunk(photoThumbnails, 25);
   let photos = photoList.map(photo => {
     if (window.devicePixelRatio > 1) {
       return photoLibraryEndpoint + photo.photo2xUrl;
@@ -77,15 +82,21 @@ function Photos(props) {
   );
 
   return (
-    <div className="mb-4 photos">
-      <CSSTransition in={true} timeout={25} classNames="fade" appear>
-        <Gallery
-          photos={photoThumbnails}
-          onClick={openLightboxOnSlide}
-          margin={4}
-          renderImage={imageRenderer}
-        />
-      </CSSTransition>
+    <>
+      <div className="mb-4 photos">
+        {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
+          return (
+            <div key={index} className="photos-chunk">
+              <Gallery
+                photos={photoThumbnailsChunk}
+                onClick={openLightboxOnSlide}
+                margin={4}
+                renderImage={imageRenderer}
+              />
+            </div>
+          );
+        })}
+      </div>
       <FsLightbox
         toggler={lightboxController.toggler}
         sources={photos}
@@ -94,7 +105,7 @@ function Photos(props) {
         openOnMount={photoId ? true : false}
         onClose={onLightBoxCloseHandler}
       />
-    </div>
+    </>
   );
 }
 
