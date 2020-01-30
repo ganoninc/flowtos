@@ -12,13 +12,11 @@
 
   .lazy-loader {
     filter: blur(25px);
-    filter: opacity(7.25%) saturate(0);
     transition: all 0.5s;
   }
 
   .lazy-load-image-loaded {
     filter: blur(0px);
-    filter: opacity(100%) saturate(1);
     transition: all 0.5s;
   }
 
@@ -26,8 +24,8 @@
     object-fit: cover;
     width: inherit;
     height: inherit;
-    filter: opacity(7.25%) saturate(0);
-    transition: all 0.38s linear;
+    filter: opacity(20%) saturate(0.5) blur(2px);
+    transition: all 0.38s ease-out;
   }
 
   .name {
