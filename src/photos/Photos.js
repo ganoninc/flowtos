@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
 import { trackWindowScroll } from "react-lazy-load-image-component";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Photo from "./Photo";
 
 import "./Photos.scss";
@@ -32,6 +33,35 @@ function Photos(props) {
       arr.slice(i * size, i * size + size)
     );
   let photoThumbnailsChunks = chunk(photoThumbnails, 25);
+
+  const [infiniteScrollerController, setInfiniteScrollerController] = useState({
+    currentItems: [photoThumbnailsChunks[0]],
+    hasMoreItems: true,
+    itemToLoadOnNextCall: 1
+  });
+
+  let loadNextItems = () => {
+    if (
+      infiniteScrollerController.currentItems.length ===
+      photoThumbnailsChunks.length
+    ) {
+      setInfiniteScrollerController({
+        currentItems: infiniteScrollerController.currentItems,
+        hasMoreItems: false,
+        itemToLoadOnNextCall: infiniteScrollerController.itemToLoadOnNextCall
+      });
+    } else {
+      let newCurrentItems = infiniteScrollerController.currentItems;
+      let itemToLoad = infiniteScrollerController.itemToLoadOnNextCall;
+      newCurrentItems.push(photoThumbnailsChunks[itemToLoad]);
+      setInfiniteScrollerController({
+        currentItems: newCurrentItems,
+        hasMoreItems: true,
+        itemToLoadOnNextCall: itemToLoad + 1
+      });
+    }
+  };
+
   let photos = photoList.map(photo => {
     if (window.devicePixelRatio > 1) {
       return photoLibraryEndpoint + photo.photo2xUrl;
@@ -81,22 +111,22 @@ function Photos(props) {
     />
   );
 
-  return (
-    <>
-      <div className="mb-4 photos">
-        {photoThumbnailsChunks.map((photoThumbnailsChunk, index) => {
-          return (
-            <div key={index} className="photos-chunk">
-              <Gallery
-                photos={photoThumbnailsChunk}
-                onClick={openLightboxOnSlide}
-                margin={4}
-                renderImage={imageRenderer}
-              />
-            </div>
-          );
-        })}
+  let infiniteScrollItems = [];
+  infiniteScrollerController.currentItems.map((item, index) => {
+    return infiniteScrollItems.push(
+      <div key={index} className="photos-chunk">
+        <Gallery
+          photos={item}
+          onClick={openLightboxOnSlide}
+          margin={4}
+          renderImage={imageRenderer}
+        />
       </div>
+    );
+  });
+
+  return (
+    <div className="mb-4 photos">
       <FsLightbox
         toggler={lightboxController.toggler}
         sources={photos}
@@ -105,7 +135,14 @@ function Photos(props) {
         openOnMount={photoId ? true : false}
         onClose={onLightBoxCloseHandler}
       />
-    </>
+      <InfiniteScroll
+        dataLength={infiniteScrollerController.currentItems.length}
+        next={loadNextItems}
+        hasMore={infiniteScrollerController.hasMoreItems}
+      >
+        {infiniteScrollItems}
+      </InfiniteScroll>
+    </div>
   );
 }
 
