@@ -28,6 +28,8 @@ __pycache__/
 /original_ressources/photos/*
 # credits
 /original_ressources/credits/*
+# ssr
+/original_ressources/ssr/*
 
 # photo library ressources
 /public/photo-library-ressources/*

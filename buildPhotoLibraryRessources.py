@@ -29,7 +29,8 @@ config = {
     'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG'],
     'sources': {
         'photos_path': './original_ressources/photos/',
-        'models_path': './original_ressources/credits/models/'
+        'models_path': './original_ressources/credits/models/',
+        'ssr_default_image_path': './original_ressources/ssr/default_image.jpg'
     },
     'plr': {
         'main_folder_name': 'photo-library-ressources',
@@ -125,7 +126,7 @@ def build_photos_folder_mapping():
 
 def build_optimized_images(photos_folder_mapping):
     bar = Bar('Processing images', max=len(
-        photos_folder_mapping['all_photos']) * 5)
+        photos_folder_mapping['all_photos']) * 4)
     for photo in photos_folder_mapping['all_photos']:
         try:
             im = Image.open(photo['path'])
@@ -188,6 +189,7 @@ def get_blurred_thumbnail_placeholder_base64(photo):
 
 
 def build_index_file(photos_folder_mapping, credits_index):
+    print("\nWriting index file")
     index_file = {'all_photos': [], 'albums': [], 'credits': credits_index}
     already_added_photo_elt = []
     for photo in photos_folder_mapping['all_photos']:
@@ -230,15 +232,18 @@ def build_index_file(photos_folder_mapping, credits_index):
         json.dump(index_file, outfile)
 
 
-def add_index_og_image(photos_folder_mapping):
-    cover_image_path = photos_folder_mapping['all_photos'][0]['path']
+def add_default_og_image(photos_folder_mapping):
+    default_og_image_path = photos_folder_mapping['all_photos'][0]['path']
+    if os.path.exists(config['sources']['ssr_default_image_path']):
+        default_og_image_path = config['sources']['ssr_default_image_path']
+
     try:
-        im = Image.open(cover_image_path)
+        im = Image.open(default_og_image_path)
         im.thumbnail(config['plr']['max_dimensions']['photo'])
         im.save(config['plr']['main_folder_path'] +
                 '/indexOGImage.jpg', "JPEG")
     except IOError:
-        print("Cannot create index open graph image")
+        print("Cannot create default open graph image.")
 
 
 def build_photo_library_ressources():
@@ -251,7 +256,7 @@ def build_photo_library_ressources():
     credits_index = bplrh_helpers.credits.build(config)
     build_index_file(photos_folder_mapping, credits_index)
     bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
-    add_index_og_image(photos_folder_mapping)
+    add_default_og_image(photos_folder_mapping)
     print("\nDone")
 
 

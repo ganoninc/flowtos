@@ -55,9 +55,13 @@ Put your original pictures in the ```./original_ressources/photos``` folder. Pic
     [] credits
         [] models
             - Steve Jobs#sjobs.jpg
+    [] ssr
+        - default_image.jpg
 ```
 
 You can give credit to your models by placing their profile picture in the ```./original_ressources/credits/models``` folder. See the file  ```HOWTO.md``` in that folder for file naming convention.
+
+You can also specify the default open graph image by placing a jpg file named ```default_image.jpg``` in the ```./original_ressources/ssr/``` folder. If no default photo is set, the first photo of the library will be picked.
 
 Then run:
 
