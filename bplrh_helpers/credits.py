@@ -44,6 +44,8 @@ def build(config):
                 im = Image.open(model)
                 im = bplrh_helpers.tools.crop_max_square(im)
                 im.thumbnail(config['plr']['max_dimensions']['model'])
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
                 im.save(config['plr']['main_folder_path'] +
                         config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg', "JPEG")
             except IOError:
@@ -54,6 +56,8 @@ def build(config):
                 im = Image.open(model)
                 im = bplrh_helpers.tools.crop_max_square(im)
                 im.thumbnail(config['plr']['max_dimensions']['model_2x'])
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
                 im.save(config['plr']['main_folder_path'] +
                         config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
             except IOError:

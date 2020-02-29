@@ -26,7 +26,7 @@ import bplrh_helpers.credits
 config = {
     'flowtos_baseurl': 'https://giovanetti.fr/flowtos/',
     'package_path': './package.json',
-    'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG'],
+    'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
     'sources': {
         'photos_path': './original_ressources/photos/',
         'models_path': './original_ressources/credits/models/',
@@ -131,6 +131,8 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
+            if im.mode == 'RGBA':
+                im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
@@ -141,6 +143,8 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
+            if im.mode == 'RGBA':
+                im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
@@ -151,6 +155,8 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo'])
+            if im.mode == 'RGBA':
+                im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
         except IOError:
@@ -161,6 +167,8 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
+            if im.mode == 'RGBA':
+                im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
         except IOError:
@@ -176,6 +184,8 @@ def get_blurred_thumbnail_placeholder_base64(photo):
                      ['blurred_thumbnail_placeholder'])
         buffered = BytesIO()
 
+        if im.mode == 'RGBA':
+            im = im.convert('RGB')
         im.save(buffered, "JPEG", quality=40)
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
@@ -240,6 +250,8 @@ def add_default_og_image(photos_folder_mapping):
     try:
         im = Image.open(default_og_image_path)
         im.thumbnail(config['plr']['max_dimensions']['photo'])
+        if im.mode == 'RGBA':
+            im = im.convert('RGB')
         im.save(config['plr']['main_folder_path'] +
                 '/indexOGImage.jpg', "JPEG")
     except IOError:
