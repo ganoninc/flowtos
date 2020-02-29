@@ -24,7 +24,7 @@
     object-fit: cover;
     width: inherit;
     height: inherit;
-    filter: opacity(15%) saturate(0.5) blur(2px);
+    filter: opacity(0.15) saturate(0.5) blur(2px);
     transition: all 0.38s ease-out;
   }
 
@@ -41,7 +41,8 @@
     cursor: pointer;
 
     .cover {
-      filter: opacity(100%) saturate(1);
+      filter: opacity(1) saturate(1);
+      transition: all 0.38s ease-out;
     }
     .name {
       background-color: #212529;
