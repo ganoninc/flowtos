@@ -177,7 +177,7 @@ function Flowtos(props) {
                 All images © 2002-2020{" "}
                 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>
                 <br />
-                Web App made by{" "}
+                Flowtos by{" "}
                 <a href="https://www.giovanetti.fr/">
                   Romain J. Giovanetti
                 </a>,{" "}
