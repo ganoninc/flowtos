@@ -16,7 +16,7 @@ function About(props) {
             {models.map(model => {
               return (
                 <Model
-                  key={model.formatedFullName}
+                  key={model.id}
                   fullname={model.fullname}
                   formatedFullName={model.formatedFullName}
                   picture={photoLibraryEndpoint + model.thumbnailUrl}

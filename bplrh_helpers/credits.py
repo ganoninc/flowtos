@@ -36,8 +36,7 @@ def build(config):
             model_basename_array = model_basename.split('.')[0].split('#')
             model_fullname = model_basename_array[0]
             model_instagran = model_basename_array[1]
-            model_formated_fullname = ''.join(
-                x for x in model_fullname.title() if not x.isspace())
+            model_id = bplrh_helpers.tools.md5(model)
 
             # regular thumbnail
             try:
@@ -47,7 +46,7 @@ def build(config):
                 if im.mode == 'RGBA':
                     im = im.convert('RGB')
                 im.save(config['plr']['main_folder_path'] +
-                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg', "JPEG")
+                        config['plr']['models_folder_name'] + '/' + model_id + '.jpg', "JPEG")
             except IOError:
                 print("Cannot create thumbnail for model ", model)
 
@@ -59,16 +58,16 @@ def build(config):
                 if im.mode == 'RGBA':
                     im = im.convert('RGB')
                 im.save(config['plr']['main_folder_path'] +
-                        config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg', "JPEG")
+                        config['plr']['models_folder_name'] + '/' + model_id + '@2x.jpg', "JPEG")
             except IOError:
                 print("Cannot create @2x thumbnail for model ", model)
 
             model_index_element = {
+                'id': model_id,
                 'fullname': model_fullname,
-                'formatedFullName': model_formated_fullname,
                 'instagram': model_instagran,
-                'thumbnailUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '.jpg',
-                'thumbnail2xUrl': config['plr']['models_folder_name'] + '/' + model_formated_fullname + '@2x.jpg'
+                'thumbnailUrl': config['plr']['models_folder_name'] + '/' + model_id + '.jpg',
+                'thumbnail2xUrl': config['plr']['models_folder_name'] + '/' + model_id + '@2x.jpg'
             }
             index['models'].append(model_index_element)
             bar.next()
