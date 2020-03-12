@@ -32,7 +32,7 @@ function Photos(props) {
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
       arr.slice(i * size, i * size + size)
     );
-  let photoThumbnailsChunks = chunk(photoThumbnails, 25);
+  let photoThumbnailsChunks = chunk(photoThumbnails, 50);
 
   const [infiniteScrollerController, setInfiniteScrollerController] = useState({
     currentItems: [photoThumbnailsChunks[0]],

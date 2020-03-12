@@ -11,7 +11,7 @@ function About(props) {
       return (
         <div className="models mt-4">
           <h2 className="mb-4">Models</h2>
-          <p>Special thanks to these amazing persons</p>
+          <p>Special thanks to these amazing models</p>
           <div className="d-flex justify-content-center flex-wrap models-list">
             {models.map(model => {
               return (

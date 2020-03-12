@@ -17,7 +17,7 @@ function Album(props) {
 
   return (
     <div className="album">
-      <h2 className="pb-3">{albumId}</h2>
+      <h3 className="pb-3">{albumId}</h3>
       {photos}
     </div>
   );

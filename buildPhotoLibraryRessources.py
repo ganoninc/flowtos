@@ -47,7 +47,7 @@ config = {
             'photo_2x': (2560, 2560),
             'model': (125, 125),
             'model_2x': (250, 250),
-            'blurred_thumbnail_placeholder': (25, 25)
+            'blurred_thumbnail_placeholder': (50, 50)
         }
     },
     'ssr': {

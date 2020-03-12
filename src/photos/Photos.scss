@@ -8,7 +8,7 @@ $imgHoverScale: 1.05;
     }
     img:hover {
       filter: brightness(1.05);
-      transform: rotate(0deg) scale($imgHoverScale) skew(0deg) translate(0px);
+      transform: scale($imgHoverScale);
     }
   }
 }
