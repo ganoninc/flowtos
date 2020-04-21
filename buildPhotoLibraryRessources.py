@@ -41,8 +41,8 @@ config = {
         'models_folder_name': 'models',
         'index_name': 'index.json',
         'max_dimensions': {
-            'thumbnail': (400, 400),
-            'thumbnail_2x': (800, 800),
+            'thumbnail': (800, 500),
+            'thumbnail_2x': (1600, 1000),
             'photo': (1280, 1280),
             'photo_2x': (2560, 2560),
             'model': (125, 125),
