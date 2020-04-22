@@ -5,6 +5,8 @@
 import os
 import shutil
 
+import bplrh_helpers.tools
+
 
 def reset(config):
     if os.path.exists(config['ssr']['photos']['destination_path']) and os.path.isdir(config['ssr']['photos']['destination_path']):
@@ -48,7 +50,7 @@ def _build_photos(photos, config):
             index.write(photos_index)
 
 
-def _build_photos_in_album(photos, config, album_id, dest_path):
+def _build_photos_in_album(photos, config, album_name, album_encoded_name, dest_path):
     with open(config['ssr']['photos_in_albums']['render_template_path']) as photo_in_album_template_file:
         photo_in_album_template = photo_in_album_template_file.read()
 
@@ -56,11 +58,11 @@ def _build_photos_in_album(photos, config, album_id, dest_path):
             photo_in_album_render = photo_in_album_template.replace(
                 '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + photo['id'] + '.jpg')
             photo_in_album_render = photo_in_album_render.replace(
-                '{ALBUM_NAME}', album_id)
+                '{ALBUM_NAME}', album_name)
             photo_in_album_render = photo_in_album_render.replace(
-                '{ALBUM_ID}', album_id)
+                '{ALBUM_ID}', album_encoded_name)
             photo_in_album_render = photo_in_album_render.replace(
-                '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums/' + album_id + '/' + photo['id'])
+                '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums/' + album_encoded_name + '/' + photo['id'])
             photo_in_album_render = photo_in_album_render.replace(
                 '{PHOTO_ID}', photo['id'])
 
@@ -73,7 +75,8 @@ def _build_albums(albums, config):
         album_template = album_template_file.read()
 
         for album in albums:
-            album_dest_path = config['ssr']['albums']['destination_path'] + album
+            album_encoded_name = bplrh_helpers.tools.encode_album_name(album)
+            album_dest_path = config['ssr']['albums']['destination_path'] + album_encoded_name
             os.mkdir(album_dest_path)
 
             album_render = album_template.replace(
@@ -83,13 +86,13 @@ def _build_albums(albums, config):
             album_render = album_render.replace(
                 '{ALBUM_NAME}', album)
             album_render = album_render.replace(
-                '{ALBUM_ID}', album)
+                '{ALBUM_ID}', album_encoded_name)
 
             with open(album_dest_path + '/index.html', 'w+') as render:
                 render.write(album_render)
 
             _build_photos_in_album(
-                albums[album]['photos'], config, album, album_dest_path)
+                albums[album]['photos'], config, album, album_encoded_name, album_dest_path)
 
     with open(config['ssr']['albums']['htaccess_template_path']) as htaccess_source:
         with open(config['ssr']['albums']['destination_path'] + '.htaccess', 'w+') as htaccess_destination:
@@ -117,6 +120,6 @@ def _build_about(config):
 
 
 def build(photos_folder_mapping, config):
-    _build_photos(photos_folder_mapping['all_photos'], config)
+    _build_photos(photos_folder_mapping['allPhotos'], config)
     _build_albums(photos_folder_mapping['albums'], config)
     _build_about(config)

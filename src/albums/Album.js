@@ -7,7 +7,9 @@ function Album(props) {
 
   let { albumId } = useParams();
 
-  let albumData = albumList.find(album => album.name === albumId);
+  let albumData = albumList.find(
+    album => album.encodedName === encodeURI(albumId)
+  );
 
   let photoList = albumData.photos;
 
@@ -17,7 +19,7 @@ function Album(props) {
 
   return (
     <div className="album">
-      <h3 className="pb-3">{albumId}</h3>
+      <h3 className="pb-3">{albumData.name}</h3>
       {photos}
     </div>
   );

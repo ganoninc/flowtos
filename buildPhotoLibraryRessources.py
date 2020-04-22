@@ -96,7 +96,7 @@ def load_package_file():
 
 
 def build_photos_folder_mapping():
-    photos_folder_mapping = {'all_photos': [], 'albums': {}}
+    photos_folder_mapping = {'allPhotos': [], 'albums': {}}
     photo_id = 0
     photos_grabbed = []
 
@@ -110,7 +110,7 @@ def build_photos_folder_mapping():
     for photo_path in photos_grabbed:
         photo_id = bplrh_helpers.tools.md5(photo_path)
         photo_folder_tree_element = {'id': photo_id, 'path': photo_path}
-        photos_folder_mapping['all_photos'].append(photo_folder_tree_element)
+        photos_folder_mapping['allPhotos'].append(photo_folder_tree_element)
 
         splitted_photo_path_in_photos_folder_path = photo_path[len(
             config['sources']['photos_path']):len(photo_path)].split('/')
@@ -126,8 +126,8 @@ def build_photos_folder_mapping():
 
 def build_optimized_images(photos_folder_mapping):
     bar = Bar('Processing images', max=len(
-        photos_folder_mapping['all_photos']) * 4)
-    for photo in photos_folder_mapping['all_photos']:
+        photos_folder_mapping['allPhotos']) * 4)
+    for photo in photos_folder_mapping['allPhotos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
@@ -139,7 +139,7 @@ def build_optimized_images(photos_folder_mapping):
             print("Cannot create thumbnail for photo ", photo['path'])
         bar.next()
 
-    for photo in photos_folder_mapping['all_photos']:
+    for photo in photos_folder_mapping['allPhotos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
@@ -151,7 +151,7 @@ def build_optimized_images(photos_folder_mapping):
             print("Cannot create @2x thumbnail for photo ", photo['path'])
         bar.next()
 
-    for photo in photos_folder_mapping['all_photos']:
+    for photo in photos_folder_mapping['allPhotos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo'])
@@ -163,7 +163,7 @@ def build_optimized_images(photos_folder_mapping):
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
 
-    for photo in photos_folder_mapping['all_photos']:
+    for photo in photos_folder_mapping['allPhotos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
@@ -200,9 +200,9 @@ def get_blurred_thumbnail_placeholder_base64(photo):
 
 def build_index_file(photos_folder_mapping, credits_index):
     print("\nWriting index file")
-    index_file = {'all_photos': [], 'albums': [], 'credits': credits_index}
+    index_file = {'allPhotos': [], 'albums': [], 'credits': credits_index}
     already_added_photo_elt = []
-    for photo in photos_folder_mapping['all_photos']:
+    for photo in photos_folder_mapping['allPhotos']:
         im = Image.open(photo['path'])
         photo_width, photo_height = im.size
         photo_elt = {
@@ -217,11 +217,12 @@ def build_index_file(photos_folder_mapping, credits_index):
         }
 
         if photo['id'] not in already_added_photo_elt:
-            index_file['all_photos'].append(photo_elt)
+            index_file['allPhotos'].append(photo_elt)
             already_added_photo_elt.append(photo['id'])
 
     for album in photos_folder_mapping['albums']:
         album_photos = []
+        album_encoded_name = bplrh_helpers.tools.encode_album_name(album)
         for photo in photos_folder_mapping['albums'][album]['photos']:
             im = Image.open(photo['path'])
             photo_width, photo_height = im.size
@@ -236,14 +237,14 @@ def build_index_file(photos_folder_mapping, credits_index):
                 'height': photo_height
             }
             album_photos.append(photo_elt)
-        index_file['albums'].append({'name': album, 'photos': album_photos})
+        index_file['albums'].append({'name': album, 'encodedName': album_encoded_name, 'photos': album_photos})
 
     with open(config['plr']['main_folder_path'] + config['plr']['index_name'], 'w') as outfile:
         json.dump(index_file, outfile)
 
 
 def add_default_og_image(photos_folder_mapping):
-    default_og_image_path = photos_folder_mapping['all_photos'][0]['path']
+    default_og_image_path = photos_folder_mapping['allPhotos'][0]['path']
     if os.path.exists(config['sources']['ssr_default_image_path']):
         default_og_image_path = config['sources']['ssr_default_image_path']
 

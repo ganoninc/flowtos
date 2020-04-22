@@ -36,7 +36,7 @@ function Flowtos(props) {
         .json()
         .then(photoLibraryIndex => {
           setPhotoLibraryIndex({
-            allPhotos: photoLibraryIndex.all_photos,
+            allPhotos: photoLibraryIndex.allPhotos,
             albums: photoLibraryIndex.albums,
             models: photoLibraryIndex.credits.models
           });

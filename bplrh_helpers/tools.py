@@ -4,6 +4,7 @@
 
 
 import hashlib
+import urllib.parse
 
 
 # Method found on Stack Overflow - Generating an MD5 checksum of a file
@@ -28,3 +29,7 @@ def crop_center(pil_img, crop_width, crop_height):
 # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
 def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
+
+
+def encode_album_name(album_name):
+    return urllib.parse.quote(album_name.replace('.', '-').replace(' ', '-').replace(',', '-'))
