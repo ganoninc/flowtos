@@ -82,7 +82,7 @@ def _build_albums(albums, config):
             album_render = album_template.replace(
                 '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + albums[album]['photos'][0]['id'] + '.jpg')
             album_render = album_render.replace(
-                '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums/' + album)
+                '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums/' + album_encoded_name)
             album_render = album_render.replace(
                 '{ALBUM_NAME}', album)
             album_render = album_render.replace(
