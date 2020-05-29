@@ -5,11 +5,18 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "./AlbumCard.scss";
 
 function AlbumCard(props) {
-  const { name, cover, cover2x, scrollPosition, placeholderSrc } = props;
+  const {
+    name,
+    encodedName,
+    cover,
+    cover2x,
+    scrollPosition,
+    placeholderSrc
+  } = props;
   let history = useHistory();
 
   let openAlbum = () => {
-    history.push("/albums/" + name);
+    history.push("/albums/" + encodedName);
   };
 
   return (

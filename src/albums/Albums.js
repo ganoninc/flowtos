@@ -20,6 +20,7 @@ function Albums(props) {
         cover2x={coverImg2x}
         placeholderSrc={placeholderSrc}
         name={album.name}
+        encodedName={album.encodedName}
         scrollPosition={scrollPosition}
       />
     );
