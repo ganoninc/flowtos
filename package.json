@@ -25,7 +25,7 @@
     "react-lazyload": "^2.6.5",
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.1",
     "react-transition-group": "^4.3.0"
   },
   "lint-staged": {
