@@ -45,7 +45,7 @@ function About(props) {
                 "/me_2x.jpg 2x"
               }
               sizes="150px"
-              alt="myself"
+              alt="me"
               className="img-thumbnail mb-4"
               width="150"
               height="150"
