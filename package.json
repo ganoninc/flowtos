@@ -10,9 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/user-event": "^12.8.0",
-    "bootstrap": "^4.4.1",
     "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.8.0",
     "bootstrap": "^4.6.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.0.4",
@@ -21,14 +20,12 @@
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.0",
     "react-ga": "^2.7.0",
-    "react-lazy-load-image-component": "^1.4.1",
-    "react-lazyload": "^3.2.0",
     "react-infinite-scroll-component": "^6.0.0",
     "react-lazy-load-image-component": "^1.5.1",
     "react-lazyload": "^2.6.5",
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^4.0.3",
     "react-transition-group": "^4.4.1"
   },
   "lint-staged": {
