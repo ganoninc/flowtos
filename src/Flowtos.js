@@ -16,17 +16,17 @@ function Flowtos(props) {
 
   const [
     photoLibraryIndexLoadingStatus,
-    setPhotoLibraryIndexLoadingStatus
+    setPhotoLibraryIndexLoadingStatus,
   ] = useState({
     hasError: false,
     error: null,
-    isLoaded: false
+    isLoaded: false,
   });
 
   const [photoLibraryIndex, setPhotoLibraryIndex] = useState({
     allPhotos: [],
     albums: [],
-    models: []
+    models: [],
   });
 
   useEffect(() => {
@@ -34,24 +34,24 @@ function Flowtos(props) {
       const res = await fetch(photoLibraryEndpoint + "index.json");
       res
         .json()
-        .then(photoLibraryIndex => {
+        .then((photoLibraryIndex) => {
           setPhotoLibraryIndex({
             allPhotos: photoLibraryIndex.allPhotos,
             albums: photoLibraryIndex.albums,
-            models: photoLibraryIndex.credits.models
+            models: photoLibraryIndex.credits.models,
           });
 
           setPhotoLibraryIndexLoadingStatus({
             hasError: false,
             error: null,
-            isLoaded: true
+            isLoaded: true,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           setPhotoLibraryIndexLoadingStatus({
             hasError: true,
             error: error,
-            isLoaded: true
+            isLoaded: true,
           });
         });
     }
@@ -174,7 +174,7 @@ function Flowtos(props) {
           <footer className="pb-5 footer">
             <div className="container">
               <span className="small text-muted">
-                All images © 2002-2020{" "}
+                All images © 2002-2021{" "}
                 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>
                 <br />
                 Flowtos by{" "}
