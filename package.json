@@ -22,7 +22,7 @@
     "react-ga": "^3.3.0",
     "react-infinite-scroll-component": "^6.0.0",
     "react-lazy-load-image-component": "^1.5.1",
-    "react-lazyload": "^2.6.5",
+    "react-lazyload": "^3.2.0",
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
