@@ -5,6 +5,7 @@
 
 import hashlib
 import urllib.parse
+import unicodedata
 
 
 # Method found on Stack Overflow - Generating an MD5 checksum of a file
@@ -31,5 +32,22 @@ def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
+#https://stackoverflow.com/questions/44431730/how-to-replace-accented-characters-in-python
+def strip_accents(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except NameError: # unicode is a default on python 3 
+        pass
+
+    text = unicodedata.normalize('NFD', text)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
+
+    return str(text)
+
+
 def encode_album_name(album_name):
-    return urllib.parse.quote(album_name.replace('.', '-').replace(' ', '-').replace(',', '-'))
+    encoded_album_name = album_name.replace('.', '-').replace(' ', '-').replace(',', '-')
+    encoded_album_name = strip_accents(encoded_album_name)
+    encoded_album_name = encoded_album_name.encode().decode('ascii', 'replace').replace(u'\ufffd', '-')
+    return urllib.parse.quote(encoded_album_name)
