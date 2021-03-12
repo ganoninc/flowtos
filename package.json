@@ -17,7 +17,7 @@
     "lint-staged": "^10.0.4",
     "node-sass": "^5.0.0",
     "react": "^16.13.1",
-    "react-bootstrap": "^1.5.1",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^16.13.0",
     "react-ga": "^3.3.0",
     "react-infinite-scroll-component": "^6.0.0",
