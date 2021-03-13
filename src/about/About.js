@@ -13,7 +13,7 @@ function About(props) {
           <h2 className="mb-4">Models</h2>
           <p>Special thanks to these amazing models</p>
           <div className="d-flex justify-content-center flex-wrap models-list">
-            {models.map(model => {
+            {models.map((model) => {
               return (
                 <Model
                   key={model.id}
@@ -54,22 +54,53 @@ function About(props) {
           <div className="presentation">
             <p>As far as I remember, I've always loved taking photos.</p>
             <p>
-              I started my journey with the camera of my father, an old one with
-              a limited photographic film, with which each photo was precious.
-              Then, I won a compact digital camera when I was 12 years old that
-              eventually died when I was 17. A few years after the iPhone
-              arrived in my life and changed everything because I was now able
-              to carry a camera all the time, right in my pocket, always ready
-              to shoot the sometimes unpredictable. Eventually, in December 19',
-              I bought a second hand professional digital camera to go beyond
-              the limitations of my smartphone and just two minutes after that,
-              as I was happily crossing the road to reach my car, all excited by
-              this promising new toy, I got hit by a car, but that's another
-              story.
+              I started my journey with my father's camera. It was one of those
+              old cameras from the nineties that needed a photographic film to
+              work. The number of shots was limited, so each pressure on the
+              shutter release button was costly. As a carefree little boy, I
+              didn't get many occasions to have this camera between my hands.
+              However, I can still remember how special these moments were.
             </p>
             <p>
-              Long story short, I've enjoyed taking and editing those photos and
-              I hope you'll like them as well.
+              A few years later, when I was a teenager, I was lucky enough to
+              win a compact digital camera. This device brought me freedom. With
+              that in my hands, I was eventually able to decide the subject of
+              my pictures and experiment without worrying about costs. On top of
+              that, I was already a computer enthusiast too, so it was natural
+              for me to embrace digital photography.
+            </p>
+            <p>
+              In 2009, I'd saved enough money during one year to buy a
+              second-hand iPhone Edge. This phone had a low-quality camera and
+              couldn't record videos, but I was more than happy to get it as my
+              precious compact digital camera had died two years earlier. Above
+              all, it changed my relation to photography as it made me carry a
+              camera all the time, right in my pocket, always ready to shoot,
+              even the unpredictable.
+            </p>
+            <p>
+              Many smartphones succeeded this iPhone (LG Optimus 7, iPhone 4S,
+              iPhone 6, and iPhone 6S). And as I started posting pictures on
+              Instagram, I got more and more people telling me some of my photos
+              were definitively interesting. So I thought: «why wouldn't I step
+              up in this photography game and get a little bit more
+              professional?».
+            </p>
+            <p>
+              Determined to improve my skills and excited by this whole new
+              world to explore, I bought a second-hand DSLR camera on December
+              19', which is today my primary camera. It's a heavy Nikon D7000
+              (APS-C) with a couple of versatile lenses (35mm F1.8, 50mm F1.8,
+              17-70mm F2.8-4, and 75-300mm F4.5-5.6). I've spent countless hours
+              learning how to use my gear and edit RAW images in Adobe
+              Lightroom, and this is not over yet (and will never be). However,
+              I'm proud of what I'm already able to create and present to you
+              today on that website.{" "}
+            </p>
+            <p>
+              I hope you'll enjoy browsing this photo gallery as much as I loved
+              working on these pictures. Last but not least, I want to thank all
+              the people who believed in me, especially my friend Sneha Sharma.
             </p>
           </div>
         </div>
