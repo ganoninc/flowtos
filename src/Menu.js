@@ -1,20 +1,20 @@
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import "./Menu.scss";
 
 function Menu(props) {
   const { displayAlbums } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
 
-  let onSelectHandler = selectedKey => {
-    if (selectedKey === "latest-photos") history.push("/");
-    else if (selectedKey === "albums") history.push("/albums");
-    else if (selectedKey === "about") history.push("/about");
+  let onSelectHandler = (selectedKey) => {
+    if (selectedKey === "latest-photos") navigate("/");
+    else if (selectedKey === "albums") navigate("/albums");
+    else if (selectedKey === "about") navigate("/about");
   };
 
-  let getNavbar = activeItem => {
+  let getNavbar = (activeItem) => {
     return (
       <div className="menu">
         <Nav
@@ -40,12 +40,12 @@ function Menu(props) {
 
   return (
     <div className="category-selector">
-      <Switch>
-        <Route path="/photos/:photoId">{getNavbar("latest-photos")}</Route>
-        <Route path="/albums">{getNavbar("albums")}</Route>
-        <Route path="/about">{getNavbar("about")}</Route>
-        <Route path="/">{getNavbar("latest-photos")}</Route>
-      </Switch>
+      <Routes>
+        <Route path="/photos/:photoId" element={getNavbar("latest-photos")} />
+        <Route path="/albums/*" element={getNavbar("albums")} />
+        <Route path="/about" element={getNavbar("about")} />
+        <Route path="/" element={getNavbar("latest-photos")} />
+      </Routes>
     </div>
   );
 }

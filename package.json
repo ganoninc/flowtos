@@ -1,6 +1,6 @@
 {
   "name": "flowtos",
-  "version": "1.6.25",
+  "version": "1.7.25",
   "private": false,
   "homepage": "https://giovanetti.fr/flowtos",
   "repository": {
@@ -12,11 +12,10 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
-    "bootstrap": "^5.0.2",
-    "fslightbox-react": "^1.6.2",
-    "node-sass": "^6.0.1",
-    "react": "^17.0.1",
-    "react-bootstrap": "^1.5.2",
+    "bootstrap": "^4.6",
+    "fslightbox-react": "^1.6",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.4",
     "react-dom": "^17.0.2",
     "react-ga": "^3.3.0",
     "react-infinite-scroll-component": "^6.1.0",
@@ -25,7 +24,8 @@
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^6.0.2",
     "react-scripts": "^4.0.3",
-    "react-transition-group": "^4.4.1"
+    "react-transition-group": "^4.4.2",
+    "sass": "^1.44.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [

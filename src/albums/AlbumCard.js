@@ -1,22 +1,16 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import "./AlbumCard.scss";
 
 function AlbumCard(props) {
-  const {
-    name,
-    encodedName,
-    cover,
-    cover2x,
-    scrollPosition,
-    placeholderSrc
-  } = props;
-  let history = useHistory();
+  const { name, encodedName, cover, cover2x, scrollPosition, placeholderSrc } =
+    props;
+  let navigate = useNavigate();
 
   let openAlbum = () => {
-    history.push("/albums/" + encodedName);
+    navigate("/albums/" + encodedName);
   };
 
   return (

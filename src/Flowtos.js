@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import Menu from "./Menu";
 import GATracker from "./GATracker";
@@ -14,14 +14,12 @@ import "./Flowtos.scss";
 function Flowtos(props) {
   const { photoLibraryEndpoint } = props;
 
-  const [
-    photoLibraryIndexLoadingStatus,
-    setPhotoLibraryIndexLoadingStatus,
-  ] = useState({
-    hasError: false,
-    error: null,
-    isLoaded: false,
-  });
+  const [photoLibraryIndexLoadingStatus, setPhotoLibraryIndexLoadingStatus] =
+    useState({
+      hasError: false,
+      error: null,
+      isLoaded: false,
+    });
 
   const [photoLibraryIndex, setPhotoLibraryIndex] = useState({
     allPhotos: [],
@@ -74,86 +72,122 @@ function Flowtos(props) {
     ) {
       return (
         <>
-          <Switch>
-            <Route path="/photos/:photoId">
-              <GATracker>
-                <Photos
-                  photoList={photoLibraryIndex.allPhotos}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-            <Route exact path="/albums/:albumId">
-              <GATracker>
-                <Album
-                  albumList={photoLibraryIndex.albums}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-            <Route exact path="/albums/:albumId/:photoId">
-              <GATracker>
-                <Album
-                  albumList={photoLibraryIndex.albums}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-            <Route path="/albums">
-              <GATracker>
-                <Albums
-                  albumList={photoLibraryIndex.albums}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-            <Route path="/about">
-              <GATracker>
-                <About
-                  models={photoLibraryIndex.models}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-            <Route exact path="/ssr/photos/:photoId">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route exact path="/ssr/albums/:albumId">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route exact path="/ssr/albums/:albumId/:photoId">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route path="/ssr/albums">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route path="/ssr/about">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route path="/ssr">
-              <GATracker>
-                <SSRRedirect />
-              </GATracker>
-            </Route>
-            <Route path="/">
-              <GATracker>
-                <Photos
-                  photoList={photoLibraryIndex.allPhotos}
-                  photoLibraryEndpoint={photoLibraryEndpoint}
-                />
-              </GATracker>
-            </Route>
-          </Switch>
+          <Routes>
+            <Route
+              path="/photos/:photoId"
+              element={
+                <GATracker>
+                  <Photos
+                    photoList={photoLibraryIndex.allPhotos}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/albums/:albumId"
+              element={
+                <GATracker>
+                  <Album
+                    albumList={photoLibraryIndex.albums}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/albums/:albumId/:photoId"
+              element={
+                <GATracker>
+                  <Album
+                    albumList={photoLibraryIndex.albums}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/albums"
+              element={
+                <GATracker>
+                  <Albums
+                    albumList={photoLibraryIndex.albums}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <GATracker>
+                  <About
+                    models={photoLibraryIndex.models}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr/photos/:photoId"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr/albums/:albumId"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr/albums/:albumId/:photoId"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr/albums"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr/about"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/ssr"
+              element={
+                <GATracker>
+                  <SSRRedirect />
+                </GATracker>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <GATracker>
+                  <Photos
+                    photoList={photoLibraryIndex.allPhotos}
+                    photoLibraryEndpoint={photoLibraryEndpoint}
+                  />
+                </GATracker>
+              }
+            />
+          </Routes>
         </>
       );
     } else {

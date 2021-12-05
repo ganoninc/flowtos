@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import FsLightbox from "fslightbox-react";
 import { trackWindowScroll } from "react-lazy-load-image-component";
@@ -10,21 +10,21 @@ import "./Photos.scss";
 
 function Photos(props) {
   const { photoList, photoLibraryEndpoint, scrollPosition } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
   let { photoId, albumId } = useParams();
 
   // remapping of the photo list
-  let photoThumbnails = photoList.map(photo => {
+  let photoThumbnails = photoList.map((photo) => {
     return {
       src: photoLibraryEndpoint + photo.thumbnailUrl,
       srcSet: [
         photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
-        photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x"
+        photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x",
       ],
       width: photo.width,
       height: photo.height,
       key: photo.id.toString(),
-      placeholderSrc: photo.blurredThumbnailPlaceholderUrl
+      placeholderSrc: photo.blurredThumbnailPlaceholderUrl,
     };
   });
   //#Source https://bit.ly/2neWfJ2
@@ -37,7 +37,7 @@ function Photos(props) {
   const [infiniteScrollerController, setInfiniteScrollerController] = useState({
     currentItems: [photoThumbnailsChunks[0]],
     hasMoreItems: true,
-    itemToLoadOnNextCall: 1
+    itemToLoadOnNextCall: 1,
   });
 
   let loadNextItems = () => {
@@ -48,7 +48,7 @@ function Photos(props) {
       setInfiniteScrollerController({
         currentItems: infiniteScrollerController.currentItems,
         hasMoreItems: false,
-        itemToLoadOnNextCall: infiniteScrollerController.itemToLoadOnNextCall
+        itemToLoadOnNextCall: infiniteScrollerController.itemToLoadOnNextCall,
       });
     } else {
       let newCurrentItems = infiniteScrollerController.currentItems;
@@ -57,12 +57,12 @@ function Photos(props) {
       setInfiniteScrollerController({
         currentItems: newCurrentItems,
         hasMoreItems: true,
-        itemToLoadOnNextCall: itemToLoad + 1
+        itemToLoadOnNextCall: itemToLoad + 1,
       });
     }
   };
 
-  let photos = photoList.map(photo => {
+  let photos = photoList.map((photo) => {
     if (window.devicePixelRatio > 1) {
       return photoLibraryEndpoint + photo.photo2xUrl;
     } else {
@@ -72,29 +72,29 @@ function Photos(props) {
   let [lightboxController, setLightboxController] = useState({
     toggler: false,
     sourceIndex: photoThumbnails.findIndex(
-      photoThumbnail => photoThumbnail.key === photoId
-    )
+      (photoThumbnail) => photoThumbnail.key === photoId
+    ),
   });
 
   let openLightboxOnSlide = (event, { photo, index }) => {
     if (albumId) {
-      history.push("/albums/" + albumId + "/" + photo.key);
+      navigate("/albums/" + albumId + "/" + photo.key);
     } else {
-      history.push("/photos/" + photo.key);
+      navigate("/photos/" + photo.key);
     }
     setLightboxController({
       toggler: !lightboxController.toggler,
       sourceIndex: photoThumbnails.findIndex(
-        photoThumbnail => photoThumbnail.key === photo.key
-      )
+        (photoThumbnail) => photoThumbnail.key === photo.key
+      ),
     });
   };
 
   let onLightBoxCloseHandler = () => {
     if (albumId) {
-      history.push("/albums/" + albumId);
+      navigate("/albums/" + albumId);
     } else {
-      history.push("/");
+      navigate("/");
     }
   };
 

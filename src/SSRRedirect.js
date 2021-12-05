@@ -1,38 +1,42 @@
 import React from "react";
-import { useParams, useHistory, useRouteMatch } from "react-router-dom";
+import { useParams, useMatch, Navigate } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 
 function SSRRedirect(props) {
-  let history = useHistory();
   let { photoId, albumId } = useParams();
 
-  let isAboutPage = useRouteMatch({
+  let isAboutPage = useMatch({
     path: "/ssr/about",
     strict: false,
-    sensitive: false
+    sensitive: false,
   });
 
-  let isAlbumsPage = useRouteMatch({
+  let isAlbumsPage = useMatch({
     path: "/ssr/albums",
     strict: true,
-    sensitive: false
+    sensitive: false,
   });
 
+  let navigateTo = "/";
+
   if (albumId && photoId) {
-    history.push("/albums/" + albumId + "/" + photoId);
+    navigateTo = "/albums/" + albumId + "/" + photoId;
   } else if (albumId) {
-    history.push("/albums/" + albumId);
+    navigateTo = "/albums/" + albumId;
   } else if (isAlbumsPage) {
-    history.push("/albums");
+    navigateTo = "/albums";
   } else if (photoId) {
-    history.push("/photos/" + photoId);
+    navigateTo = "/photos/" + photoId;
   } else if (isAboutPage) {
-    history.push("/about");
-  } else {
-    history.push("/");
+    navigateTo = "/about";
   }
 
-  return <LoadingIndicator></LoadingIndicator>;
+  return (
+    <>
+      <LoadingIndicator></LoadingIndicator>
+      <Navigate to={navigateTo} replace />
+    </>
+  );
 }
 
 export default SSRRedirect;
