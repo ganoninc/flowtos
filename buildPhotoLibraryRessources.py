@@ -26,11 +26,11 @@ import bplrh_helpers.credits
 config = {
     'flowtos_baseurl': 'https://giovanetti.fr/flowtos/',
     'package_path': './package.json',
-    'supported_photo_types': ['.jpg', '.jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
+    'supported_photo_types': ['.webp', '.jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
     'sources': {
         'photos_path': './original_ressources/photos/',
         'models_path': './original_ressources/credits/models/',
-        'ssr_default_image_path': './original_ressources/ssr/default_image.jpg'
+        'ssr_default_image_path': './original_ressources/ssr/default_image.webp'
     },
     'plr': {
         'main_folder_name': 'photo-library-ressources',
@@ -134,7 +134,7 @@ def build_optimized_images(photos_folder_mapping):
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
-                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
+                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
         except IOError:
             print("Cannot create thumbnail for photo ", photo['path'])
         bar.next()
@@ -146,7 +146,7 @@ def build_optimized_images(photos_folder_mapping):
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
-                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
+                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
         except IOError:
             print("Cannot create @2x thumbnail for photo ", photo['path'])
         bar.next()
@@ -158,7 +158,7 @@ def build_optimized_images(photos_folder_mapping):
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
-                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg', "JPEG", optimize=True)
+                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
         except IOError:
             print("Cannot create resized photo of ", photo['path'])
         bar.next()
@@ -170,7 +170,7 @@ def build_optimized_images(photos_folder_mapping):
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
             im.save(config['plr']['main_folder_path'] +
-                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg', "JPEG", optimize=True)
+                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
         except IOError:
             print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
@@ -186,7 +186,7 @@ def get_blurred_thumbnail_placeholder_base64(photo):
 
         if im.mode == 'RGBA':
             im = im.convert('RGB')
-        im.save(buffered, "JPEG", quality=40)
+        im.save(buffered, "WEBP", quality=40)
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
         img_str = 'data:image/jpg;base64,' + img_str
@@ -207,11 +207,11 @@ def build_index_file(photos_folder_mapping, credits_index):
         photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg',
-            'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
+            'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
+            'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
             'blurredThumbnailPlaceholderUrl': get_blurred_thumbnail_placeholder_base64(photo),
-            'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg',
-            'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
+            'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
+            'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
             'width': photo_width,
             'height': photo_height
         }
@@ -228,11 +228,11 @@ def build_index_file(photos_folder_mapping, credits_index):
             photo_width, photo_height = im.size
             photo_elt = {
                 'id': photo['id'],
-                'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.jpg',
-                'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
-                'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.jpg',
-                'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.jpg',
-                'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.jpg',
+                'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
+                'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
                 'width': photo_width,
                 'height': photo_height
             }
@@ -254,7 +254,7 @@ def add_default_og_image(photos_folder_mapping):
         if im.mode == 'RGBA':
             im = im.convert('RGB')
         im.save(config['plr']['main_folder_path'] +
-                '/indexOGImage.jpg', "JPEG")
+                '/indexOGImage.webp', "WEBP")
     except IOError:
         print("Cannot create default open graph image.")
 
