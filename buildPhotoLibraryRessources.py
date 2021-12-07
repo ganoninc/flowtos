@@ -37,7 +37,6 @@ config = {
         'main_folder_path': './public/photo-library-ressources/',
         'photos_folder_name': 'photos',
         'thumbnails_folder_name': 'thumbnails',
-        'blurred_thumbnail_placeholders_folder_name': 'blurred-thumbnail-placeholders',
         'models_folder_name': 'models',
         'index_name': 'index.json',
         'max_dimensions': {
@@ -47,7 +46,7 @@ config = {
             'photo_2x': (2560, 2560),
             'model': (125, 125),
             'model_2x': (250, 250),
-            'blurred_thumbnail_placeholder': (50, 50)
+            'blurred_thumbnail_placeholder': (10, 10)
         }
     },
     'ssr': {
@@ -81,8 +80,6 @@ def reset_photo_library_ressources():
     os.mkdir(config['plr']['main_folder_path'])
     os.mkdir(config['plr']['main_folder_path'] +
              config['plr']['thumbnails_folder_name'])
-    os.mkdir(config['plr']['main_folder_path'] +
-             config['plr']['blurred_thumbnail_placeholders_folder_name'])
     os.mkdir(config['plr']['main_folder_path'] +
              config['plr']['photos_folder_name'])
 
@@ -230,7 +227,7 @@ def build_index_file(photos_folder_mapping, credits_index):
                 'id': photo['id'],
                 'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
                 'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
-                'blurredThumbnailPlaceholderUrl': config['plr']['blurred_thumbnail_placeholders_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'blurredThumbnailPlaceholderUrl': get_blurred_thumbnail_placeholder_base64(photo),
                 'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
                 'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
                 'width': photo_width,
