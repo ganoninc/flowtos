@@ -3,18 +3,22 @@ import { useParams } from "react-router-dom";
 import Photos from "../photos/Photos";
 
 function Album(props) {
-  const { albumList, photoLibraryEndpoint } = props;
+  const { albumList, sharedPhotosData, photoLibraryEndpoint } = props;
 
   let { albumId } = useParams();
 
   let albumData = albumList.find(
-    album => album.encodedName === encodeURI(albumId)
+    (album) => album.encodedName === encodeURI(albumId)
   );
 
   let photoList = albumData.photos;
 
   let photos = (
-    <Photos photoList={photoList} photoLibraryEndpoint={photoLibraryEndpoint} />
+    <Photos
+      photoList={photoList}
+      sharedPhotosData={sharedPhotosData}
+      photoLibraryEndpoint={photoLibraryEndpoint}
+    />
   );
 
   return (

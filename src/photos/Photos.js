@@ -9,22 +9,24 @@ import Photo from "./Photo";
 import "./Photos.scss";
 
 function Photos(props) {
-  const { photoList, photoLibraryEndpoint, scrollPosition } = props;
+  const { photoList, sharedPhotosData, photoLibraryEndpoint, scrollPosition } =
+    props;
   let navigate = useNavigate();
   let { photoId, albumId } = useParams();
 
   // remapping of the photo list
   let photoThumbnails = photoList.map((photo) => {
+    var photoData = sharedPhotosData[photo.sharedPhotosDataIndex];
     return {
-      src: photoLibraryEndpoint + photo.thumbnailUrl,
+      src: photoLibraryEndpoint + photoData.thumbnailUrl,
       srcSet: [
-        photoLibraryEndpoint + photo.thumbnailUrl + " 1x",
-        photoLibraryEndpoint + photo.thumbnail2xUrl + " 2x",
+        photoLibraryEndpoint + photoData.thumbnailUrl + " 1x",
+        photoLibraryEndpoint + photoData.thumbnail2xUrl + " 2x",
       ],
-      width: photo.width,
-      height: photo.height,
+      width: photoData.width,
+      height: photoData.height,
       key: photo.id.toString(),
-      placeholderSrc: photo.blurredThumbnailPlaceholderUrl,
+      placeholderSrc: photoData.blurredThumbnailPlaceholderUrl,
     };
   });
   //#Source https://bit.ly/2neWfJ2
@@ -63,10 +65,11 @@ function Photos(props) {
   };
 
   let photos = photoList.map((photo) => {
+    var photoData = sharedPhotosData[photo.sharedPhotosDataIndex];
     if (window.devicePixelRatio > 1) {
-      return photoLibraryEndpoint + photo.photo2xUrl;
+      return photoLibraryEndpoint + photoData.photo2xUrl;
     } else {
-      return photoLibraryEndpoint + photo.photoUrl;
+      return photoLibraryEndpoint + photoData.photoUrl;
     }
   });
   let [lightboxController, setLightboxController] = useState({

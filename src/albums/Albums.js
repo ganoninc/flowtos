@@ -6,12 +6,14 @@ import AlbumCard from "./AlbumCard";
 import "./Albums.scss";
 
 function Albums(props) {
-  const { albumList, photoLibraryEndpoint, scrollPosition } = props;
+  const { albumList, sharedPhotosData, photoLibraryEndpoint, scrollPosition } =
+    props;
 
-  let albumListComponents = albumList.map(album => {
-    let coverImg = photoLibraryEndpoint + album.photos[0].thumbnailUrl;
-    let coverImg2x = photoLibraryEndpoint + album.photos[0].thumbnail2xUrl;
-    let placeholderSrc = album.photos[0].blurredThumbnailPlaceholderUrl;
+  let albumListComponents = albumList.map((album) => {
+    var photoData = sharedPhotosData[album.photos[0].sharedPhotosDataIndex];
+    let coverImg = photoLibraryEndpoint + photoData.thumbnailUrl;
+    let coverImg2x = photoLibraryEndpoint + photoData.thumbnail2xUrl;
+    let placeholderSrc = photoData.blurredThumbnailPlaceholderUrl;
 
     return (
       <AlbumCard

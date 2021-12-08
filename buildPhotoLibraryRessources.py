@@ -197,7 +197,9 @@ def get_blurred_thumbnail_placeholder_base64(photo):
 
 def build_index_file(photos_folder_mapping, credits_index):
     print("\nWriting index file")
-    index_file = {'allPhotos': [], 'albums': [], 'credits': credits_index}
+    index_file = {'sharedPhotosData': [],'allPhotos': [], 'albums': [], 'credits': credits_index}
+    shared_photos_data_index = {}
+
     already_added_photo_elt = []
     for photo in photos_folder_mapping['allPhotos']:
         im = Image.open(photo['path'])
@@ -214,6 +216,21 @@ def build_index_file(photos_folder_mapping, credits_index):
         }
 
         if photo['id'] not in already_added_photo_elt:
+            index_file['sharedPhotosData'].append(photo_elt)
+            shared_photos_data_index[photo['id']] = len(index_file['sharedPhotosData']) - 1
+            already_added_photo_elt.append(photo['id'])
+
+
+    already_added_photo_elt = []
+    for photo in photos_folder_mapping['allPhotos']:
+        im = Image.open(photo['path'])
+        photo_width, photo_height = im.size
+        photo_elt = {
+            # 'id': photo['id'],
+            'sharedPhotosDataIndex': shared_photos_data_index[photo['id']]
+        }
+
+        if photo['id'] not in already_added_photo_elt:
             index_file['allPhotos'].append(photo_elt)
             already_added_photo_elt.append(photo['id'])
 
@@ -224,14 +241,8 @@ def build_index_file(photos_folder_mapping, credits_index):
             im = Image.open(photo['path'])
             photo_width, photo_height = im.size
             photo_elt = {
-                'id': photo['id'],
-                'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
-                'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
-                'blurredThumbnailPlaceholderUrl': get_blurred_thumbnail_placeholder_base64(photo),
-                'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
-                'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
-                'width': photo_width,
-                'height': photo_height
+                # 'id': photo['id'],
+                'sharedPhotosDataIndex': shared_photos_data_index[photo['id']]
             }
             album_photos.append(photo_elt)
         index_file['albums'].append({'name': album, 'encodedName': album_encoded_name, 'photos': album_photos})

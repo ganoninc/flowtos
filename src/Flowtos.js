@@ -35,6 +35,7 @@ function Flowtos(props) {
         .then((photoLibraryIndex) => {
           setPhotoLibraryIndex({
             allPhotos: photoLibraryIndex.allPhotos,
+            sharedPhotosData: photoLibraryIndex.sharedPhotosData,
             albums: photoLibraryIndex.albums,
             models: photoLibraryIndex.credits.models,
           });
@@ -79,6 +80,7 @@ function Flowtos(props) {
                 <GATracker>
                   <Photos
                     photoList={photoLibraryIndex.allPhotos}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
@@ -90,6 +92,7 @@ function Flowtos(props) {
                 <GATracker>
                   <Album
                     albumList={photoLibraryIndex.albums}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
@@ -101,6 +104,7 @@ function Flowtos(props) {
                 <GATracker>
                   <Album
                     albumList={photoLibraryIndex.albums}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
@@ -112,6 +116,7 @@ function Flowtos(props) {
                 <GATracker>
                   <Albums
                     albumList={photoLibraryIndex.albums}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
@@ -123,6 +128,7 @@ function Flowtos(props) {
                 <GATracker>
                   <About
                     models={photoLibraryIndex.models}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
@@ -182,6 +188,7 @@ function Flowtos(props) {
                 <GATracker>
                   <Photos
                     photoList={photoLibraryIndex.allPhotos}
+                    sharedPhotosData={photoLibraryIndex.sharedPhotosData}
                     photoLibraryEndpoint={photoLibraryEndpoint}
                   />
                 </GATracker>
