@@ -25,7 +25,7 @@ function Photos(props) {
       ],
       width: photoData.width,
       height: photoData.height,
-      key: photo.id.toString(),
+      key: photoData.id.toString(),
       placeholderSrc: photoData.blurredThumbnailPlaceholderUrl,
     };
   });
