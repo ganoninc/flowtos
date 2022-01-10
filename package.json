@@ -25,7 +25,7 @@
     "react-router-dom": "^6.0.2",
     "react-scripts": "^4.0.3",
     "react-transition-group": "^4.4.2",
-    "sass": "^1.44.0"
+    "sass": "^1.47.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
