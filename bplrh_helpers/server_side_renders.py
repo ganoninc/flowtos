@@ -27,7 +27,7 @@ def _build_photos(photos, config):
 
         for photo in photos:
             photo_render = photo_template.replace(
-                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + photo['id'] + '.jpg')
+                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + photo['id'] + '.webp')
             photo_render = photo_render.replace(
                 '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'photos/' + photo['id'])
             photo_render = photo_render.replace(
@@ -56,7 +56,7 @@ def _build_photos_in_album(photos, config, album_name, album_encoded_name, dest_
 
         for photo in photos:
             photo_in_album_render = photo_in_album_template.replace(
-                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + photo['id'] + '.jpg')
+                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + photo['id'] + '.webp')
             photo_in_album_render = photo_in_album_render.replace(
                 '{ALBUM_NAME}', album_name)
             photo_in_album_render = photo_in_album_render.replace(
@@ -80,7 +80,7 @@ def _build_albums(albums, config):
             os.mkdir(album_dest_path)
 
             album_render = album_template.replace(
-                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + albums[album]['photos'][0]['id'] + '.jpg')
+                '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + albums[album]['photos'][0]['id'] + '.webp')
             album_render = album_render.replace(
                 '{SERVER_SIDE_RENDER_URL}', config['flowtos_baseurl'] + 'albums/' + album_encoded_name)
             album_render = album_render.replace(
