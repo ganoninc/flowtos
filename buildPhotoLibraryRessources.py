@@ -26,7 +26,7 @@ import bplrh_helpers.credits
 config = {
     'flowtos_baseurl': 'https://giovanetti.fr/flowtos/',
     'package_path': './package.json',
-    'supported_photo_types': ['.webp', '.jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
+    'supported_photo_types': ['.webp', '.jpeg', 'JPG', 'jpg', 'JPEG', 'png', 'PNG'],
     'sources': {
         'photos_path': './original_ressources/photos/',
         'models_path': './original_ressources/credits/models/',
