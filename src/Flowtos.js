@@ -215,7 +215,7 @@ function Flowtos(props) {
           <footer className="pb-5 footer">
             <div className="container">
               <span className="small text-muted">
-                All images © 2002-2021{" "}
+                All images © 2002-2022{" "}
                 <a href="https://www.giovanetti.fr/">Romain J. Giovanetti</a>
                 <br />
                 Flowtos by{" "}
