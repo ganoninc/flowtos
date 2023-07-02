@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import "./custom.scss";
 import "./index.css";
 import Flowtos from "./Flowtos";
 //import * as serviceWorker from "./serviceWorker";
 
-ReactGA.initialize("UA-156968412-1");
+ReactGA.initialize("G-NKHEEYGE2L");
 
 let photoLibraryEndpoint =
   process.env.PUBLIC_URL + "/photo-library-ressources/";
