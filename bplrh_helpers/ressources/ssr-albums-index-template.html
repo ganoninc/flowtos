@@ -9,31 +9,39 @@ __/\\\_______/\\\__/\\\_______/\\\__/\\\________/\\\_
        __/\\\/___\///\\\__/\\\/___\///\\\______\//\\\_______ 
         _\///_______\///__\///_______\///________\///________
  -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta property="og:url" content="{SERVER_SIDE_RENDER_URL}" />
+        <meta property="og:title" content="Albums - Jeu de Lumières" />
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:description"
+            content="Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery."
+        />
+        <meta
+            property="og:image"
+            content="https://giovanetti.fr/flowtos/photo-library-ressources/indexOGImage.jpg"
+        />
+        <meta name="description" content="Albums - Jeu de Lumières - Romain J. Giovanetti" />
+        <title>Albums - Jeu de Lumières - Romain J. Giovanetti</title>
+    </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta property="og:url" content="{SERVER_SIDE_RENDER_URL}" />
-  <meta property="og:title" content="Albums - Jeu de Lumières" />
-  <meta property="og:type" content="website" />
-  <meta property="og:description"
-    content="Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery." />
-  <meta property="og:image" content="https://giovanetti.fr/flowtos/photo-library-ressources/indexOGImage.jpg" />
-  <meta name="description" content="Albums - Jeu de Lumières - Romain J. Giovanetti" />
-  <title>Albums - Jeu de Lumières - Romain J. Giovanetti</title>
-</head>
-
-<body>
-  <h1>Albums - Jeu de Lumières</h1>
-  <h2>By Romain J. Giovanetti</h2>
-  <br />
-  <p>Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery.</p>
-  <br />
-  <img src="https://giovanetti.fr/flowtos/photo-library-ressources/indexOGImage.webp" alt="photo" />
-  <br />
-  <p>Please wait while the app is loading. You'll be redirected in a few seconds.</p>
-  <script type="text/javascript">window.location.replace("../ssr/albums/");</script>
-</body>
-
+    <body>
+        <h1>Albums - Jeu de Lumières</h1>
+        <h2>By Romain J. Giovanetti</h2>
+        <br />
+        <p>Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery.</p>
+        <br />
+        <img
+            src="https://giovanetti.fr/flowtos/photo-library-ressources/indexOGImage.webp"
+            alt="photo"
+        />
+        <br />
+        <p>Please wait while the app is loading. You'll be redirected in a few seconds.</p>
+        <script type="text/javascript">
+            window.location.replace('../ssr/albums/')
+        </script>
+    </body>
 </html>

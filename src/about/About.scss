@@ -1,32 +1,32 @@
 .about {
-  transition: All 0.5s;
+    transition: All 0.5s;
 
-  .presentation {
-    text-align: justify;
-    margin: auto;
-    max-width: 480px;
-  }
-
-  .models {
-    p {
-      text-align: center;
-      margin: auto;
-      max-width: 480px;
+    .presentation {
+        text-align: justify;
+        margin: auto;
+        max-width: 480px;
     }
 
-    .models-list {
-      max-width: 700px;
-      margin: auto;
+    .models {
+        p {
+            text-align: center;
+            margin: auto;
+            max-width: 480px;
+        }
+
+        .models-list {
+            max-width: 700px;
+            margin: auto;
+        }
     }
-  }
 }
 
 .fade-appear {
-  opacity: 0;
-  filter: blur(25px);
+    opacity: 0;
+    filter: blur(25px);
 }
 
 .fade-appear-done {
-  opacity: 1;
-  filter: blur(0px);
+    opacity: 1;
+    filter: blur(0px);
 }

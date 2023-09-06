@@ -65,10 +65,13 @@ def build(config):
             model_index_element = {
                 'id': model_id,
                 'fullname': model_fullname,
-                'instagram': model_instagran,
                 'thumbnailUrl': config['plr']['models_folder_name'] + '/' + model_id + '.jpg',
                 'thumbnail2xUrl': config['plr']['models_folder_name'] + '/' + model_id + '@2x.jpg'
             }
+            
+            if len(model_instagran) > 0:
+                model_index_element['instagram'] = model_instagran
+
             index['models'].append(model_index_element)
             bar.next()
 

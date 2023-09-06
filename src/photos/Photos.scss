@@ -1,14 +1,14 @@
 $imgHoverScale: 1.05;
 
 .photos {
-  .react-photo-gallery--gallery {
-    img {
-      filter: brightness(1);
-      transition: All 0.5s ease-in-out;
+    .react-photo-album {
+        img {
+            filter: brightness(1);
+            transition: All 0.5s ease-in-out;
+        }
+        img:hover {
+            filter: brightness(1.05);
+            transform: scale($imgHoverScale);
+        }
     }
-    img:hover {
-      filter: brightness(1.05);
-      transform: scale($imgHoverScale);
-    }
-  }
 }

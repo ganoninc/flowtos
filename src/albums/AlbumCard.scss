@@ -1,68 +1,101 @@
-@import "../custom.scss";
+@import '../custom.scss';
 
 .album-card {
-  height: 300px;
-  width: inherit;
-  overflow: hidden;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
 
-  span:first-child {
-    width: inherit;
-    height: inherit;
-  }
+    span:first-child {
+        width: inherit;
+        height: inherit;
+    }
 
-  .lazy-loader {
-    filter: blur(25px);
-    transition: all 0.5s;
-  }
+    .lazy-loader {
+        filter: blur(25px);
+        transition: all 0.5s;
+    }
 
-  .lazy-load-image-loaded {
-    filter: blur(0px);
-    transition: all 0.5s;
-  }
-
-  .cover {
-    object-fit: cover;
-    width: inherit;
-    height: inherit;
-    filter: opacity(0.15) saturate(0);
-    transition: all 0.25s ease-out;
-  }
-
-  .name {
-    position: relative;
-    top: -56%;
-    font-size: 1.25rem;
-    color: $link-color;
-    transition: all 0.38s ease-in-out;
-    display: block;
-  }
-
-  &:hover {
-    cursor: pointer;
+    .lazy-load-image-loaded {
+        filter: blur(0px);
+        transition: all 0.5s;
+    }
 
     .cover {
-      filter: opacity(1) saturate(1);
-      transition: all 0.38s ease-out;
-    }
-    .name {
-      background-color: #212529;
-      color: white;
-      top: -30%;
-      opacity: 0.75;
-    }
-  }
-}
+        object-fit: cover;
+        width: inherit;
+        height: inherit;
 
-@media (prefers-color-scheme: dark) {
-  .album-card {
+        @media (pointer: fine) {
+            filter: opacity(0.15) saturate(0.5) blur(0px) brightness(0.9);
+            transition: all 0.25s ease-out;
+        }
+    }
+
     .name {
-      color: #569def;
+        position: relative;
+        font-size: 1.35rem;
+        transition: all 0.38s ease-in-out;
+        display: block;
+        background-color: #212529;
+        color: white;
+        top: -30%;
+        opacity: 0.95;
+
+        @media (pointer: fine) {
+            color: $link-color;
+            opacity: 0.75;
+            top: -56%;
+            transition: all 0.38s ease-in-out;
+            background: none;
+        }
     }
 
     &:hover {
-      .name {
-        color: #a6cfff;
-      }
+        @media (pointer: fine) {
+            cursor: pointer;
+
+            .cover {
+                filter: opacity(1) saturate(1);
+                transition: filter 0.38s ease-out;
+            }
+            .name {
+                background-color: #212529;
+                color: white;
+                top: -30%;
+                opacity: 0.85;
+            }
+        }
     }
-  }
+}
+
+@include media-breakpoint-up(md) {
+    .album-card {
+        height: 350px;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .album-card {
+        height: 350px;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    .album-card {
+        height: 325px;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .album-card {
+        .name {
+            color: #569def;
+        }
+
+        &:hover {
+            .name {
+                color: #a6cfff;
+            }
+        }
+    }
 }
