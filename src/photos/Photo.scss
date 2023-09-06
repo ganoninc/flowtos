@@ -1,9 +1,9 @@
 .lazy-loader {
-  filter: blur(20px);
-  transition: filter 0.5s;
+    filter: blur(20px);
+    transition: filter 0.5s;
 }
 
 .lazy-load-image-loaded {
-  filter: blur(0px);
-  transition: filter 0.5s;
+    filter: blur(0px);
+    transition: filter 0.5s;
 }

@@ -1,14 +1,7 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
-  ],
-  "python.pythonPath": "/usr/bin/python3",
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#501F03",
-    "titleBar.activeBackground": "#712B04",
-    "titleBar.activeForeground": "#FFFAF8"
-  }
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#501F03",
+        "titleBar.activeBackground": "#712B04",
+        "titleBar.activeForeground": "#FFFAF8"
+    }
 }

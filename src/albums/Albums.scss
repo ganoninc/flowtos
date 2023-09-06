@@ -1,13 +1,13 @@
 .albums {
-  transition: All 0.25s;
+    transition: All 0.25s;
 }
 
 .fade-appear {
-  opacity: 0;
-  filter: blur(25px);
+    opacity: 0;
+    filter: blur(25px);
 }
 
 .fade-appear-done {
-  opacity: 1;
-  filter: blur(0px);
+    opacity: 1;
+    filter: blur(0px);
 }

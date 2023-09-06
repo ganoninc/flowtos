@@ -1,0 +1,35 @@
+.album-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    align-items: end;
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    .action-btn-left {
+        text-align: left;
+        grid-area: 1 / 1 / 2 / 2;
+
+        .label {
+            transition: margin 0.25s linear;
+            margin-left: 7px;
+        }
+
+        &:hover {
+            .label {
+                margin-left: 0px;
+            }
+        }
+    }
+
+    .album-title {
+        grid-area: 1 / 2 / 2 / 3;
+
+        h3 {
+            margin: 0;
+        }
+    }
+}

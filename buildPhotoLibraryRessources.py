@@ -12,7 +12,6 @@ import os
 import glob
 import json
 import shutil
-import hashlib
 import base64
 from io import BytesIO
 
@@ -122,14 +121,42 @@ def build_photos_folder_mapping():
 
 
 def build_optimized_images(photos_folder_mapping):
+    optimized_images_metadata = {}
+    for photo in photos_folder_mapping['allPhotos']:
+        optimized_images_metadata[photo['id']] = {
+            'photo': {
+                'width': 0,
+                'height': 0,
+            },
+            'photo2x': {
+                'width': 0,
+                'height': 0,
+            },
+            'thumbnail': {
+                'width': 0,
+                'height': 0,
+            },
+            'thumbnail2x': {
+                'width': 0,
+                'height': 0,
+            },
+        }
+
     bar = Bar('Processing images', max=len(
         photos_folder_mapping['allPhotos']) * 4)
+    
     for photo in photos_folder_mapping['allPhotos']:
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
+
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
+
+            width, height = im.size
+            optimized_images_metadata[photo['id']]['thumbnail']['width'] = width
+            optimized_images_metadata[photo['id']]['thumbnail']['height'] = height
+
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
         except IOError:
@@ -140,8 +167,14 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
+
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
+
+            width, height = im.size
+            optimized_images_metadata[photo['id']]['thumbnail2x']['width'] = width
+            optimized_images_metadata[photo['id']]['thumbnail2x']['height'] = height
+
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
         except IOError:
@@ -152,8 +185,14 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo'])
+
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
+
+            width, height = im.size
+            optimized_images_metadata[photo['id']]['photo']['width'] = width
+            optimized_images_metadata[photo['id']]['photo']['height'] = height
+
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
         except IOError:
@@ -164,13 +203,21 @@ def build_optimized_images(photos_folder_mapping):
         try:
             im = Image.open(photo['path'])
             im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
+
             if im.mode == 'RGBA':
                 im = im.convert('RGB')
+
+            width, height = im.size
+            optimized_images_metadata[photo['id']]['photo2x']['width'] = width
+            optimized_images_metadata[photo['id']]['photo2x']['height'] = height
+
             im.save(config['plr']['main_folder_path'] +
                     config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
         except IOError:
             print("Cannot create @2x resized photo of ", photo['path'])
         bar.next()
+
+    return optimized_images_metadata
 
 
 # https://stackoverflow.com/questions/31826335/how-to-convert-pil-image-image-object-to-base64-string
@@ -195,24 +242,36 @@ def get_blurred_thumbnail_placeholder_base64(photo):
             "Cannot create blurred thumbnail placeholder for photo ", photo['path'])
 
 
-def build_index_file(photos_folder_mapping, credits_index):
+def build_index_file(photos_folder_mapping, optimized_images_metadata, credits_index):
     print("\nWriting index file")
     index_file = {'sharedPhotosData': [],'allPhotos': [], 'albums': [], 'credits': credits_index}
     shared_photos_data_index = {}
 
     already_added_photo_elt = []
     for photo in photos_folder_mapping['allPhotos']:
-        im = Image.open(photo['path'])
-        photo_width, photo_height = im.size
         photo_elt = {
             'id': photo['id'],
-            'thumbnailUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
-            'thumbnail2xUrl': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
+            'photo': {
+                'url': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'width': optimized_images_metadata[photo['id']]['photo']['width'],
+                'height': optimized_images_metadata[photo['id']]['photo']['height'],
+            },
+            'photo2x': {
+                'url': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
+                'width': optimized_images_metadata[photo['id']]['photo2x']['width'],
+                'height': optimized_images_metadata[photo['id']]['photo2x']['height'],
+            },
+            'thumbnail': {
+                'url': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp',
+                'width': optimized_images_metadata[photo['id']]['thumbnail']['width'],
+                'height': optimized_images_metadata[photo['id']]['thumbnail']['height'],
+            },
+            'thumbnail2x': {
+                'url': config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
+                'width': optimized_images_metadata[photo['id']]['thumbnail2x']['width'],
+                'height': optimized_images_metadata[photo['id']]['thumbnail2x']['height'],
+            },
             'blurredThumbnailPlaceholderUrl': get_blurred_thumbnail_placeholder_base64(photo),
-            'photoUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp',
-            'photo2xUrl': config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp',
-            'width': photo_width,
-            'height': photo_height
         }
 
         if photo['id'] not in already_added_photo_elt:
@@ -223,10 +282,7 @@ def build_index_file(photos_folder_mapping, credits_index):
 
     already_added_photo_elt = []
     for photo in photos_folder_mapping['allPhotos']:
-        im = Image.open(photo['path'])
-        photo_width, photo_height = im.size
         photo_elt = {
-            # 'id': photo['id'],
             'sharedPhotosDataIndex': shared_photos_data_index[photo['id']]
         }
 
@@ -238,10 +294,7 @@ def build_index_file(photos_folder_mapping, credits_index):
         album_photos = []
         album_encoded_name = bplrh_helpers.tools.encode_album_name(album)
         for photo in photos_folder_mapping['albums'][album]['photos']:
-            im = Image.open(photo['path'])
-            photo_width, photo_height = im.size
             photo_elt = {
-                # 'id': photo['id'],
                 'sharedPhotosDataIndex': shared_photos_data_index[photo['id']]
             }
             album_photos.append(photo_elt)
@@ -273,9 +326,9 @@ def build_photo_library_ressources():
     flowtos_version = package_file['version']
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
     photos_folder_mapping = build_photos_folder_mapping()
-    build_optimized_images(photos_folder_mapping)
+    optimized_images_metadata = build_optimized_images(photos_folder_mapping)
     credits_index = bplrh_helpers.credits.build(config)
-    build_index_file(photos_folder_mapping, credits_index)
+    build_index_file(photos_folder_mapping, optimized_images_metadata, credits_index)
     bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
     add_default_og_image(photos_folder_mapping)
     print("\nDone")
