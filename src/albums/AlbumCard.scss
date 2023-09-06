@@ -1,68 +1,68 @@
-@import "../custom.scss";
+@import '../custom.scss';
 
 .album-card {
-  height: 300px;
-  width: inherit;
-  overflow: hidden;
-
-  span:first-child {
+    height: 300px;
     width: inherit;
-    height: inherit;
-  }
+    overflow: hidden;
 
-  .lazy-loader {
-    filter: blur(25px);
-    transition: all 0.5s;
-  }
+    span:first-child {
+        width: inherit;
+        height: inherit;
+    }
 
-  .lazy-load-image-loaded {
-    filter: blur(0px);
-    transition: all 0.5s;
-  }
+    .lazy-loader {
+        filter: blur(25px);
+        transition: all 0.5s;
+    }
 
-  .cover {
-    object-fit: cover;
-    width: inherit;
-    height: inherit;
-    filter: opacity(0.15) saturate(0);
-    transition: all 0.25s ease-out;
-  }
-
-  .name {
-    position: relative;
-    top: -56%;
-    font-size: 1.25rem;
-    color: $link-color;
-    transition: all 0.38s ease-in-out;
-    display: block;
-  }
-
-  &:hover {
-    cursor: pointer;
+    .lazy-load-image-loaded {
+        filter: blur(0px);
+        transition: all 0.5s;
+    }
 
     .cover {
-      filter: opacity(1) saturate(1);
-      transition: all 0.38s ease-out;
+        object-fit: cover;
+        width: inherit;
+        height: inherit;
+        filter: opacity(0.15) saturate(0);
+        transition: all 0.25s ease-out;
     }
-    .name {
-      background-color: #212529;
-      color: white;
-      top: -30%;
-      opacity: 0.75;
-    }
-  }
-}
 
-@media (prefers-color-scheme: dark) {
-  .album-card {
     .name {
-      color: #569def;
+        position: relative;
+        top: -56%;
+        font-size: 1.25rem;
+        color: $link-color;
+        transition: all 0.38s ease-in-out;
+        display: block;
     }
 
     &:hover {
-      .name {
-        color: #a6cfff;
-      }
+        cursor: pointer;
+
+        .cover {
+            filter: opacity(1) saturate(1);
+            transition: all 0.38s ease-out;
+        }
+        .name {
+            background-color: #212529;
+            color: white;
+            top: -30%;
+            opacity: 0.75;
+        }
     }
-  }
+}
+
+@media (prefers-color-scheme: dark) {
+    .album-card {
+        .name {
+            color: #569def;
+        }
+
+        &:hover {
+            .name {
+                color: #a6cfff;
+            }
+        }
+    }
 }

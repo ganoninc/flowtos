@@ -1,19 +1,19 @@
 .menu {
-  .nav-link {
-    border-bottom: 4px solid white;
-  }
-  .active {
-    border-bottom: 4px solid;
-  }
+    .nav-link {
+        border-bottom: 4px solid white;
+    }
+    .active {
+        border-bottom: 4px solid;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
-  .menu {
-    .nav-link {
-      border-bottom: 4px solid #222;
+    .menu {
+        .nav-link {
+            border-bottom: 4px solid #222;
+        }
+        .active {
+            border-bottom: 4px solid;
+        }
     }
-    .active {
-      border-bottom: 4px solid;
-    }
-  }
 }

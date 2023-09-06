@@ -9,31 +9,33 @@ __/\\\_______/\\\__/\\\_______/\\\__/\\\________/\\\_
        __/\\\/___\///\\\__/\\\/___\///\\\______\//\\\_______ 
         _\///_______\///__\///_______\///________\///________
  -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta property="og:url" content="{SERVER_SIDE_RENDER_URL}" />
+        <meta property="og:title" content="About - Jeu de Lumières" />
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:description"
+            content="Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery."
+        />
+        <meta property="og:image" content="https://giovanetti.fr/flowtos/me_2x.jpg" />
+        <meta name="description" content="About - Jeu de Lumières - Romain J. Giovanetti" />
+        <title>About - Jeu de Lumières - Romain J. Giovanetti</title>
+    </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta property="og:url" content="{SERVER_SIDE_RENDER_URL}" />
-  <meta property="og:title" content="About - Jeu de Lumières" />
-  <meta property="og:type" content="website" />
-  <meta property="og:description"
-    content="Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery." />
-  <meta property="og:image" content="https://giovanetti.fr/flowtos/me_2x.jpg" />
-  <meta name="description" content="About - Jeu de Lumières - Romain J. Giovanetti" />
-  <title>About - Jeu de Lumières - Romain J. Giovanetti</title>
-</head>
-
-<body>
-  <h1>About - Jeu de Lumières</h1>
-  <h2>By Romain J. Giovanetti</h2>
-  <br />
-  <p>Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery.</p>
-  <br />
-  <img src="https://giovanetti.fr/flowtos/me_2x.jpg" alt="photo" />
-  <br />
-  <p>Please wait while the app is loading. You'll be redirected in a few seconds.</p>
-  <script type="text/javascript">window.location.replace("../ssr/about");</script>
-</body>
-
+    <body>
+        <h1>About - Jeu de Lumières</h1>
+        <h2>By Romain J. Giovanetti</h2>
+        <br />
+        <p>Hello, I'm Romain and I've always loved taking pictures. Welcome to my photo gallery.</p>
+        <br />
+        <img src="https://giovanetti.fr/flowtos/me_2x.jpg" alt="photo" />
+        <br />
+        <p>Please wait while the app is loading. You'll be redirected in a few seconds.</p>
+        <script type="text/javascript">
+            window.location.replace('../ssr/about')
+        </script>
+    </body>
 </html>
