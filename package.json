@@ -15,7 +15,7 @@
         ]
     },
     "dependencies": {
-        "bootstrap": "^4.6",
+        "bootstrap": "^5.3",
         "fslightbox-react": "^1.7",
         "react": "^17.*",
         "react-bootstrap": "^2.8.0",
