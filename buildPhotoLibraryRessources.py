@@ -14,6 +14,7 @@ import json
 import shutil
 import base64
 from io import BytesIO
+import argparse
 
 from PIL import Image
 from progress.bar import Bar
@@ -37,6 +38,8 @@ config = {
         'photos_folder_name': 'photos',
         'thumbnails_folder_name': 'thumbnails',
         'models_folder_name': 'models',
+        'photo_folder_mapping_filename': 'photo-folder-mapping.json',
+        'optimized_images_metadata_filename': 'optimized-images-metadata.json',
         'index_name': 'index.json',
         'max_dimensions': {
             'thumbnail': (800, 500),
@@ -72,8 +75,7 @@ config = {
 }
 
 
-def reset_photo_library_ressources():
-    print("Reset photo library ressources...")
+def remove_photo_library_ressources():
     if os.path.exists(config['plr']['main_folder_path']) and os.path.isdir(config['plr']['main_folder_path']):
         shutil.rmtree(config['plr']['main_folder_path'])
     os.mkdir(config['plr']['main_folder_path'])
@@ -91,7 +93,7 @@ def load_package_file():
         return json.load(json_file)
 
 
-def build_photos_folder_mapping():
+def build_photo_folder_mapping():
     photos_folder_mapping = {'allPhotos': [], 'albums': {}}
     photo_id = 0
     photos_grabbed = []
@@ -120,7 +122,7 @@ def build_photos_folder_mapping():
     return photos_folder_mapping
 
 
-def build_optimized_images(photos_folder_mapping):
+def build_optimized_images(photos_folder_mapping, already_built_optimized_image_ids, previous_optimized_images_metadata):
     optimized_images_metadata = {}
     for photo in photos_folder_mapping['allPhotos']:
         optimized_images_metadata[photo['id']] = {
@@ -144,77 +146,89 @@ def build_optimized_images(photos_folder_mapping):
 
     bar = Bar('Processing images', max=len(
         photos_folder_mapping['allPhotos']) * 4)
-    
+        
     for photo in photos_folder_mapping['allPhotos']:
-        try:
-            im = Image.open(photo['path'])
-            im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
+        if photo['id'] not in already_built_optimized_image_ids:
+            try:
+                im = Image.open(photo['path'])
+                im.thumbnail(config['plr']['max_dimensions']['thumbnail'])
 
-            if im.mode == 'RGBA':
-                im = im.convert('RGB')
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
 
-            width, height = im.size
-            optimized_images_metadata[photo['id']]['thumbnail']['width'] = width
-            optimized_images_metadata[photo['id']]['thumbnail']['height'] = height
+                width, height = im.size
+                optimized_images_metadata[photo['id']]['thumbnail']['width'] = width
+                optimized_images_metadata[photo['id']]['thumbnail']['height'] = height
 
-            im.save(config['plr']['main_folder_path'] +
-                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
-        except IOError:
-            print("Cannot create thumbnail for photo ", photo['path'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
+            except IOError:
+                print("Cannot create thumbnail for photo ", photo['path'])
+        else:
+            optimized_images_metadata[photo['id']] = previous_optimized_images_metadata[photo['id']]
         bar.next()
 
     for photo in photos_folder_mapping['allPhotos']:
-        try:
-            im = Image.open(photo['path'])
-            im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
+        if photo['id'] not in already_built_optimized_image_ids:
+            try:
+                im = Image.open(photo['path'])
+                im.thumbnail(config['plr']['max_dimensions']['thumbnail_2x'])
 
-            if im.mode == 'RGBA':
-                im = im.convert('RGB')
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
 
-            width, height = im.size
-            optimized_images_metadata[photo['id']]['thumbnail2x']['width'] = width
-            optimized_images_metadata[photo['id']]['thumbnail2x']['height'] = height
+                width, height = im.size
+                optimized_images_metadata[photo['id']]['thumbnail2x']['width'] = width
+                optimized_images_metadata[photo['id']]['thumbnail2x']['height'] = height
 
-            im.save(config['plr']['main_folder_path'] +
-                    config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
-        except IOError:
-            print("Cannot create @2x thumbnail for photo ", photo['path'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['thumbnails_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
+            except IOError:
+                print("Cannot create @2x thumbnail for photo ", photo['path'])
+        else:
+            optimized_images_metadata[photo['id']] = previous_optimized_images_metadata[photo['id']]
         bar.next()
 
     for photo in photos_folder_mapping['allPhotos']:
-        try:
-            im = Image.open(photo['path'])
-            im.thumbnail(config['plr']['max_dimensions']['photo'])
+        if photo['id'] not in already_built_optimized_image_ids:
+            try:
+                im = Image.open(photo['path'])
+                im.thumbnail(config['plr']['max_dimensions']['photo'])
 
-            if im.mode == 'RGBA':
-                im = im.convert('RGB')
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
 
-            width, height = im.size
-            optimized_images_metadata[photo['id']]['photo']['width'] = width
-            optimized_images_metadata[photo['id']]['photo']['height'] = height
+                width, height = im.size
+                optimized_images_metadata[photo['id']]['photo']['width'] = width
+                optimized_images_metadata[photo['id']]['photo']['height'] = height
 
-            im.save(config['plr']['main_folder_path'] +
-                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
-        except IOError:
-            print("Cannot create resized photo of ", photo['path'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '.webp', "WEBP", optimize=True)
+            except IOError:
+                print("Cannot create resized photo of ", photo['path'])
+        else:
+            optimized_images_metadata[photo['id']] = previous_optimized_images_metadata[photo['id']]
         bar.next()
 
     for photo in photos_folder_mapping['allPhotos']:
-        try:
-            im = Image.open(photo['path'])
-            im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
+        if photo['id'] not in already_built_optimized_image_ids:
+            try:
+                im = Image.open(photo['path'])
+                im.thumbnail(config['plr']['max_dimensions']['photo_2x'])
 
-            if im.mode == 'RGBA':
-                im = im.convert('RGB')
+                if im.mode == 'RGBA':
+                    im = im.convert('RGB')
 
-            width, height = im.size
-            optimized_images_metadata[photo['id']]['photo2x']['width'] = width
-            optimized_images_metadata[photo['id']]['photo2x']['height'] = height
+                width, height = im.size
+                optimized_images_metadata[photo['id']]['photo2x']['width'] = width
+                optimized_images_metadata[photo['id']]['photo2x']['height'] = height
 
-            im.save(config['plr']['main_folder_path'] +
-                    config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
-        except IOError:
-            print("Cannot create @2x resized photo of ", photo['path'])
+                im.save(config['plr']['main_folder_path'] +
+                        config['plr']['photos_folder_name'] + '/' + str(photo['id']) + '@2x.webp', "WEBP", optimize=True)
+            except IOError:
+                print("Cannot create @2x resized photo of ", photo['path'])
+        else:
+            optimized_images_metadata[photo['id']] = previous_optimized_images_metadata[photo['id']]
         bar.next()
 
     return optimized_images_metadata
@@ -319,20 +333,93 @@ def add_default_og_image(photos_folder_mapping):
     except IOError:
         print("Cannot create default open graph image.")
 
+def dump_photo_folder_mapping(photos_folder_mapping):
+    try:
+        dump_file_path = config['plr']['main_folder_path'] + config['plr']['photo_folder_mapping_filename']
+        with open(dump_file_path, 'w') as file:
+            json.dump(photos_folder_mapping, file)
 
-def build_photo_library_ressources():
-    reset_photo_library_ressources()
+    except Exception as e:
+        print(f'Error: {e}')
+
+
+def dump_optimized_images_metadata(optimized_images_metadata):
+    try:
+        dump_file_path = config['plr']['main_folder_path'] + config['plr']['optimized_images_metadata_filename']
+        with open(dump_file_path, 'w') as file:
+            json.dump(optimized_images_metadata, file)
+
+    except Exception as e:
+        print(f'Error: {e}')
+
+
+def get_previous_photo_folder_mapping():
+    try:
+        dump_file_path = config['plr']['main_folder_path'] + config['plr']['photo_folder_mapping_filename']
+        with open(dump_file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f'Error: {e}')
+        return {}
+    
+
+def get_previous_optimized_images_metadata():
+    try:
+        dump_file_path = config['plr']['main_folder_path'] + config['plr']['optimized_images_metadata_filename']
+        with open(dump_file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f'Error: {e}')
+        return {}
+
+
+def get_already_built_optimized_image_ids(previous_photo_folder_mapping):
+    already_built_optimized_image_ids = []
+    for photo_entry in previous_photo_folder_mapping["allPhotos"]:
+        already_built_optimized_image_ids.append(photo_entry["id"])
+
+    return already_built_optimized_image_ids
+
+
+def build_photo_library_ressources(override_ressources):
+    if override_ressources:
+        print("Clearing previous photo library resources.")
+        remove_photo_library_ressources()
+
     package_file = load_package_file()
     flowtos_version = package_file['version']
     print("Building photo library ressources for Flowtos version: ", flowtos_version)
-    photos_folder_mapping = build_photos_folder_mapping()
-    optimized_images_metadata = build_optimized_images(photos_folder_mapping)
+
+    new_photo_folder_mapping = build_photo_folder_mapping()
+    
+    if override_ressources:
+        already_built_optimized_image_ids = []
+        previous_optimized_images_metadata = {}
+    else:
+        previous_photo_folder_mapping = get_previous_photo_folder_mapping()
+        already_built_optimized_image_ids = get_already_built_optimized_image_ids(previous_photo_folder_mapping)
+        previous_optimized_images_metadata = get_previous_optimized_images_metadata()
+
+    new_optimized_images_metadata = build_optimized_images(new_photo_folder_mapping, already_built_optimized_image_ids, previous_optimized_images_metadata)
+
     credits_index = bplrh_helpers.credits.build(config)
-    build_index_file(photos_folder_mapping, optimized_images_metadata, credits_index)
-    bplrh_helpers.server_side_renders.build(photos_folder_mapping, config)
-    add_default_og_image(photos_folder_mapping)
+    build_index_file(new_photo_folder_mapping, new_optimized_images_metadata, credits_index)
+
+    bplrh_helpers.server_side_renders.build(new_photo_folder_mapping, config)
+    add_default_og_image(new_photo_folder_mapping)
+
+    dump_photo_folder_mapping(new_photo_folder_mapping)
+    dump_optimized_images_metadata(new_optimized_images_metadata)
+
     print("\nDone")
 
 
 if __name__ == '__main__':
-    build_photo_library_ressources()
+    parser = argparse.ArgumentParser()    
+    parser.add_argument('--override', action='store_true', help='Erase and rebuild the photo library ressources')
+    args = parser.parse_args()
+    override_ressources = args.override
+
+    build_photo_library_ressources(override_ressources)

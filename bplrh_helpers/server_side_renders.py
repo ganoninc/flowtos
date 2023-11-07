@@ -77,7 +77,9 @@ def _build_albums(albums, config):
         for album in albums:
             album_encoded_name = bplrh_helpers.tools.encode_album_name(album)
             album_dest_path = config['ssr']['albums']['destination_path'] + album_encoded_name
-            os.mkdir(album_dest_path)
+
+            if not os.path.exists(album_dest_path) or not os.path.isdir(album_dest_path):
+                os.mkdir(album_dest_path)
 
             album_render = album_template.replace(
                 '{PHOTO_URL}', config['flowtos_baseurl'] + config['plr']['main_folder_name'] + '/' + config['plr']['photos_folder_name'] + '/' + albums[album]['photos'][0]['id'] + '.webp')

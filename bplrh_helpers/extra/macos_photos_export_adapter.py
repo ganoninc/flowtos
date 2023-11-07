@@ -27,8 +27,8 @@ def update_folder(working_directory):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        raise Exception("Missing argument. Please provide a working directory using the -wd option followed by the path of the targeted folder")
+        raise Exception("Missing argument. Please provide a working directory using the -wd option followed by the path of the working directory")
     elif len(sys.argv) == 2 and sys.argv[1] == '-wd':
-        raise Exception("Missing argument. You forgot to specify the path of the targeted folder after the -wd option")
+        raise Exception("Missing argument. You forgot to specify the path of the working directory after the -wd option")
     elif len(sys.argv) == 3 and sys.argv[1] == '-wd':
         update_folder(sys.argv[2])
