@@ -149,7 +149,7 @@ export const Flowtos = (props: FlowtosProps): React.JSX.Element => {
                     <footer className='pb-5 footer'>
                         <Container>
                             <span className='small text-muted'>
-                                All images © 2002-2023{' '}
+                                All images © 2002-2025{' '}
                                 <a href='https://www.giovanetti.fr/'>Romain J. Giovanetti</a>
                                 <br />
                                 Flowtos by{' '}
