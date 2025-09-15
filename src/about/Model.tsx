@@ -5,7 +5,7 @@ import './Model.scss'
 
 type ModelProps = Pick<ModelType, 'fullname' | 'thumbnailUrl' | 'thumbnail2xUrl' | 'instagram'>
 
-export const Model = (props: ModelProps): React.JSX.Element => {
+const Model = (props: ModelProps): React.JSX.Element => {
     const { instagram, thumbnailUrl, thumbnail2xUrl, fullname } = props
 
     const InstagramLink = (): React.JSX.Element => (

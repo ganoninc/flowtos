@@ -36,3 +36,5 @@ __pycache__/
 /public/photos/*
 /public/albums/*
 /public/about/*
+
+refreshProd.dmg

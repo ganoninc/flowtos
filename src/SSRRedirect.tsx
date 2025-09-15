@@ -1,9 +1,8 @@
-import React from 'react'
 import { useParams, useMatch, Navigate } from 'react-router-dom'
 import LoadingIndicator from './LoadingIndicator'
 import { Route, RouteBuilder } from './routes'
 
-export const SSRRedirect = (): React.JSX.Element => {
+const SSRRedirect = () => {
     const { photoId, albumId } = useParams()
 
     const isAboutPage = useMatch({
@@ -35,3 +34,5 @@ export const SSRRedirect = (): React.JSX.Element => {
         </>
     )
 }
+
+export default SSRRedirect

@@ -1,8 +1,7 @@
-import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 import type { ScrollPosition } from 'react-lazy-load-image-component'
-import { AlbumCard } from './AlbumCard'
+import AlbumCard from './AlbumCard'
 import type { Album, Photo } from '../types'
 import { Container, Row } from 'react-bootstrap'
 
@@ -15,7 +14,7 @@ type AlbumsProps = {
     scrollPosition: ScrollPosition
 }
 
-export const Albums = trackWindowScroll((props: AlbumsProps): React.JSX.Element => {
+const Albums = trackWindowScroll((props: AlbumsProps) => {
     const { albumList, sharedPhotosData, photoLibraryEndpoint, scrollPosition } = props
 
     const albumListComponents = albumList.map((album) => {
@@ -45,3 +44,5 @@ export const Albums = trackWindowScroll((props: AlbumsProps): React.JSX.Element 
         </CSSTransition>
     )
 })
+
+export default Albums

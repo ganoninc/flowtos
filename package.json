@@ -1,6 +1,6 @@
 {
     "name": "flowtos",
-    "version": "2.0.25",
+    "version": "2.1.25",
     "private": false,
     "homepage": "https://giovanetti.fr/flowtos",
     "repository": {
@@ -17,9 +17,9 @@
     "dependencies": {
         "bootstrap": "^4.6",
         "fslightbox-react": "^1.7",
-        "react": "^17.*",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
         "react-bootstrap": "^2.8.0",
-        "react-dom": "^17.0.2",
         "react-ga4": "^2.1.0",
         "react-infinite-scroll-component": "^6.1.0",
         "react-lazy-load-image-component": "^1.6",
@@ -55,8 +55,8 @@
         "@types/fslightbox-react": "^1.7.3",
         "@types/jest": "^29.5.4",
         "@types/node": "^20.5.7",
-        "@types/react": "^17.*",
-        "@types/react-dom": "^17.*.*",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
         "@types/react-lazy-load-image-component": "^1.6",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",

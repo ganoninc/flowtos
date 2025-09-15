@@ -1,4 +1,3 @@
-import React from 'react'
 import Nav from 'react-bootstrap/Nav'
 import { useNavigate } from 'react-router-dom'
 import { Route } from './routes'
@@ -16,14 +15,11 @@ export type MenuProps = {
     activeItemKey: MenuItemKey
 }
 
-export const Menu = (props: MenuProps): React.JSX.Element => {
+const Menu = (props: MenuProps) => {
     const { displayAlbums, activeItemKey } = props
     const navigate = useNavigate()
 
-    const onSelectHandler = (
-        selectedKey: string | null,
-        _: React.SyntheticEvent<unknown>,
-    ): void => {
+    const onSelectHandler = (selectedKey: string | null) => {
         switch (selectedKey) {
             case MenuItemKey.LATEST_PHOTOS:
                 navigate(Route.HOME)
@@ -61,3 +57,5 @@ export const Menu = (props: MenuProps): React.JSX.Element => {
         </Nav>
     )
 }
+
+export default Menu

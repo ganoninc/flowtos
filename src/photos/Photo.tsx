@@ -1,4 +1,3 @@
-import React from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import type { ScrollPosition } from 'react-lazy-load-image-component'
 import { PhotoAlbumType } from './Photos'
@@ -14,7 +13,7 @@ export type PhotoProps = {
     computedImagesProps: NonOptional<ImageElementAttributes, 'style' | 'src' | 'alt'>
 }
 
-export const Photo = (props: PhotoProps): React.JSX.Element => {
+const Photo = (props: PhotoProps) => {
     const { photo, onClick, scrollPosition, layout, computedImagesProps } = props
 
     const styles = {
@@ -25,7 +24,7 @@ export const Photo = (props: PhotoProps): React.JSX.Element => {
         ...computedImagesProps.style,
     }
 
-    const onClickHandler: React.MouseEventHandler<HTMLElement> = (): void => {
+    const onClickHandler = () => {
         onClick(photo.id)
     }
 
@@ -55,3 +54,5 @@ export const Photo = (props: PhotoProps): React.JSX.Element => {
         </div>
     )
 }
+
+export default Photo

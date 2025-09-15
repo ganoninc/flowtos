@@ -1,19 +1,19 @@
-import React from 'react'
+import { ReactElement } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { GATracker } from './GATracker'
 import { Route as RoutePath } from './routes'
 import { MenuItemKey } from './Menu'
 
 type RoutesConfigProps = {
-    MenuFactory: (menuItemKey: MenuItemKey) => React.JSX.Element
-    Photos: React.JSX.Element
-    Albums: React.JSX.Element
-    Album: React.JSX.Element
-    About: React.JSX.Element
-    SSRRedirect: React.JSX.Element
+    MenuFactory: (menuItemKey: MenuItemKey) => ReactElement
+    Photos: ReactElement
+    Albums: ReactElement
+    Album: ReactElement
+    About: ReactElement
+    SSRRedirect: ReactElement
 }
 
-export const RoutesConfig = (props: RoutesConfigProps): React.JSX.Element => {
+const RoutesConfig = (props: RoutesConfigProps) => {
     const { MenuFactory, Photos, Albums, Album, About, SSRRedirect } = props
 
     return (
@@ -87,3 +87,5 @@ export const RoutesConfig = (props: RoutesConfigProps): React.JSX.Element => {
         </Routes>
     )
 }
+
+export default RoutesConfig

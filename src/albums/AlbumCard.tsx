@@ -1,4 +1,3 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { RouteBuilder } from '../routes'
@@ -16,11 +15,11 @@ type AlbumCardProps = {
     scrollPosition: ScrollPosition
 }
 
-export const AlbumCard = (props: AlbumCardProps): React.JSX.Element => {
+const AlbumCard = (props: AlbumCardProps) => {
     const { name, albumId, cover, cover2x, placeholderSrc, scrollPosition } = props
     const navigate = useNavigate()
 
-    const openAlbum = (): void => {
+    const openAlbum = () => {
         navigate(RouteBuilder.buildViewAlbumRoute(albumId))
     }
 
@@ -43,3 +42,5 @@ export const AlbumCard = (props: AlbumCardProps): React.JSX.Element => {
         </Col>
     )
 }
+
+export default AlbumCard

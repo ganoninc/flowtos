@@ -6,7 +6,7 @@ import FsLightbox from 'fslightbox-react'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 import type { ScrollPosition } from 'react-lazy-load-image-component'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { Photo } from './Photo'
+import Photo from './Photo'
 import { RouteBuilder, Route } from '../routes'
 import type { Photo as PhotoType, PhotoReference } from '../types'
 
@@ -28,12 +28,12 @@ export type PhotoAlbumType = PhotoType & {
     placeholderSrc: string
 }
 
-export const Photos = trackWindowScroll((props: PhotosProps): React.JSX.Element => {
+const Photos = trackWindowScroll((props: PhotosProps) => {
     const { photoList, sharedPhotosData, photoLibraryEndpoint, scrollPosition } = props
     const navigate = useNavigate()
     const { photoId, albumId } = useParams()
 
-    const photoThumbnails: PhotoAlbumType[] = photoList.map((photo): PhotoAlbumType => {
+    const photoThumbnails = photoList.map((photo): PhotoAlbumType => {
         const photoData = sharedPhotosData[photo.sharedPhotosDataIndex]
         return {
             ...photoData,
@@ -179,3 +179,5 @@ export const Photos = trackWindowScroll((props: PhotosProps): React.JSX.Element 
         </div>
     )
 })
+
+export default Photos

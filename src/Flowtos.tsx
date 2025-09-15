@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { RoutesConfig } from './RoutesConfig'
+import RoutesConfig from './RoutesConfig'
 import { ErrorMessage } from './ErrorMessage'
 import LoadingIndicator from './LoadingIndicator'
-import { Menu, MenuItemKey } from './Menu'
-import type { Exception } from 'sass'
+import Menu, { MenuItemKey } from './Menu'
 import type { PhotoLibraryIndex } from './types'
-import { Photos } from './photos/Photos'
-import { Albums } from './albums/Albums'
-import { Album } from './albums/Album'
-import { About } from './about/About'
-import { SSRRedirect } from './SSRRedirect'
+import Photos from './photos/Photos'
+import Albums from './albums/Albums'
+import Album from './albums/Album'
+import About from './about/About'
+import SSRRedirect from './SSRRedirect'
 
 import './Flowtos.scss'
 import { Container } from 'react-bootstrap'
@@ -38,79 +37,75 @@ type FlowtosProps = {
     photoLibraryEndpoint: string
 }
 
-export const Flowtos = (props: FlowtosProps): React.JSX.Element => {
-    const { photoLibraryEndpoint } = props
-
-    const [LoadingState, setLoadingState] = useState<LoadingState>({
+const Flowtos = ({ photoLibraryEndpoint }: FlowtosProps) => {
+    const [loadingState, setLoadingState] = useState<LoadingState>({
         status: LoadingStatus.LOADING,
     })
 
     useEffect(() => {
-        const fetchPhotoLibraryIndex = async (): Promise<void> => {
-            const res = await fetch(photoLibraryEndpoint + 'index.json')
-            res.json()
-                .then((photoLibraryIndex) => {
-                    setLoadingState({
-                        status: LoadingStatus.LOADED,
-                        photoLibraryIndex: {
-                            allPhotos: photoLibraryIndex.allPhotos,
-                            sharedPhotosData: photoLibraryIndex.sharedPhotosData,
-                            albums: photoLibraryIndex.albums,
-                            models: photoLibraryIndex.credits.models,
-                        },
-                    })
+        fetch(photoLibraryEndpoint + 'index.json')
+            .then((response) => response.json())
+            .then((photoLibraryIndex) => {
+                setLoadingState({
+                    status: LoadingStatus.LOADED,
+                    photoLibraryIndex: {
+                        allPhotos: photoLibraryIndex.allPhotos,
+                        sharedPhotosData: photoLibraryIndex.sharedPhotosData,
+                        albums: photoLibraryIndex.albums,
+                        models: photoLibraryIndex.credits.models,
+                    },
                 })
-                .catch((error: Exception) => {
-                    setLoadingState({
-                        status: LoadingStatus.ERROR,
-                        errorMessage: error.toString(),
-                    })
+            })
+            .catch((error) => {
+                setLoadingState({
+                    status: LoadingStatus.ERROR,
+                    errorMessage: error.toString(),
                 })
-        }
-
-        void fetchPhotoLibraryIndex()
+            })
     }, [photoLibraryEndpoint])
 
-    const MainContent = (): React.JSX.Element => {
-        switch (LoadingState.status) {
+    const currentYear = new Date().getFullYear()
+
+    const MainContent = () => {
+        switch (loadingState.status) {
             case LoadingStatus.ERROR:
                 return <ErrorMessage />
             case LoadingStatus.LOADED:
-                if (LoadingState.photoLibraryIndex.allPhotos.length > 0) {
+                if (loadingState.photoLibraryIndex.allPhotos.length > 0) {
                     const MenuFactory = (menuItemKey: MenuItemKey) => (
                         <Menu
-                            displayAlbums={LoadingState.photoLibraryIndex.albums.length > 0}
+                            displayAlbums={loadingState.photoLibraryIndex.albums.length > 0}
                             activeItemKey={menuItemKey}
                         />
                     )
 
                     const PhotosImpl = (
                         <Photos
-                            photoList={LoadingState.photoLibraryIndex.allPhotos}
-                            sharedPhotosData={LoadingState.photoLibraryIndex.sharedPhotosData}
+                            photoList={loadingState.photoLibraryIndex.allPhotos}
+                            sharedPhotosData={loadingState.photoLibraryIndex.sharedPhotosData}
                             photoLibraryEndpoint={photoLibraryEndpoint}
                         />
                     )
 
                     const AlbumImpl = (
                         <Album
-                            albumList={LoadingState.photoLibraryIndex.albums}
-                            sharedPhotosData={LoadingState.photoLibraryIndex.sharedPhotosData}
+                            albumList={loadingState.photoLibraryIndex.albums}
+                            sharedPhotosData={loadingState.photoLibraryIndex.sharedPhotosData}
                             photoLibraryEndpoint={photoLibraryEndpoint}
                         />
                     )
 
                     const AlbumsImpl = (
                         <Albums
-                            albumList={LoadingState.photoLibraryIndex.albums}
-                            sharedPhotosData={LoadingState.photoLibraryIndex.sharedPhotosData}
+                            albumList={loadingState.photoLibraryIndex.albums}
+                            sharedPhotosData={loadingState.photoLibraryIndex.sharedPhotosData}
                             photoLibraryEndpoint={photoLibraryEndpoint}
                         />
                     )
 
                     const AboutImpl = (
                         <About
-                            models={LoadingState.photoLibraryIndex.models}
+                            models={loadingState.photoLibraryIndex.models}
                             photoLibraryEndpoint={photoLibraryEndpoint}
                         />
                     )
@@ -149,7 +144,7 @@ export const Flowtos = (props: FlowtosProps): React.JSX.Element => {
                     <footer className='pb-5 footer'>
                         <Container>
                             <span className='small text-muted'>
-                                All images © 2002-2025{' '}
+                                All images © 2002-{`${currentYear} `}
                                 <a href='https://www.giovanetti.fr/'>Romain J. Giovanetti</a>
                                 <br />
                                 Flowtos by{' '}
@@ -169,3 +164,5 @@ export const Flowtos = (props: FlowtosProps): React.JSX.Element => {
         </div>
     )
 }
+
+export default Flowtos

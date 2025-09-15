@@ -1,6 +1,5 @@
-import React from 'react'
 import { CSSTransition } from 'react-transition-group'
-import { Model } from './Model'
+import Model from './Model'
 import type { Model as ModelType } from '../types'
 
 import './About.scss'
@@ -10,10 +9,10 @@ type AboutProps = {
     photoLibraryEndpoint: string
 }
 
-export const About = (props: AboutProps): React.JSX.Element => {
+const About = (props: AboutProps) => {
     const { models, photoLibraryEndpoint } = props
 
-    const Models = (): React.JSX.Element => {
+    const Models = () => {
         return (
             <div className='models mt-4'>
                 <h2 className='mb-4'>Models</h2>
@@ -113,3 +112,5 @@ export const About = (props: AboutProps): React.JSX.Element => {
         </CSSTransition>
     )
 }
+
+export default About

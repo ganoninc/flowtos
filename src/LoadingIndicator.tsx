@@ -1,6 +1,4 @@
-import React from 'react'
-
-const LoadingIndicator = (): React.JSX.Element => {
+const LoadingIndicator = () => {
     return (
         <div className='mb-4 loading-indicator'>
             <span>Loading...</span>
