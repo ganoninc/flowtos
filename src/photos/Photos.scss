@@ -1,6 +1,10 @@
 $imgHoverScale: 1.05;
 
 .photos {
+    .react-photo-album--photo {
+        overflow: hidden;
+    }
+
     .react-photo-album {
         img {
             filter: brightness(1);

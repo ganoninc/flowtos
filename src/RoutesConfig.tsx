@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import { GATracker } from './GATracker'
 import { Route as RoutePath } from './routes'
 import { MenuItemKey } from './Menu'

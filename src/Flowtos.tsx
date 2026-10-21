@@ -1,18 +1,21 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { useState, useEffect, lazy, Suspense } from 'react'
+import { BrowserRouter as Router } from 'react-router'
 import RoutesConfig from './RoutesConfig'
 import { ErrorMessage } from './ErrorMessage'
 import LoadingIndicator from './LoadingIndicator'
 import Menu, { MenuItemKey } from './Menu'
 import type { PhotoLibraryIndex } from './types'
-import Photos from './photos/Photos'
-import Albums from './albums/Albums'
-import Album from './albums/Album'
-import About from './about/About'
 import SSRRedirect from './SSRRedirect'
 
 import './Flowtos.scss'
 import { Container } from 'react-bootstrap'
+
+const Photos = lazy(() => import('./photos/Photos'))
+const Albums = lazy(() => import('./albums/Albums'))
+const Album = lazy(() => import('./albums/Album'))
+const About = lazy(() => import('./about/About'))
+
+const routerBasename = '/flowtos'
 
 const enum LoadingStatus {
     LOADING,
@@ -64,6 +67,12 @@ const Flowtos = ({ photoLibraryEndpoint }: FlowtosProps) => {
             })
     }, [photoLibraryEndpoint])
 
+    // The router renders nothing outside its basename (e.g. "/" on the dev server)
+    if (!window.location.pathname.startsWith(routerBasename)) {
+        window.location.replace(routerBasename + '/')
+        return null
+    }
+
     const currentYear = new Date().getFullYear()
 
     const MainContent = () => {
@@ -113,14 +122,16 @@ const Flowtos = ({ photoLibraryEndpoint }: FlowtosProps) => {
                     const SSRRedirectImpl = <SSRRedirect />
 
                     return (
-                        <RoutesConfig
-                            MenuFactory={MenuFactory}
-                            Photos={PhotosImpl}
-                            Albums={AlbumsImpl}
-                            Album={AlbumImpl}
-                            About={AboutImpl}
-                            SSRRedirect={SSRRedirectImpl}
-                        />
+                        <Suspense fallback={<LoadingIndicator />}>
+                            <RoutesConfig
+                                MenuFactory={MenuFactory}
+                                Photos={PhotosImpl}
+                                Albums={AlbumsImpl}
+                                Album={AlbumImpl}
+                                About={AboutImpl}
+                                SSRRedirect={SSRRedirectImpl}
+                            />
+                        </Suspense>
                     )
                 } else {
                     return <ErrorMessage />
@@ -132,7 +143,7 @@ const Flowtos = ({ photoLibraryEndpoint }: FlowtosProps) => {
 
     return (
         <div className='flowtos'>
-            <Router basename='/flowtos'>
+            <Router basename={routerBasename}>
                 <Container>
                     <header className='Flowtos-header pt-5'>
                         <span className='text-muted'>Romain J. Giovanetti</span>

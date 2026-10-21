@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import PhotoAlbum from 'react-photo-album'
-import type { Image, RenderPhotoProps } from 'react-photo-album'
+import { useParams, useNavigate } from 'react-router'
+import { RowsPhotoAlbum } from 'react-photo-album'
+import type { Image, RenderImageProps, RenderImageContext } from 'react-photo-album'
 import FsLightbox from 'fslightbox-react'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 import type { ScrollPosition } from 'react-lazy-load-image-component'
@@ -10,6 +10,7 @@ import Photo from './Photo'
 import { RouteBuilder, Route } from '../routes'
 import type { Photo as PhotoType, PhotoReference } from '../types'
 
+import 'react-photo-album/rows.css'
 import './Photos.scss'
 
 type PhotosProps = {
@@ -127,18 +128,16 @@ const Photos = trackWindowScroll((props: PhotosProps) => {
         }
     }
 
-    const customPhotoRenderer = ({
-        photo,
-        imageProps,
-        layout,
-    }: RenderPhotoProps<PhotoAlbumType>) => (
+    const customImageRenderer = (
+        imageProps: RenderImageProps,
+        { photo, width, height }: RenderImageContext<PhotoAlbumType>,
+    ) => (
         <Photo
             scrollPosition={scrollPosition}
-            key={photo.key}
             photo={photo}
-            onClick={openLightbox}
-            layout={layout}
-            computedImagesProps={imageProps}
+            width={width}
+            height={height}
+            computedImageProps={imageProps}
         />
     )
 
@@ -146,13 +145,13 @@ const Photos = trackWindowScroll((props: PhotosProps) => {
     infiniteScrollerController.currentChuck.map((item, index): number => {
         return infiniteScrollItems.push(
             <div key={index} className='photos-chunk mb-2'>
-                <PhotoAlbum<PhotoAlbumType>
+                <RowsPhotoAlbum<PhotoAlbumType>
                     breakpoints={[576, 768, 992, 1200]}
                     targetRowHeight={225}
                     photos={item}
                     spacing={10}
-                    layout='rows'
-                    renderPhoto={customPhotoRenderer}
+                    onClick={({ photo }) => openLightbox(photo.id)}
+                    render={{ image: customImageRenderer }}
                 />
             </div>,
         )

@@ -1,4 +1,4 @@
-import { useParams, useMatch, Navigate } from 'react-router-dom'
+import { useParams, useMatch, Navigate } from 'react-router'
 import LoadingIndicator from './LoadingIndicator'
 import { Route, RouteBuilder } from './routes'
 

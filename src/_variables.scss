@@ -1,0 +1,25 @@
+// Override default variables before the import
+//$body-bg: #ddd;
+$font-family-sans-serif: 'Open Sans', sans-serif;
+
+$link-color: rgb(56, 108, 168);
+$link-hover-color: rgb(48, 127, 218);
+$link-decoration: none;
+
+// Also escape '%' (first) since Sass outputs percentage rgb() colors, which would otherwise
+// produce undecodable SVG data URIs and break the CSS minifier
+$escaped-characters: (
+    ('%', '%25'),
+    ('<', '%3c'),
+    ('>', '%3e'),
+    ('#', '%23'),
+    ('(', '%28'),
+    (')', '%29')
+);
+
+// Import Bootstrap functions, variables and mixins (no CSS output)
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/variables-dark';
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';

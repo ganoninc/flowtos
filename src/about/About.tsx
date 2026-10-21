@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Model from './Model'
 import type { Model as ModelType } from '../types'
@@ -11,6 +12,7 @@ type AboutProps = {
 
 const About = (props: AboutProps) => {
     const { models, photoLibraryEndpoint } = props
+    const nodeRef = useRef<HTMLDivElement>(null)
 
     const Models = () => {
         return (
@@ -35,8 +37,8 @@ const About = (props: AboutProps) => {
     }
 
     return (
-        <CSSTransition in={true} timeout={25} classNames='fade' appear>
-            <div className='about'>
+        <CSSTransition nodeRef={nodeRef} in={true} timeout={25} classNames='fade' appear>
+            <div ref={nodeRef} className='about'>
                 <div className='about-me'>
                     <div className='profile-picture'>
                         <img

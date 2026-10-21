@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 import type { ScrollPosition } from 'react-lazy-load-image-component'
@@ -16,6 +17,7 @@ type AlbumsProps = {
 
 const Albums = trackWindowScroll((props: AlbumsProps) => {
     const { albumList, sharedPhotosData, photoLibraryEndpoint, scrollPosition } = props
+    const nodeRef = useRef<HTMLDivElement>(null)
 
     const albumListComponents = albumList.map((album) => {
         const photoData = sharedPhotosData[album.photos[0].sharedPhotosDataIndex]
@@ -37,8 +39,8 @@ const Albums = trackWindowScroll((props: AlbumsProps) => {
     })
 
     return (
-        <CSSTransition in={true} timeout={0} classNames='fade' appear>
-            <Container className='albums'>
+        <CSSTransition nodeRef={nodeRef} in={true} timeout={0} classNames='fade' appear>
+            <Container ref={nodeRef} className='albums'>
                 <Row className='justify-content-center'>{albumListComponents}</Row>
             </Container>
         </CSSTransition>

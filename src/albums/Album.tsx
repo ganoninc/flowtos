@@ -1,4 +1,4 @@
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router'
 import Photos from '../photos/Photos'
 import type { Album as AlbumType, Photo } from '../types'
 import BackSignImg from './back-sign.svg'

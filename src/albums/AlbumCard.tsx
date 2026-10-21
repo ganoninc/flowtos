@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { RouteBuilder } from '../routes'
 import { Col } from 'react-bootstrap'
